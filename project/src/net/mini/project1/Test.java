@@ -1,4 +1,4 @@
-package mywork;
+package net.mini.project1;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -62,8 +62,6 @@ public class Test {
         //문제풀기
         System.out.print("정답입력>> ");
         String uanswer = sc.nextLine();
-
-        //시간제한구현
 
         msg = "select kor from word where code =" + question;
         RS = ST.executeQuery(msg);
