@@ -24,11 +24,14 @@ public class ScoreCard {
       //첫번째명령어 생성
       ST = CN.createStatement();
 
-      msg = "select score from member";
+      msg = "select ID, score from member order by score";
       RS = ST.executeQuery(msg);
 
-      while ()
-
+      if (RS.next() == true) {
+        String uid = RS.getString("ID");
+        int uscore = RS.getInt("score");
+        System.out.println(uid+"\t" + uscore);
+      }
 
     } catch (Exception ex) { System.out.println("에러 =" + ex);}
 

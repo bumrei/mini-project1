@@ -13,6 +13,8 @@ create table member (
   score number(4) default(0)
 );
 
+set pagesize 120;
+set linesize 120;
 
 commit ;
 
