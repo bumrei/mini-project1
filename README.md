@@ -22,6 +22,6 @@
 
 
 ### 20210709 프로젝트 1일차
-[회의1]
+[회의1] (https://github.com/bumrei/mini-project1/blob/main/%ED%9A%8C%EC%9D%98%EA%B8%B0%EB%A1%9D/0709%ED%9A%8C%EC%9D%98.txt)
 
 ### 진행 상황
