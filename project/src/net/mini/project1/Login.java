@@ -140,15 +140,15 @@ public class Login {
           switch(command) {
             case 1:
               System.out.println("회원 관리입니다.\n");
-              System.out.println("Apologise, system is not ready.\n");
+              System.out.println("Apologise, the system is not ready.\n");
               break;
             case 2:
               System.out.println("게임 설정 관리 입니다.\n");
-              System.out.println("Apologise, system is not ready.\n");
+              System.out.println("Apologise, the system is not ready.\n");
               break;
             case 3:
               System.out.println("단어장 관리 입니다.\n");
-              System.out.println("Apologise, system is not ready.\n");
+              System.out.println("Apologise, the system is not ready.\n");
               break;
             case 4:
               break loop;
