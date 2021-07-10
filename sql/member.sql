@@ -10,11 +10,12 @@ create table member (
   psw varchar(6) not null ,
   email varchar(20) not null ,
   cdate date not null ,
-  score number(4) default(0)
+  score number(4) default(0) ,
+  admin number(4)
 );
 
-set pagesize 120;
-set linesize 120;
+set pagesize 160;
+set linesize 160;
 
 commit ;
 
@@ -22,8 +23,8 @@ desc member
 
 --insert ∫Œ∫–/////////////////////////////////////////////////////////////////////////////////////////////////////
 
-insert into member(memNo, name, ID, psw, email, cdate)
- values(member_seq.nextval, '±Ë«œ«œ', 'ID1', '12345', 'hahahaha@gmail.com', sysdate);
+insert into member(memNo, name, ID, psw, email, cdate, admin)
+ values(member_seq.nextval, '±Ë«œ«œ', 'ID1', '12345', 'hahahaha@gmail.com', sysdate, 1234);
 
 insert into member(memNo, name, ID, psw, email, cdate)
  values(member_seq.nextval, '±Ë»£»£', 'ID2', '12345', 'ggggjjj@gmail.com', sysdate);
