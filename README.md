@@ -21,7 +21,7 @@
   단계별로 점수에 차등을 주어 합산 점수로 랭킹 책정후 출력.
 
 
-### 20210709 프로젝트 1일차
-[회의1]
+### 회의 about 프로젝트
+- [(20210709) - 회의1 내용](https://github.com/bumrei/mini-project1/blob/main/%ED%9A%8C%EC%9D%98%EA%B8%B0%EB%A1%9D/0709%ED%9A%8C%EC%9D%98.txt)
 
 ### 진행 상황
