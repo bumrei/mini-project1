@@ -11,11 +11,11 @@ create table member (
   email varchar(20) not null ,
   cdate date not null ,
   score number(4) default(0) ,
-  admin number(4)
+  admin number(4) default(0)
 );
 
-set pagesize 160;
-set linesize 160;
+set pagesize 200;
+set linesize 200;
 
 commit ;
 

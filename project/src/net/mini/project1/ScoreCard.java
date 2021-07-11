@@ -35,6 +35,7 @@ public class ScoreCard {
 
     } catch (Exception ex) { System.out.println("에러 =" + ex);}
 
-  }
+    sc.close();
+  }// main END
 }
 
