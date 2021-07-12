@@ -22,7 +22,6 @@ public class Login {
   Scanner sc = new Scanner(System.in);
   SqlDb sqlDb= new SqlDb();
 
-<<<<<<< HEAD
   public void executeLogin() {
     JoinMember jm = new JoinMember();
 
@@ -35,47 +34,9 @@ public class Login {
         switch(command) {
           case 1:
             LoginFrame();
-=======
-  public static void main(String[] args) {
-    Login lg = new Login();
-    while (true) {
-      try {
-        int controlThread = 800;
-        lg.dbConnect();
-        System.out.println("                    ◤----------------◥ ");
-        System.out.println("================= * | 단어 암기 게임 | * ===================");
-        System.out.print("                    ◣----------------◢ ");
-        Thread.sleep(controlThread);
-        System.out.println("\n       *            *              *         *         *");
-        Thread.sleep(controlThread);
-        System.out.println("\n*         apple           *              *          Haha");
-        Thread.sleep(controlThread);
-        System.out.println("\n      Sweet           *        자동차             *");
-        Thread.sleep(controlThread);
-        System.out.println("\n    *        양초               *         Fly          *");
-        Thread.sleep(controlThread);
-        System.out.println("\n*           *         Amazing        *                장난감 ");
-        Thread.sleep(controlThread);
-        System.out.println("\n        Car             *                 Happy      *");
-        Thread.sleep(controlThread);
-        System.out.print("\n[1. 일반회원 로그인]   [2. 관리자 로그인]   [9. 종료]\n >>> ");
-        int command = Integer.parseInt(lg.sc.nextLine());
-
-        switch(command) {
-          case 1:
-            lg.loginFrame();
-            lg.selectFromDB();
-            lg.goIntoTheGame();
->>>>>>> 6e41e02286a134fd0918b9f8494dbfcbd5d537c0
             break;
           case 2:
-<<<<<<< HEAD
             jm.join();
-=======
-            lg.adminLogin();
-            lg.adminInfoFromDB();
-            lg.adminWork();
->>>>>>> 6e41e02286a134fd0918b9f8494dbfcbd5d537c0
             break;
 
           case 9:
@@ -89,16 +50,6 @@ public class Login {
     }
   }//main END
 
-<<<<<<< HEAD
-=======
-  public void dbConnect() throws Exception {
-    Class.forName("oracle.jdbc.driver.OracleDriver");
-    String url = "jdbc:oracle:thin:@localhost:1521:XE";
-    CN = DriverManager.getConnection(url, "system", "1234");
-    ST = CN.createStatement(); 
-  }// dbConnect End
-
->>>>>>> 6e41e02286a134fd0918b9f8494dbfcbd5d537c0
   // class for 일반회원 로그인//////////////////////////////////////////////////////////////////////
 
   public void LoginFrame() throws Exception {
@@ -110,7 +61,7 @@ public class Login {
       userPsw = sc.nextLine();
       System.out.println("관리자 Pin >> ");
       adminPin = Integer.parseInt(sc.nextLine());
-
+      if ()
 
     }
 
@@ -125,15 +76,7 @@ public class Login {
   }
 }
 
-<<<<<<< HEAD
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // class for 관리자 로그인 ///////////////////////////////////////////////////////////////////////
-=======
-  public String matchIdWithDBForDelete(String ID) throws Exception {
-    msg = "select ID,ADMIN from member where ID = '" + ID + "'";
-    RS = ST.executeQuery(msg);
-    String delID = null;
-
->>>>>>> 6e41e02286a134fd0918b9f8494dbfcbd5d537c0
 
