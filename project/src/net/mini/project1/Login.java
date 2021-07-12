@@ -26,42 +26,24 @@ public class Login {
   String userPsw = null;
   int userAdmin;
 
-  public static void main(String[] args) {
-    Login lg = new Login();
+  public void executeLogin() {
     while (true) {
       try {
-        int controlThread = 800;
-        lg.dbConnect();
-        System.out.println("                    ◤----------------◥ ");
-        System.out.println("================= * | 단어 암기 게임 | * ===================");
-        System.out.print("                    ◣----------------◢ ");
-        Thread.sleep(controlThread);
-        System.out.println("\n       *            *              *         *         *");
-        Thread.sleep(controlThread);
-        System.out.println("\n*         apple           *              *          Haha");
-        Thread.sleep(controlThread);
-        System.out.println("\n      Sweet           *        자동차             *");
-        Thread.sleep(controlThread);
-        System.out.println("\n    *        양초               *         Fly          *");
-        Thread.sleep(controlThread);
-        System.out.println("\n*           *         Amazing        *                장난감 ");
-        Thread.sleep(controlThread);
-        System.out.println("\n        Car             *                 Happy      *");
-        Thread.sleep(controlThread);
+        
         System.out.print("\n[1. 일반회원 로그인]   [2. 관리자 로그인]   [9. 종료]\n >>> ");
-        int command = Integer.parseInt(lg.sc.nextLine());
+        int command = Integer.parseInt(sc.nextLine());
 
         switch(command) {
           case 1:
-            lg.loginFrame();
-            lg.selectFromDB();
-            lg.goIntoTheGame();
+            loginFrame();
+            selectFromDB();
+            goIntoTheGame();
             break;
 
           case 2:
-            lg.adminLogin();
-            lg.adminInfoFromDB();
-            lg.adminWork();
+            adminLogin();
+            adminInfoFromDB();
+            adminWork();
             break;
 
           case 9:
@@ -80,6 +62,7 @@ public class Login {
     String url = "jdbc:oracle:thin:@localhost:1521:XE";
     CN = DriverManager.getConnection(url, "system", "1234");
     ST = CN.createStatement(); 
+    
   }// dbConnect End
 
   // class for 일반회원 로그인//////////////////////////////////////////////////////////////////////
