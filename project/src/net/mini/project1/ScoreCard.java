@@ -19,11 +19,8 @@ public class ScoreCard {
       Class.forName("oracle.jdbc.driver.OracleDriver"); // 오라클드라이브로드
       String url = "jdbc:oracle:thin:@127.0.0.1:1521:XE" ;
       CN = DriverManager.getConnection(url , "system", "1234"); //오라클 서버, 계정, 비번, 연결하기. // XE는 우리가 설치한 DB서버의 이름. //CN은 getConnection의 리턴값이 Connection이니까 해주는것이다.
-
-
       //첫번째명령어 생성
       ST = CN.createStatement();
-
       msg = "select ID, score from member order by score";
       RS = ST.executeQuery(msg);
       System.out.println("아이디\t점 수");
