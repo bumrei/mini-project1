@@ -58,9 +58,7 @@ public class JoinMember {
         if(stringCheck(id)) {continue;}
         break;
       }//while end
-      System.out.println("아이디 중복확인 중 입니다.");
       try {
-        Thread.sleep(1000);
         msg = "select ID from member";
         RS = ST.executeQuery(msg);
         while(RS.next()==true) {
@@ -100,7 +98,7 @@ public class JoinMember {
   public void setEmail() {
     while(true) {
       while(true) {
-        System.out.print("email>> (ex:abc@abc.com)");
+        System.out.print("email>>  ");
         email = sc.nextLine();
         if(stringCheck(email)) {continue;}
         break;
