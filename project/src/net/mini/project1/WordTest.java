@@ -14,6 +14,7 @@ public class WordTest {
   String msg = "isud = crud쿼리문기술";
   String userID;
   int level;
+  int[] question = new int[10];
   Scanner sc = new Scanner(System.in);
 
   WordTest(String userID, int level) {
@@ -33,16 +34,22 @@ public class WordTest {
   }//dbconnect end
 
   public void wordTest() { //중복제거필요
+
+    System.out.println("영어단어 테스트");
+
     try {
+
+      //랜덤문제생성
+      randomSetting();
+
       //테스트 5번 반복
-      for(int i =0 ; i<5; i++) {
+      for(int i =0 ; i<question.length; i++) {
         //문제 랜덤출력
-        int wordNum = (int)(Math.random()*getTotalWordNum())+1;
-        System.out.printf("문제>> %s\n", getWord("eng", wordNum));
+        System.out.printf("문제>> %s\n",getWord("eng", i));
         System.out.print("정답>> ");
         String uanswer = sc.nextLine();
 
-        int currentScore = answerCheck(uanswer, wordNum);
+        int currentScore = answerCheck(uanswer, i);
         setDBScore(currentScore);
 
         System.out.println();
@@ -54,7 +61,6 @@ public class WordTest {
   public int getTotalWordNum() {
     int count = 0;
     try {
-      //msg = "select count(*) from word";
       msg = "select count(*) from word where wordlevel = " + level;
       RS = ST.executeQuery(msg);
       if( RS.next() == true) {
@@ -64,15 +70,25 @@ public class WordTest {
     return count;
   }//getTotalWordNum end
 
+  public void randomSetting() {
+    for(int i = 0; i < question.length; i++) {
+      question[i] = (int)(Math.random()*getTotalWordNum()) +1;
+      for(int j = 0; j < i; j++) {
+        if(question[i] == question[j]) {
+          i--;
+        }//if end
+      }//for end
+    }//for end
+  }//print[] END
+
   //데이터베이스 단어 가져오기
-  public String getWord(String type, int wordNumber) {
+  public String getWord(String type, int number) {
     String word = "단어";
     try {
-      //msg = "select " + type + " from word where code =" + wordNumber;
       msg = "select " + type + " from "
           + "(select row_number() over(partition by wordlevel order by wordlevel) as row_num, b.* "
           + "from word b) a "
-          + "where wordlevel = " + level + " and a.row_num = " + wordNumber;
+          + "where wordlevel = " + level + " and a.row_num = " + question[number];
       RS = ST.executeQuery(msg);
       if( RS.next() == true) {
         word = RS.getString(type);
@@ -85,7 +101,6 @@ public class WordTest {
   public int getDBScore() {
     int score = 0;
     try {
-      //msg = "select score from member where id = 'ID1'";
       msg = "select score from member where id = '" + userID + "'";
       RS = ST.executeQuery(msg);
       if(RS.next() == true) {
@@ -96,8 +111,8 @@ public class WordTest {
   }//getDBScore end
 
   //정답채점, 점수매기기
-  public int answerCheck(String userAnswer, int wordNumber) {
-    String answer = getWord("kor",wordNumber);
+  public int answerCheck(String userAnswer, int number) {
+    String answer = getWord("kor",number);
     int score = getDBScore();
 
     if(answer.equals(userAnswer)) {
@@ -122,7 +137,6 @@ public class WordTest {
   //데이터베이스에 점수저장
   public void setDBScore(int score) {
     try {
-      //msg = "update member set score =" + score + " where id = 'ID1'";
       msg = "update member set score =" + score + " where id = '" + userID + "'";
       ST.executeUpdate(msg);
     }catch(Exception ex) { }
