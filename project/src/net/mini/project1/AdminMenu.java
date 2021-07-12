@@ -1,4 +1,4 @@
-package com.sql.test;
+package net.mini.project1;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -26,8 +26,7 @@ public class AdminMenu {
   String userPsw = null;
   int userAdmin;
   String ucmt = null;
-
-  SqlDb sdb = new SqlDb();
+  String delId = null;
 
   public void dbConnect() throws Exception {
     Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -57,34 +56,30 @@ public class AdminMenu {
         int command = Integer.parseInt(sc.nextLine());
         switch(command) {
           case 1:
-            System.out.println("[회원 관리]\n");
-            System.out.println("수행하실 작업을 선택해 주십시오.");
-
             try {
+              System.out.println("\n[회원 관리]");
               loop2 : while(true) {
-                System.out.println("[1. 회원 리스트]   [2. 회원 삭제]   [8. 뒤로가기]");
+                System.out.println("\n수행하실 작업을 선택해 주십시오.");
+                System.out.print("[1. 회원 리스트]   [2. 회원 삭제]   [8. 뒤로가기]\n >>> ");
                 int command2 = Integer.parseInt(sc.nextLine());
                 switch (command2) {
-                  case 1: listMember(); break;
-                  case 2: deleteMember(); break;
+                  case 1: listMember(); continue;
+                  case 2: deleteMember(); continue;
                   case 8: break loop2;
                   default: System.out.println("번호를 잘못 입력하셨습니다."); continue;
                 }
-                break;
               }
             }catch (Exception e) {System.out.println("error1: "+e);}
             break;
           case 2:
-            System.out.println("[코멘트 확인]\n");
             cmtMember();
             break;
           case 3:
-            System.out.println("[단어 관리]\n");
             manageWord();
             break;
-          case 9: System.out.println("로그아웃"); break admin;
+          case 9: System.out.println("\n로그아웃"); break admin;
           default:
-            System.out.println("잘못된 번호를 입력하셨습니다.");
+            System.out.println("잘못된 번호를 입력하셨습니다."); continue;
         }
       }catch (Exception e) {System.out.println("error2: "+e);}
     }
@@ -96,10 +91,12 @@ public class AdminMenu {
   //[1. 회원관리] in adminWork()////////////////////////////////////
   //1. 회원 리스트//////////////////////////////////////////////////
   public void listMember() throws Exception {
-    System.out.println("[회원 리스트]\n");
+    System.out.println("\n[회원 리스트]");
     sql = "select MEMNO,NAME,ID,EMAIL,CDATE,SCORE from member";
     RS = ST.executeQuery(sql);
-    System.out.println("[No.]\t[Name]\t[ID]\t[Email]\t\t\t[Created Date]\t[Score]");
+
+    System.out.println("\n[No.]\t[Name]\t[ID]\t[Email]\t\t\t[Created Date]\t[Score]");
+
     while(RS.next() == true) {
       uMemno = RS.getInt("MEMNO");
       uName = RS.getString("NAME");
@@ -114,43 +111,139 @@ public class AdminMenu {
           uCdate + "\t" + 
           uScore);
     }
-    System.out.print("[8. 뒤로가기]\n >>> ");
-    int command = Integer.parseInt(sc.nextLine());
-    if(command == 8) return;
   }//listMember end
 
   //1. 회원 삭제//////////////////////////////////////////////////
   public void deleteMember() throws Exception {
-    System.out.println("[회원 삭제]\n");
+    System.out.println("\n[회원 삭제]");
     while(true) {
-      System.out.print("삭제하실 아이디를 입력하여 주십시오.\n >>> ");
+      System.out.print("\n삭제하실 아이디를 입력하여 주십시오.\n >>> ");
       String deleteID = sc.next();
       if (deleteID.equals("Admin")) {
         System.out.println("관리자는 삭제하실 수 없습니다.");
         return;
-      } else if (sdb.delete(deleteID)) {
+      } else if (delete(deleteID)) {
         System.out.println("회원 삭제가 완료되었습니다.");
+      } else {
+        System.out.println("\n아이디를 다시 확인하십시오.");
       }
+      //삭제할 아이디 입력 후에 자꾸 에러 반복
+      //error delete:java.sql.SQLSyntaxErrorException: ORA-00900: SQL 문이 부적합합니다
       return;
     }
   }//deleteMember end
 
+
+  //테스트용 임시삽입 delete(SqlDb)
+  public boolean delete(String id) {
+    try {
+      sql = "select * from member where ID = '" + id + "'";
+      RS = ST.executeQuery(sql);
+      while(RS.next() == true) {
+        delId = RS.getString("ID");
+      }
+      //디버그 결과 여기까지는 문제없었음 이 밑에서 위에 적은 SQL부적합 오류 발생 왜?ㅠ
+      //오류 발생 후 다음 keyScan에 공백 넘어가는 오류 발생 어디서 공백이 넘어가지?
+      //error2: java.lang.NumberFormatException: For input string: ""
+      if (id.equals(delId)) {
+        sql = "delect from member where ID = '" + id + "'";
+        ST.executeUpdate(sql);  
+        //System.out.println(sql);
+        return true ;
+      } else { return false ; }
+    } catch(Exception e) { System.out.println("error delete:" + e); return false; }
+  }//Delete 
+
+
   //[2. 코멘트 확인]////////////////////////////////////////////////
   public void cmtMember() throws Exception {
-    System.out.println("[코멘트 확인]");
+    System.out.println("\n[코멘트 확인]");
     sql = "select comment from member";
     RS = ST.executeQuery(sql);
-    System.out.println("");
+    System.out.println("\nComment");
     while(RS.next() == true) {
       ucmt = RS.getString("comment");
       System.out.println(ucmt);
     }
   }
 
+
+
   //[3. 단어 관리]//////////////////////////////////////////////////
   public void manageWord() {
-    System.out.println("[단어 관리]");
+    System.out.println("\n[단어 관리]");
     //단어관리 수정/추가 기능
+    word: while(true) {
+      System.out.println();
+      System.out.print("[1. 단어 추가]   [2. 단어 삭제]   [3. 단어 목록]   [8. 뒤로가기]   \n >>> ");
+      int menu = Integer.parseInt(sc.nextLine());
+      switch(menu) {
+        case 1: addWord(); break;
+        case 2: delWord(); break;
+        case 3: printWord(); break;
+        case 8: break word;
+        default: System.out.println("메뉴 번호 확인"); continue;
+      }
+    }
+    System.out.println("\n단어관리 종료\n");
   }
+
+  public void addWord() {
+    try {
+      System.out.println("\n[단어 추가]");
+      System.out.print("\n  level>>> ");
+      int wlevel = Integer.parseInt(sc.nextLine());
+      System.out.print("  영단어>>> ");
+      String weng = sc.nextLine();
+      System.out.print("  단어 뜻>>> ");
+      String wkor = sc.nextLine();
+
+      sql = "insert into word(wordNum, wordLevel, eng, kor) values( word_seq.nextval, " + wlevel + ", '" + weng + "', '" + wkor + "')";
+      int check = ST.executeUpdate(sql);
+      if(check > 0) {
+        System.out.println("단어 추가 완료");
+        System.out.print("\n  단어 목록 출력? (y/N)>>> ");
+        String print = sc.nextLine();
+        if (print.equals("y")) {
+          printWord();
+        } else {
+          return;
+        }
+      } 
+    } catch(Exception e) {System.out.println("error addword:" + e);}
+  }
+
+  public void delWord() {
+    try {
+      System.out.println("\n[단어 삭제]");
+      System.out.print("\n  삭제할 단어 입력>>> ");
+      String weng = sc.nextLine();
+      sql = "delete from word where eng = '" + weng + "'";
+      ST.executeUpdate(sql);
+      System.out.println("단어 삭제 완료");
+      System.out.print("\n  단어 목록 출력? (y/N)>>> ");
+      String print = sc.nextLine();
+      if (print.equals("y")) {
+        printWord();
+      } else {
+        return;
+      }
+    } catch(Exception e) {System.out.println("error delword:" + e);}
+  }
+
+  public void printWord() {
+    try {
+      System.out.println("\n[단어 출력]");
+      sql = "select wordLevel, eng, kor from word order by wordLevel";
+      RS = ST.executeQuery(sql);
+      System.out.println("\n영단어\t단어뜻");
+      while(RS.next() == true) {
+        String peng = RS.getString("eng");
+        String pkor = RS.getString("kor");
+        System.out.println(peng + "\t" + pkor);
+      }
+    } catch(Exception e) {System.out.println("error printWord:" + e);}
+  }
+
 
 }
