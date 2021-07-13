@@ -72,7 +72,6 @@ public class Member {
     ST = CN.createStatement(); 
   }// dbConnect End
 
-  // class for 일반회원 로그인//////////////////////////////////////////////////////////////////////
   public void login() throws Exception {
     boolean a = loginFrame();
     selectFromDB();
@@ -115,7 +114,7 @@ public class Member {
   }
 
   public void adminLogin() throws Exception {
-    System.out.println("관리지로 로그인하시겠습니까?  (y/N)");
+    System.out.println("관리자로 로그인하시겠습니까?  (y/N)");
     String command = sc.nextLine();
     if (command.equals("y")) {
       System.out.print("A Password >> ");
