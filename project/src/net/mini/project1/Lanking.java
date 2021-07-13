@@ -15,7 +15,7 @@ public class Lanking {
 
   public void lanking() throws Exception {
     dbConnect();
-    msg = "select ID, score from member order by score";
+    msg = "select ID, score from member order by score desc";
     RS = ST.executeQuery(msg);
     System.out.println("아이디\t점 수");
     while (RS.next() == true) {

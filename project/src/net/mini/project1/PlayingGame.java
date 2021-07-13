@@ -15,10 +15,11 @@ public class PlayingGame {
   Scanner sc = new Scanner(System.in);
   int sLevel = 0;
   String sql = null;
+  WordTest wt = new WordTest("ID2");
+  Lanking lk = new Lanking();
 
   public void game() throws Exception {
 
-    WordTest wt = new WordTest("ID2");
 
     System.out.println("҉ ٩(๑>ω<๑)۶҉     단어 맞추기 게임 월드에 오신것을 환영합니다.  ꉂ (๑¯ਊ¯)σ \n");
 
@@ -36,9 +37,9 @@ public class PlayingGame {
           wt.dbConnect();
           wt.wordTest();
           break;
-        case "3": // 랭킹표
-          System.out.println("준비중");
-          break;
+        case "3": lk.lanking(); back();
+        System.out.println("준비중");
+        break;
         case "4": // 내 정보
           System.out.println("준비중");
           break;
@@ -102,6 +103,14 @@ public class PlayingGame {
           System.out.println("\n번호 다시 확인해주세요.");
         }
       } catch(Exception e) {System.out.println("번호 다시 확인해주세요");}
+    }
+  }
+
+  public void back() {
+    System.out.println("[8. 뒤로가기]");
+    String command = sc.nextLine();
+    if (command.equals("8")) {
+      return;
     }
   }
 
