@@ -142,8 +142,13 @@ public class AdminMenu {
       }
       if (id.equals(delId)) {
         sql = "delete from member where ID = '" + id + "'";
-        ST.executeUpdate(sql);  
-        //System.out.println(sql);
+        System.out.print("\n  삭제하려는 아이디가 "+ id +"가 맞습니까? (y/N)>>> ");
+        String print = sc.nextLine();
+        if (print.equals("y")) {
+          ST.executeUpdate(sql);  
+        } else {
+          return false;
+        }
         return true ;
       } else { return false ; }
     } catch(Exception e) { System.out.println("error delete:" + e); return false; }
