@@ -17,6 +17,8 @@ public class PlayingGame {
 
   public void game() throws Exception {
 
+    WordTest wt = new WordTest("ID2");
+
     System.out.println("҉ ٩(๑>ω<๑)۶҉     단어 맞추기 게임 월드에 오신것을 환영합니다.  ꉂ (๑¯ਊ¯)σ \n");
 
     while(true) {
@@ -30,7 +32,8 @@ public class PlayingGame {
       switch (command) {
         case "1": this.selectLevel(); break;
         case "2": // 단어 테스트 게임
-          System.out.println("준비중");
+          wt.dbConnect();
+          wt.wordTest();
           break;
         case "3": // 랭킹표
           System.out.println("준비중");

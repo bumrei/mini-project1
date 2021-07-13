@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Scanner;
@@ -20,6 +21,7 @@ public class WordTest {
 
   Connection CN = null; //DB서버연결정보 서버ip주소 계정id,pwd
   Statement ST = null; //ST=CN, createStatement() 명령어생성 삭제, 신규등록, 조회하라
+  PreparedStatement PST=null ;
   ResultSet RS = null; //select조회결과값 전체데이터를 기억
   String msg = "isud = crud쿼리문기술";
   Scanner sc = new Scanner(System.in);
@@ -28,9 +30,8 @@ public class WordTest {
   int level;
   int[] questionNum = new int[6];
 
-  WordTest(String userID,int level) {
+  WordTest(String userID) {
     this.userID = userID;
-    this.level = level;
   }
 
   public void dbConnect() {
@@ -46,6 +47,10 @@ public class WordTest {
 
   public void wordTest() { //게임종료 후 리플레이와 뒤로가기 구현필요
     test: while(true) {
+      System.out.println("난이도를 선택해주세요.(1~3)");
+      System.out.print("난이도>> ");
+      level = Integer.parseInt(sc.nextLine());
+
       System.out.println("영어단어테스트를 시작합니다.");
       System.out.println("문제당 제한시간은 10초입니다.");
       System.out.println("테스트중간에 그만두고 싶으시다면 'end'를 입력해주세요.\n");
@@ -125,8 +130,10 @@ public class WordTest {
   public int getTotalWordNum() {
     int count = 0;
     try {
-      msg = "select count(*) from word where wordlevel = " + level;
-      RS = ST.executeQuery(msg);
+      msg = "select count(*) from word where wordlevel = ?";
+      PST = CN.prepareStatement(msg);
+      PST.setInt(1, level);
+      RS = PST.executeQuery();
       if( RS.next() == true) {
         count = RS.getInt("count(*)");
       }//if end
@@ -154,6 +161,7 @@ public class WordTest {
           + "from word b) a "
           + "where wordlevel = " + level + " and a.row_num = " + questionNum[number];
       RS = ST.executeQuery(msg);
+
       if( RS.next() == true) {
         word = RS.getString(type);
       }//if end
@@ -165,8 +173,11 @@ public class WordTest {
   public int getDBScore() {
     int score = 0;
     try {
-      msg = "select score from member where id = '" + userID + "'";
-      RS = ST.executeQuery(msg);
+      msg = "select score from member where id = ?";
+      PST = CN.prepareStatement(msg);
+      PST.setString(1, userID);
+      RS = PST.executeQuery();
+
       if(RS.next() == true) {
         score = RS.getInt("score");
       }//if end
@@ -197,8 +208,11 @@ public class WordTest {
     System.out.println("현재점수는 " + score + "점입니다.");
 
     try {
-      msg = "update member set score =" + score + " where id = '" + userID + "'";
-      ST.executeUpdate(msg);
+      msg = "update member set score = ? where id = ?";
+      PST = CN.prepareStatement(msg);
+      PST.setInt(1, score);
+      PST.setString(2, userID);
+      PST.executeUpdate();
     }catch(Exception ex) { }
   }//answerCheck end
 }//WordTest Class END
@@ -223,6 +237,7 @@ class InputAnswer implements Callable<String> { // 값 입력받기
         return null;
       }//try end
     } //while end
+
     return input;
   }//call end
 }//InputAnswer Class END
