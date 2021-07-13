@@ -110,9 +110,25 @@ public class Member {
 
   public void goIntoTheGame() throws Exception {
     System.out.print("\n\n게임 로딩중"); Thread.sleep(500);
-    System.out.print("."); Thread.sleep(500);
-    System.out.print("."); Thread.sleep(500);
-    System.out.print("."); Thread.sleep(500);
+    System.out.print("▰"); Thread.sleep(100);
+    System.out.print("▰▰"); Thread.sleep(100);
+    System.out.print("▰▰▰▰▰▰▰"); Thread.sleep(1000);
+    System.out.print("▰"); Thread.sleep(100);
+    System.out.print("▰"); Thread.sleep(100);
+    System.out.print("▰"); Thread.sleep(500);
+    System.out.print("▰"); Thread.sleep(500);
+    System.out.print("▰"); Thread.sleep(100);
+    System.out.print("▰"); Thread.sleep(100);
+    System.out.print("▰"); Thread.sleep(100);
+    System.out.print("▰"); Thread.sleep(1000);
+    System.out.print("▰"); Thread.sleep(100);
+    System.out.print("▰"); Thread.sleep(100);
+    System.out.print("▰"); Thread.sleep(100);
+    System.out.print("▰"); Thread.sleep(100);
+    System.out.print("▰"); Thread.sleep(500);
+    System.out.print("▰▰▰▰▰▰"); Thread.sleep(500);
+    System.out.println("꧁ଘ(੭ˊ꒳ˋ)੭✧\n");
+    Thread.sleep(700);
     pg.game();
   }
 

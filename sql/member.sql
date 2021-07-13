@@ -10,11 +10,12 @@ create table member (
   psw varchar(6) not null ,
   email varchar(20) not null ,
   cdate date not null ,
-  score number(4) default(0) 
+  score number(4) default(0) ,
+  comnt varchar(100)  
 );
 
-set pagesize 280;
-set linesize 280;
+set pagesize 1000;
+set linesize 1000;
 
 commit ;
 
