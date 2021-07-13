@@ -78,27 +78,27 @@ public class Member {
           System.exit(0);
           break;
         default :
-          System.out.println("옳바른 번호를 입력해 주십시오.");
+          System.out.println("올바른 번호를 입력해 주십시오.");
       }
     }
   } // executeMember() End
 
   public void login() throws Exception {
     while (true) {
-      System.out.print("ID>>");
+      System.out.print("\n  ID>>> ");
       userID = sc.nextLine();
       if (userID.equals("Admin")) {
         adminLogin();
         return;
       }
 
-      System.out.print("\nPassword>>");
+      System.out.print("  Password>>> ");
       userPsw = sc.nextLine();
 
       matchLoginFromDB();
 
       if (userID.equals(uID) && userPsw.equals(uPsw)) {
-        System.out.println("로그인 성공");
+        System.out.println("\n로그인 성공");
         goIntoTheGame();
         return;
       } else {
@@ -109,15 +109,17 @@ public class Member {
   }
 
   public void goIntoTheGame() throws Exception {
-    System.out.println("게임 로딩중...");
-    Thread.sleep(3000);
+    System.out.print("\n\n게임 로딩중"); Thread.sleep(500);
+    System.out.print("."); Thread.sleep(500);
+    System.out.print("."); Thread.sleep(500);
+    System.out.print("."); Thread.sleep(500);
     pg.game();
   }
 
   public void adminLogin() {
-    System.out.print("Passwords>> ");
+    System.out.print("  Passwords>>> ");
     String adminPsw = sc.nextLine();
-    System.out.print("\nPin number>> ");
+    System.out.print("\n  Pin number>>> ");
     String adminPin = sc.nextLine();
 
     if (adminPsw.equals("12345") && adminPin.equals("1234")) {
