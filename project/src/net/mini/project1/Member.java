@@ -13,7 +13,6 @@ public class Member {
   Statement ST = null;
   ResultSet RS = null;
   String msg = null;
-  Scanner sc = new Scanner(System.in);
   String uID = null;
   String uPsw = null;
   String uName = null;
@@ -27,8 +26,10 @@ public class Member {
   String fpsw = "찾기용비번";
   String rpsw = "바꾸기용비번";
 
+  Scanner sc = new Scanner(System.in);
   JoinMember jm = new JoinMember();
   AdminMenu am = new AdminMenu();
+  PlayingGame pg = new PlayingGame();
 
   public static void main(String[] args) throws Exception {
     Member mb = new Member();
@@ -110,8 +111,7 @@ public class Member {
   public void goIntoTheGame() throws Exception {
     System.out.println("게임 로딩중...");
     Thread.sleep(3000);
-    System.out.println("준비중");
-    // 게임 실행파일 들어가기!!!
+    pg.game();
   }
 
   public void adminLogin() {
