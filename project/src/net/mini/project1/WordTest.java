@@ -108,7 +108,7 @@ public class WordTest {
       //게임종료 후 메뉴선택
       while(true) {
         System.out.println("1.리플레이 2.이전메뉴");
-        System.out.println("메뉴>> ");
+        System.out.print("메뉴>> ");
         String menu = sc.nextLine();
 
         switch(menu) {
