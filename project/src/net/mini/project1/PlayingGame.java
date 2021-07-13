@@ -3,6 +3,7 @@ package net.mini.project1;
 import java.util.Scanner;
 
 public class PlayingGame {
+  Lanking lk = new Lanking();
 
   Scanner sc = new Scanner(System.in);
 
@@ -25,9 +26,7 @@ public class PlayingGame {
         case "2": // 단어 테스트 게임
           System.out.println("준비중");
           break;
-        case "3": // 랭킹표
-          System.out.println("준비중");
-          break;
+        case "3": lk.lanking(); back(); break;
         case "4": // 내 정보
           System.out.println("준비중");
           break;
@@ -46,4 +45,13 @@ public class PlayingGame {
     }
   }
 
+  public void back() {
+    System.out.println("[8. 뒤로가기]");
+    String command = sc.nextLine();
+    if (command.equals("8")) {
+      return;
+    }
+  }
 }
+
+
