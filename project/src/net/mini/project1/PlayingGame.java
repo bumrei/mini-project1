@@ -1,6 +1,7 @@
 package net.mini.project1;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -14,7 +15,6 @@ public class PlayingGame {
   Scanner sc = new Scanner(System.in);
   int sLevel = 0;
   String sql = null;
-  Member mb = new Member();
 
   public void game() throws Exception {
 
@@ -57,11 +57,16 @@ public class PlayingGame {
     }
   }
 
-
+  public void dbConnect() throws Exception {
+    Class.forName("oracle.jdbc.driver.OracleDriver");
+    String url = "jdbc:oracle:thin:@localhost:1521:XE";
+    CN = DriverManager.getConnection(url, "system", "1234");
+    ST = CN.createStatement(); 
+  }// dbConnect End
 
   public void selectLevel() throws Exception {
     Loop :while(true) {
-      mb.dbConnect();
+      dbConnect();
       System.out.print("\nLevel 선택 [1~3] [8. 뒤로가기]\n >>> ");
       try {
         sLevel = Integer.parseInt(sc.nextLine());
