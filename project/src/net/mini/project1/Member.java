@@ -53,8 +53,8 @@ public class Member {
         System.out.println("\n        Car             *                 Happy      *");
         Thread.sleep(controlThread);
         System.out.print("\n[1. 로그인]   [2. 회원가입]   [9. 종료]\n >>> ");
-        int command = Integer.parseInt(sc.nextLine());
-
+        int command = sc.nextInt();
+        String str = sc.nextLine();
         switch(command) {
           case 1: login(); break;
           case 2: jm.join(); break;
