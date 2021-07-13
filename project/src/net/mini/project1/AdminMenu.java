@@ -35,20 +35,11 @@ public class AdminMenu {
     ST = CN.createStatement(); 
   }// dbConnect End
 
-  public static void main(String[] args) {
-    try {
-      AdminMenu ad = new AdminMenu();
-
-      ad.dbConnect();
-      ad.adminWork();
-
-    }catch (Exception e) {System.out.println("Error:" + e);}
-  }
-
 
   public void adminWork() {
     admin : while(true) {
       try {
+        dbConnect();
         System.out.println("관리자로 로그인 하셨습니다. 수행하실 작업을 선택해 주십시오.");
         System.out.print("[1. 회원 관리]   [2. 코멘트 확인]   [3. 단어 관리]   "
             + "[9. 관리자 계정 로그아웃]\n >>> ");
