@@ -1,59 +1,52 @@
 package net.mini.project1;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.Scanner;
 
-public class PlayingGame {
+public class WordPrintNum {
   Connection CN = null;
   Statement ST = null;
   ResultSet RS = null;
-  PreparedStatement pstmt = null;
-  Scanner sc = new Scanner(System.in);
-  int sLevel = 0;
+  PreparedStatement pstmt = null;   
+
   String sql = null;
+  Scanner sc = new Scanner(System.in);
+  int uMemno;
+  String uName = null;
+  String uID = null;
+  String uPsw = null;
+  String uEmail = null;
+  Date uCdate = null;
+  int uScore;
+  int uadmin;
+  String userID = null;
+  String userPsw = null;
+  int userAdmin;
+  String ucmt = null;
+  String delId = null;
+  int sLevel = 0;
 
-  public void game() throws Exception {
+  public void dbConnect() throws Exception {
+    Class.forName("oracle.jdbc.driver.OracleDriver");
+    String url = "jdbc:oracle:thin:@localhost:1521:XE";
+    CN = DriverManager.getConnection(url, "system", "1234");
+    ST = CN.createStatement(); 
+  }// dbConnect End
 
-    System.out.println("҉ ٩(๑>ω<๑)۶҉     단어 맞추기 게임 월드에 오신것을 환영합니다.  ꉂ (๑¯ਊ¯)σ \n");
+  public static void main(String[] args) {
+    try {
+      WordPrintNum wp = new WordPrintNum();
 
-    while(true) {
+      wp.dbConnect();
+      wp.selectLevel();
 
-      System.out.print("[1. 단어 암기] \n\n[2. 단어 테스트]\n\n[3. 랭킹표]\n\n[4. 내 정보]\n\n"
-          + "[5. comment to 관리자]\n\n[8. 로그 아웃]\n\n[9. 게임 종료]");
-
-      System.out.print("\n\n>>> ");
-      String command = sc.nextLine();
-
-      switch (command) {
-        case "1": this.selectLevel(); break;
-        case "2": // 단어 테스트 게임
-          System.out.println("준비중");
-          break;
-        case "3": // 랭킹표
-          System.out.println("준비중");
-          break;
-        case "4": // 내 정보
-          System.out.println("준비중");
-          break;
-        case "5": // comment to 관리자
-          System.out.println("준비중");
-          break;
-        case "8": // 로그아웃
-          System.out.println("로그아웃 합니다.");
-          return;
-        case "9": // 종료
-          System.out.println("게임을 종료합니다.");
-          System.exit(0);
-        default :
-          System.out.println("올바른 번호를 입력해 주세요.  !!!( •̀ ᴗ •́ )و!!!");
-      }
-    }
+    } catch(Exception e) {}
   }
-
-
 
   public void selectLevel() throws Exception {
     Loop :while(true) {
@@ -64,7 +57,6 @@ public class PlayingGame {
         if (sLevel >= 1 && sLevel <=3) {
           System.out.println("\n  Level: " + sLevel);
 
-          System.out.println("단어 범위 [1~100]");
           System.out.print("\n출력할 단어 시작번호>>> ");
           int snum = Integer.parseInt(sc.nextLine());
           System.out.print("출력할 단어 마지막번호>>> ");
@@ -94,5 +86,4 @@ public class PlayingGame {
       } catch(Exception e) {System.out.println("번호 다시 확인해주세요");}
     }
   }
-
 }
