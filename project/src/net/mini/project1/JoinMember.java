@@ -29,6 +29,7 @@ public class JoinMember {
   }//dbconnect end
 
   public void join() {
+    dbConnect();
     System.out.println("회원가입");
 
     setName();

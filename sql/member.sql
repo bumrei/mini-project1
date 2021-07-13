@@ -23,7 +23,7 @@ desc member
 --insert ∫Œ∫–/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 insert into member(memNo, name, ID, psw, email, cdate)
- values(member_seq.nextval, '±Ë«œ«œ', 'Admin', '12345', 'hahahaha@gmail.com', sysdate);
+ values(member_seq.nextval, '±Ë«œ«œ', 'ID1', '12345', 'hahahaha@gmail.com', sysdate);
 
 insert into member(memNo, name, ID, psw, email, cdate)
  values(member_seq.nextval, '±Ë»£»£', 'ID2', '12345', 'ggggjjj@gmail.com', sysdate);
