@@ -16,8 +16,17 @@ public class Member {
   Scanner sc = new Scanner(System.in);
   String uID = null;
   String uPsw = null;
+  String uName = null;
+  String uEmail = null;
   String userID = null;
   String userPsw = null;
+
+  String fname = "찾기용이름";
+  String femail = "찾기용메일";
+  String fID = "찾기용아이디";
+  String fpsw = "찾기용비번";
+  String rpsw = "바꾸기용비번";
+
   JoinMember jm = new JoinMember();
   AdminMenu am = new AdminMenu();
 
@@ -43,14 +52,26 @@ public class Member {
     }
   }
 
+  public void matchFindFromDB() throws Exception {
+    msg = "select * from member where NAME = '" + fname + "'";
+    RS = ST.executeQuery(msg);
+    while (RS.next() == true) {
+      uID = RS.getString("ID");
+      uPsw = RS.getString("PSW");
+      uName = RS.getString("NAME");
+      uEmail = RS.getString("EMAIL");
+    }
+  }
+
   public void executeMember() throws Exception {
     while (true) {
-      System.out.print("[1. 로그인]   [2. 회원가입]   [9. 종료] \n>>> ");
+      System.out.print("[1. 로그인]   [2. 회원가입]   [3. 아이디 / 비밀번호 찾기]   [9. 종료] \n>>> ");
       String command = sc.nextLine();
 
       switch (command) {
         case "1" : login(); break;
         case "2" : jm.join(); break;
+        case "3": findDb(); break;
         case "9" :
           System.out.println("게임을 종료합니다.");
           System.exit(0);
@@ -108,6 +129,92 @@ public class Member {
     }
   }
 
+
+  public void findDb() {
+    System.out.println("\n[아이디 / 비밀번호 찾기]");
+    Loop: while(true) {
+      System.out.print("\n[1. 아이디 찾기]   [2. 비밀번호 찾기]   [8. 뒤로가기]\n >>> ");
+
+      int menu = Integer.parseInt(sc.nextLine());
+      switch(menu) {
+        case 1:
+          findId();
+          break;
+        case 2:
+          findPsw();
+          break;
+        case 8:
+          System.out.println("\n뒤로가기");
+          break Loop;
+        default:
+          System.out.println("메뉴 번호 확인");
+          break;
+      }
+    }
+  }
+
+  public void findId() {
+    try {
+      System.out.println("\n[아이디 찾기]");
+      System.out.println("\n회원정보를 입력하세요.");
+
+      System.out.print("  이름 >>> ");
+      fname = sc.nextLine();
+      System.out.print("  Email >>> ");
+      femail = sc.nextLine();
+
+      matchFindFromDB();
+      if (fname.equals(uName) && femail.equals(uEmail)) {
+        msg = "select id from member where name = '"+fname+"' and email = '"+femail+"'";
+        RS = ST.executeQuery(msg);
+        if (RS.next()==true) {
+          fID = RS.getString("ID");
+          System.out.println("\n당신의 ID는 '" + fID + "' 입니다.");
+        }
+        return;
+      } else {System.out.println("\n정보없음");}
+      System.out.println();
+    } catch(Exception e) {System.out.println("error: "+e);}
+  }
+
+  public void findPsw() {
+    try {
+      System.out.println("\n[비밀번호 찾기]");
+      System.out.println("\n회원정보를 입력하세요.");
+
+      System.out.print("  이름 >>> ");
+      fname = sc.nextLine();
+      System.out.print("  ID >>> ");
+      fID = sc.nextLine();
+
+      matchFindFromDB();
+      if (fname.equals(uName) && fID.equals(uID)) {
+        msg = "select psw from member where name = '"+fname+"' and id = '"+fID+"'";
+        RS = ST.executeQuery(msg);
+        if (RS.next()==true) {
+          fpsw = RS.getString("psw");
+          System.out.println("\n회원확인이 되었습니다.");
+          resetPsw();
+        }
+        return;
+      }  else {System.out.println("\n정보없음");}
+      System.out.println();
+    } catch(Exception e) {System.out.println("error: "+e);}
+  }
+
+  public void resetPsw() {
+    try {
+      System.out.println("\n비밀번호를 재설정합니다.");
+      System.out.print(" 새로운 비밀번호를 입력해주세요\n >>> ");
+      rpsw = sc.nextLine();
+
+      msg = "update member set psw = '"+rpsw+"' where id = '"+fID+"'";
+      ST.executeUpdate(msg);
+
+      System.out.println("\n\n변경이 완료되었습니다.");
+      System.out.println("\n변경된 비밀번호는 " +rpsw+ " 입니다.");
+    } catch(Exception e) {System.out.println("error: "+e);}
+  }
 
 
 }
