@@ -40,8 +40,8 @@ public class AdminMenu {
     admin : while(true) {
       try {
         dbConnect();
-        System.out.println("관리자로 로그인 하셨습니다. 수행하실 작업을 선택해 주십시오.");
-        System.out.print("[1. 회원 관리]   [2. 코멘트 확인]   [3. 단어 관리]   "
+        System.out.println("\n\n관리자로 로그인 하셨습니다. \n수행하실 작업을 선택해 주십시오.");
+        System.out.print("\n[1. 회원 관리]   [2. 코멘트 확인]   [3. 단어 관리]   "
             + "[9. 관리자 계정 로그아웃]\n >>> ");
 
         int command = Integer.parseInt(sc.nextLine());
@@ -70,7 +70,7 @@ public class AdminMenu {
             break;
           case 9: System.out.println("\n로그아웃"); break admin;
           default:
-            System.out.println("잘못된 번호를 입력하셨습니다."); continue;
+            System.out.println("번호를 잘못 입력하셨습니다."); continue;
         }
       }catch (Exception e) {System.out.println("error2: "+e);}
     }
@@ -82,7 +82,7 @@ public class AdminMenu {
     sql = "select MEMNO,NAME,ID,EMAIL,CDATE,SCORE from member";
     RS = ST.executeQuery(sql);
 
-    System.out.println("\n[No.]\t[Name]\t[ID]\t[Email]\t\t\t[Created Date]\t[Score]");
+    System.out.println("[No.]\t[Name]\t[ID]\t[Email]\t\t\t[Created Date]\t[Score]");
 
     while(RS.next() == true) {
       uMemno = RS.getInt("MEMNO");
@@ -110,7 +110,7 @@ public class AdminMenu {
         System.out.println("관리자는 삭제하실 수 없습니다.");
         return;
       } else if (delete(deleteID)) {
-        System.out.println("회원 삭제가 완료되었습니다.");
+        System.out.println("\n회원 삭제가 완료되었습니다.");
       } else {
         System.out.println("\n아이디를 다시 확인하십시오.");
       }
@@ -208,7 +208,7 @@ public class AdminMenu {
       String weng = sc.nextLine();
       sql = "delete from word where eng = '" + weng + "'";
       ST.executeUpdate(sql);
-      System.out.println("단어 삭제 완료");
+      System.out.println("\n단어 삭제 완료");
       System.out.print("\n  단어 목록 출력? (y/N)>>> ");
       String print = sc.nextLine();
       if (print.equals("y")) {

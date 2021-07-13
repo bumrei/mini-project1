@@ -8,10 +8,15 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 public class PlayingGame {
+<<<<<<< HEAD
   Connection CN = null;
   Statement ST = null;
   ResultSet RS = null;
   PreparedStatement pstmt = null;
+=======
+  Lanking lk = new Lanking();
+
+>>>>>>> f7d80c942f4e99b3529510021241892aa3264d5b
   Scanner sc = new Scanner(System.in);
   int sLevel = 0;
   String sql = null;
@@ -51,9 +56,7 @@ public class PlayingGame {
         case "2": // 단어 테스트 게임
           System.out.println("준비중");
           break;
-        case "3": // 랭킹표
-          System.out.println("준비중");
-          break;
+        case "3": lk.lanking(); back(); break;
         case "4": // 내 정보
           System.out.println("준비중");
           break;
@@ -72,6 +75,7 @@ public class PlayingGame {
     }
   }
 
+<<<<<<< HEAD
 
 
   public void selectLevel() throws Exception {
@@ -113,4 +117,15 @@ public class PlayingGame {
     }
   }
 
+=======
+  public void back() {
+    System.out.println("[8. 뒤로가기]");
+    String command = sc.nextLine();
+    if (command.equals("8")) {
+      return;
+    }
+  }
+>>>>>>> f7d80c942f4e99b3529510021241892aa3264d5b
 }
+
+
