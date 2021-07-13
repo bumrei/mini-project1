@@ -127,8 +127,6 @@ public class AdminMenu {
       } else {
         System.out.println("\n아이디를 다시 확인하십시오.");
       }
-      //삭제할 아이디 입력 후에 자꾸 에러 반복
-      //error delete:java.sql.SQLSyntaxErrorException: ORA-00900: SQL 문이 부적합합니다
       return;
     }
   }//deleteMember end
@@ -142,11 +140,8 @@ public class AdminMenu {
       while(RS.next() == true) {
         delId = RS.getString("ID");
       }
-      //디버그 결과 여기까지는 문제없었음 이 밑에서 위에 적은 SQL부적합 오류 발생 왜?ㅠ
-      //오류 발생 후 다음 keyScan에 공백 넘어가는 오류 발생 어디서 공백이 넘어가지?
-      //error2: java.lang.NumberFormatException: For input string: ""
       if (id.equals(delId)) {
-        sql = "delect from member where ID = '" + id + "'";
+        sql = "delete from member where ID = '" + id + "'";
         ST.executeUpdate(sql);  
         //System.out.println(sql);
         return true ;
@@ -161,7 +156,7 @@ public class AdminMenu {
     sql = "select comment from member";
     RS = ST.executeQuery(sql);
     System.out.println("\nComment");
-    while(RS.next() == true) {
+    if(RS.next() == true) {
       ucmt = RS.getString("comment");
       System.out.println(ucmt);
     }
