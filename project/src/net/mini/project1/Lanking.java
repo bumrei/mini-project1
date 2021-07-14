@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Scanner;
 
-public class Lanking2 {
+public class Lanking {
   Connection CN = null;  
   Statement ST = null; 
   ResultSet RS = null;  

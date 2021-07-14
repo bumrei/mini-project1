@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 
-public class Member2 {
+public class Member {
 
   Connection CN = null;
   Statement ST = null;
@@ -28,11 +28,11 @@ public class Member2 {
 
   Scanner sc = new Scanner(System.in);
   JoinMember jm = new JoinMember();
-  AdminMenu2 am = new AdminMenu2();
-  PlayingGame2 pg = new PlayingGame2();
+  AdminMenu am = new AdminMenu();
+  PlayingGame pg = new PlayingGame();
 
   public static void main(String[] args) throws Exception {
-    Member2 mb = new Member2();
+    Member mb = new Member();
     mb.dbConnect();
     mb.executeMember();
   }
