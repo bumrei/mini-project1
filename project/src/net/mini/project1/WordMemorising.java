@@ -38,15 +38,15 @@ public class WordMemorising {
 
   public void printSeperate() {
     if (ENG.length() < 8) {
-      System.out.println(ENG+ "\t\t\t" + KOR);
-      enginStart();
+      System.out.println("\t\t\t\t" + ENG+ "\t\t\t" + KOR);
+
     } else {
-      System.out.println(ENG+ "\t\t" + KOR);
-      enginStart();
+      System.out.println("\t\t\t\t" + ENG+ "\t\t" + KOR);
+
 
     }
 
-    System.out.println("\n\n[Enter]   [8. 뒤로가기]");
+    System.out.println("\t\t\t\t[Enter]   [8. 뒤로가기]\n\n\n\n\n\n\n\n");
     String command = sc.nextLine();
 
     for (int i = 0; i <30; i++) {
@@ -68,14 +68,14 @@ public class WordMemorising {
 
     for (int engin = 0; engin < Gtotal(); engin++) {
       enginStart();
-      System.out.println("[단 어]\t\t\t[ 뜻 ]\n______________________________\n");
+      System.out.println("\t\t\t\t[단 어]\t\t\t[ 뜻 ]\n\t\t\t\t______________________________\n");
       msg = "select ENG,KOR from word where WORDNUM =" + num[engin];
       RS = ST.executeQuery(msg);
       if (RS.next() == true) {
         ENG = RS.getString("ENG");
         KOR = RS.getString("KOR");
         printSeperate();
-
+        enginStart();
       }
     }
     System.out.println("모든 단어를 정독하셨습니다. 게임에 도전하세요!");
