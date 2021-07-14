@@ -14,12 +14,7 @@ public class AccountInfo {
   ResultSet RS ;
   PreparedStatement PST ;
   Scanner sc = new Scanner(System.in);
-  String msg ;
-  String ans;
-  String cEmail = "변경할 이메일";
-  String sPsw = "변경할 비밀번호";
-  String upsw;
-  String fpsw;
+  String msg , ans, cEmail , sPsw , upsw, fpsw;
   String userID = LogInMenu.userID;
   JoinMember jm = new JoinMember();
 

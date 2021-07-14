@@ -10,24 +10,14 @@ import java.util.Scanner;
 
 ///////////LogIn/////////////
 public class LogInMenu {
-  Connection CN = null;
-  Statement ST = null;
-  ResultSet RS = null;
-  String msg = null;
+  Connection CN ;
+  Statement ST ;
+  ResultSet RS;
+  String msg;
   Scanner sc = new Scanner(System.in);
-
-  String uID = null;
-  String uPsw = null;
-  String uName = null;
-  String uEmail = null;
-  static String userID = null;
-  String userPsw = null;
-
-  String fname = "찾기용이름";
-  String femail = "찾기용메일";
-  String fID = "찾기용아이디";
-  String fpsw = "찾기용비번";
-  String rpsw = "바꾸기용비번";
+  String uID , uPsw ,uName , uEmail, userPsw ;
+  static String userID ;
+  String fname , femail ,fID , fpsw , rpsw;
 
   public void dbConnect() throws Exception {
     Class.forName("oracle.jdbc.driver.OracleDriver");

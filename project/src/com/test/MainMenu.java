@@ -8,24 +8,14 @@ import java.util.Scanner;
 
 public class MainMenu {
 
-  Connection CN = null;
-  Statement ST = null;
-  ResultSet RS = null;
-  String msg = null;
-  String uID = null;
-  String uPsw = null;
-  String uName = null;
-  String uEmail = null;
-  String userID = null;
-  String userPsw = null;
-
-  String fname = "찾기용이름";
-  String femail = "찾기용메일";
-  String fID = "찾기용아이디";
-  String fpsw = "찾기용비번";
-  String rpsw = "바꾸기용비번";
-
-  Scanner sc = new Scanner(System.in);
+  Connection CN ;
+  Statement ST ;
+  ResultSet RS ;
+  String msg ;
+  String userID ;
+  String uID , uPsw ,uName , uEmail, userPsw ;
+  String fname , femail ,fID , fpsw , rpsw;
+ Scanner sc = new Scanner(System.in);
 
   public void dbConnect() throws Exception {
     Class.forName("oracle.jdbc.driver.OracleDriver");
