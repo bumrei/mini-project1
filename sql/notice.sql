@@ -10,10 +10,10 @@ id varchar2(10) default('Admin')
 
 create sequence notice_seq;
 
-insert into notice(code, title, content) values(notice_seq.nextval, 'ì œëª©1', 'ë‚´ìš©...............');
-insert into notice(code, title, content) values(notice_seq.nextval, 'ì œëª©2', 'ë‚´ìš©ë‚´ìš©');
-insert into notice(code, title, content) values(notice_seq.nextval, 'ì œëª©3', 'ë‚´ìš©');
-insert into notice(code, title, content) values(notice_seq.nextval, 'ì œëª©4', 'ë‚´ìš©ë‚´ìš©.........');
-insert into notice(code, title, content) values(notice_seq.nextval, 'ì œëª©5', 'ë‚´ìš©');
+insert into notice(code, title, content) values(notice_seq.nextval, 'Á¦¸ñ1', '³»¿ë...............');
+insert into notice(code, title, content) values(notice_seq.nextval, 'Á¦¸ñ2', '³»¿ë³»¿ë');
+insert into notice(code, title, content) values(notice_seq.nextval, 'Á¦¸ñ3', '³»¿ë');
+insert into notice(code, title, content) values(notice_seq.nextval, 'Á¦¸ñ4', '³»¿ë³»¿ë.........');
+insert into notice(code, title, content) values(notice_seq.nextval, 'Á¦¸ñ5', '³»¿ë');
 
 commit;
