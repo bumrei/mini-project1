@@ -1,4 +1,4 @@
-package net.mini.project1;
+package net.mini.projectTest;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

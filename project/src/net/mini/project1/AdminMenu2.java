@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.Date;
 import java.util.Scanner;
 
-public class AdminMenu {
+public class AdminMenu2 {
 
   Connection CN = null;
   Statement ST = null;

@@ -17,33 +17,79 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class WordTest {
-
-  Connection CN = null; //DB서버연결정보 서버ip주소 계정id,pwd
-  Statement ST = null; //ST=CN, createStatement() 명령어생성 삭제, 신규등록, 조회하라
-  PreparedStatement PST=null ;
-  ResultSet RS = null; //select조회결과값 전체데이터를 기억
-  String msg = "isud = crud쿼리문기술";
+public class PlayingGame2 {
+  Connection CN = null;
+  Statement ST = null;
+  ResultSet RS = null;
+  PreparedStatement PST = null;
   Scanner sc = new Scanner(System.in);
-  String userID = "로그인 ID";
+  int sLevel = 0;
+  String sql = null;
+  String msg = "isud = crud쿼리문기술";
   String uanswer = "사용자입력값";
   int level;
   int[] questionNum = new int[6];
+  WordTest2 wt = new WordTest2("ID2");
+  Lanking2 lk = new Lanking2();
+  Member2 m = new Member2();
+  String userID = m.userID;
 
-  WordTest(String userID) {
-    this.userID = userID;
+
+  public void dbConnect() throws Exception {
+    Class.forName("oracle.jdbc.driver.OracleDriver");
+    String url = "jdbc:oracle:thin:@localhost:1521:XE";
+    CN = DriverManager.getConnection(url, "system", "1234");
+    ST = CN.createStatement(); 
+  }// dbConnect End
+
+  public void selectLevel() throws Exception {
+    Loop :while(true) {
+      dbConnect();
+      System.out.print("\nLevel 선택 [1~3] [8. 뒤로가기]\n >>> ");
+      try {
+        sLevel = Integer.parseInt(sc.nextLine());
+
+        if (sLevel >= 1 && sLevel <=3) {
+          System.out.println("\n  Level: " + sLevel);
+
+          System.out.println("단어 범위 [1~100]");
+          System.out.print("\n출력할 단어 시작번호>>> ");
+          int snum = Integer.parseInt(sc.nextLine());
+          System.out.print("출력할 단어 마지막번호>>> ");
+          int fnum = Integer.parseInt(sc.nextLine());
+
+          sql = "select * from (select row_number() "
+              + "over(partition by wordlevel order by wordNum) as row_num, b.* from word b) "
+              + "a where wordlevel = " + sLevel + " and a.row_num between ? and ? ";
+          PST = CN.prepareStatement(sql);
+          PST.setInt(1, snum);
+          PST.setInt(2, fnum);
+          RS = PST.executeQuery();
+
+          System.out.println("\n  영단어 \t 단어뜻");
+          System.out.println("---------------------------");
+          while(RS.next() == true) {
+            String peng = RS.getString("eng");
+            String pkor = RS.getString("kor");
+            System.out.println("  " + peng + " \t " + pkor);
+          }
+        } else if (sLevel == 8) {
+          System.out.println("뒤로가기");
+          break Loop;
+        } else {
+          System.out.println("\n번호 다시 확인해주세요.");
+        }
+      } catch(Exception e) {System.out.println("번호 다시 확인해주세요");}
+    }
   }
 
-  public void dbConnect() {
-    try {
-      Class.forName("oracle.jdbc.driver.OracleDriver"); //오라클드라이브로드
-      String url = "jdbc:oracle:thin:@127.0.0.1:1521:XE";
-      CN = DriverManager.getConnection( url, "system", "1234");
-      System.out.println("오라클 드라이브및 서버연결성공");
-
-      ST = CN.createStatement();
-    }catch(Exception ex) { System.out.println("에러이유 " + ex);}
-  }//dbconnect end
+  public void back() {
+    System.out.println("[8. 뒤로가기]");
+    String command = sc.nextLine();
+    if (command.equals("8")) {
+      return;
+    }
+  }
 
   public void wordTest() { //게임종료 후 리플레이와 뒤로가기 구현필요
     test: while(true) {
@@ -215,7 +261,7 @@ public class WordTest {
       PST.executeUpdate();
     }catch(Exception ex) { }
   }//answerCheck end
-}//WordTest Class END
+}//Playing Class END
 
 class InputAnswer implements Callable<String> { // 값 입력받기
   @Override

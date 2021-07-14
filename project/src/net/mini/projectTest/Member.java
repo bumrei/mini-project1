@@ -1,4 +1,4 @@
-package net.mini.project1;
+package net.mini.projectTest;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,7 +17,7 @@ public class Member {
   String uPsw = null;
   String uName = null;
   String uEmail = null;
-  String userID = null;
+  static String userID = null;
   String userPsw = null;
 
   String fname = "찾기용이름";
@@ -29,13 +29,8 @@ public class Member {
   Scanner sc = new Scanner(System.in);
   JoinMember jm = new JoinMember();
   AdminMenu am = new AdminMenu();
-  PlayingGame pg = new PlayingGame();
 
-  public static void main(String[] args) throws Exception {
-    Member mb = new Member();
-    mb.dbConnect();
-    mb.executeMember();
-  }
+
 
   public void dbConnect() throws Exception {
     Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -63,25 +58,6 @@ public class Member {
       uEmail = RS.getString("EMAIL");
     }
   }
-
-  public void executeMember() throws Exception {
-    while (true) {
-      System.out.print("[1. 로그인]   [2. 회원가입]   [3. 아이디 / 비밀번호 찾기]   [9. 종료] \n>>> ");
-      String command = sc.nextLine();
-
-      switch (command) {
-        case "1" : login(); break;
-        case "2" : jm.join(); break;
-        case "3": findDb(); break;
-        case "9" :
-          System.out.println("게임을 종료합니다.");
-          System.exit(0);
-          break;
-        default :
-          System.out.println("올바른 번호를 입력해 주십시오.");
-      }
-    }
-  } // executeMember() End
 
   public void login() throws Exception {
     while (true) {
@@ -129,7 +105,6 @@ public class Member {
     System.out.print("▰▰▰▰▰▰"); Thread.sleep(500);
     System.out.println("꧁ଘ(੭ˊ꒳ˋ)੭✧\n");
     Thread.sleep(700);
-    pg.game();
   }
 
   public void adminLogin() {
@@ -233,6 +208,5 @@ public class Member {
       System.out.println("\n변경된 비밀번호는 " +rpsw+ " 입니다.");
     } catch(Exception e) {System.out.println("error: "+e);}
   }
-
 
 }
