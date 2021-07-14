@@ -23,25 +23,25 @@ public class GameMenu {
   }// dbConnect End
 
   public void goIntoTheGame() throws Exception {
-    System.out.print("\n\n게임 로딩중  "); Thread.sleep(500);
-    System.out.print("▰"); Thread.sleep(100);
-    System.out.print("▰▰"); Thread.sleep(100);
-    System.out.print("▰▰▰▰▰▰▰"); Thread.sleep(1000);
-    System.out.print("▰"); Thread.sleep(100);
-    System.out.print("▰"); Thread.sleep(100);
-    System.out.print("▰"); Thread.sleep(500);
-    System.out.print("▰"); Thread.sleep(500);
-    System.out.print("▰"); Thread.sleep(100);
-    System.out.print("▰"); Thread.sleep(100);
-    System.out.print("▰"); Thread.sleep(100);
-    System.out.print("▰"); Thread.sleep(1000);
-    System.out.print("▰"); Thread.sleep(100);
-    System.out.print("▰"); Thread.sleep(100);
-    System.out.print("▰"); Thread.sleep(100);
-    System.out.print("▰"); Thread.sleep(100);
-    System.out.print("▰"); Thread.sleep(500);
-    System.out.print("▰▰▰▰▰▰"); Thread.sleep(500);
-    System.out.println("꧁ଘ(੭ˊ꒳ˋ)੭✧\n");
+//    System.out.print("\n\n게임 로딩중  "); Thread.sleep(500);
+//    System.out.print("▰"); Thread.sleep(100);
+//    System.out.print("▰▰"); Thread.sleep(100);
+//    System.out.print("▰▰▰▰▰▰▰"); Thread.sleep(1000);
+//    System.out.print("▰"); Thread.sleep(100);
+//    System.out.print("▰"); Thread.sleep(100);
+//    System.out.print("▰"); Thread.sleep(500);
+//    System.out.print("▰"); Thread.sleep(500);
+//    System.out.print("▰"); Thread.sleep(100);
+//    System.out.print("▰"); Thread.sleep(100);
+//    System.out.print("▰"); Thread.sleep(100);
+//    System.out.print("▰"); Thread.sleep(1000);
+//    System.out.print("▰"); Thread.sleep(100);
+//    System.out.print("▰"); Thread.sleep(100);
+//    System.out.print("▰"); Thread.sleep(100);
+//    System.out.print("▰"); Thread.sleep(100);
+//    System.out.print("▰"); Thread.sleep(500);
+//    System.out.print("▰▰▰▰▰▰"); Thread.sleep(500);
+//    System.out.println("꧁ଘ(੭ˊ꒳ˋ)੭✧\n");
     Thread.sleep(700);
     game();
   }
@@ -53,7 +53,7 @@ public class GameMenu {
     this.dbConnect();
     System.out.println("\n=================================================================================\n");
     System.out.println("҉ ٩(๑>ω<๑)۶҉     단어 맞추기 게임 월드에 오신것을 환영합니다.  ꉂ (๑¯ਊ¯)σ \n");
-    System.out.println("\n=================================================================================\n");
+
     while(true) {
       System.out.println("\n-------------------------\n");
       System.out.print("[1. 단어 암기] \n\n[2. 단어 게임 시작]\n\n[3. 랭킹]\n\n[4. 내 정보]"
@@ -67,7 +67,7 @@ public class GameMenu {
         case "2": game.wordTest();  break;
         case "3": ranking(); back();  break;
         case "4": ai.info();  break;
-        case "5": notification(); back();  break;
+        case "5": notification();  break;
         case "8": System.out.println("로그아웃 합니다.");  return;
         case "9": System.out.println("게임을 종료합니다.");  System.exit(0);
         default : System.out.println("올바른 번호를 입력해 주세요.  !!!( •̀ ᴗ •́ )و!!!");
@@ -91,7 +91,6 @@ public class GameMenu {
       msg = "select code, title, content from notice order by code";
       RS = ST.executeQuery(msg);
       System.out.println("\nNo. \t Title \t\t\t\t\t Content");
-      System.out.println("-------------------------------------------------------------------------------");
       while(RS.next() == true) {
         int pcode = RS.getInt("code");
         String ptitle = RS.getString("title");

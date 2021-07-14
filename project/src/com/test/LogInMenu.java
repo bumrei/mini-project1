@@ -41,8 +41,10 @@ public class LogInMenu {
     GameMenu gm = new GameMenu();
     this.dbConnect();
     while (true) {
-      System.out.println("\n  [로그인]");
+      System.out.println("\n  [로그인]");   
+
       System.out.print("\n  ID>>> ");
+
       userID = sc.nextLine();
       if (userID.equals("Admin")) {
         am.adminLogin();

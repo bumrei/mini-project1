@@ -46,7 +46,7 @@ public class MainMenu {
     FindMember fm = new FindMember();
 
     while (true) {
-      System.out.print("[1. 로그인]   [2. 회원가입]   [3. 아이디 / 비밀번호 찾기]   [9. 종료] \n>>> ");
+      System.out.print("  [1. 로그인]   [2. 회원가입]   [3. 아이디 / 비밀번호 찾기]   [9. 종료] \n  >>> ");
       String command = sc.nextLine();
 
       switch (command) {

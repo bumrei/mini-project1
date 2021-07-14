@@ -33,7 +33,7 @@ public class AccountInfo {
   public void info() throws Exception {
     dbConnect();
     System.out.println("\n\n               내정보              ");
-    System.out.println("─────────────────────────────────── ");
+    System.out.println("─────────────────────────────────────── ");
     msg = "select * from member where ID = '" + userID + "'";
 
     RS = ST.executeQuery(msg);
@@ -175,6 +175,7 @@ public class AccountInfo {
           if (a.equals("y")) {
             ST.executeUpdate(msg);
             System.out.println("회원 탈퇴가 완료되었습니다.");
+            System.out.println();
             break;
           } else {System.out.println("회원 탈퇴를 취소하셨습니다.");}
         }  else {
@@ -183,7 +184,8 @@ public class AccountInfo {
         }//else 
       } 
     }  
-
+    MainMenu mm = new MainMenu();
+    mm.mainmenu();
   }//delId
 
 }// Class END

@@ -25,7 +25,7 @@ public class Game {
   ResultSet RS = null; 
   String msg = "isud = crud쿼리문기술";
   Scanner sc = new Scanner(System.in);
-  String userID = "로그인 ID";
+  String userID = LogInMenu.userID;
   String uanswer = "사용자입력값";
   int level;
   int[] questionNum = new int[6];
