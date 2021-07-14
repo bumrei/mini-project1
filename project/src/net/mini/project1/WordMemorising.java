@@ -46,7 +46,7 @@ public class WordMemorising {
 
     }
 
-    System.out.println("\t\t\t\t[Enter]   [8. 뒤로가기]\n\n\n\n\n\n\n\n");
+    System.out.println("\n\t\t\t\t[Enter]   [8. 뒤로가기]\n\n\n\n\n\n\n\n");
     String command = sc.nextLine();
 
     for (int i = 0; i <30; i++) {
