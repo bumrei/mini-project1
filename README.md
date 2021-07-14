@@ -23,7 +23,7 @@
 
 
 ## 회의 About 프로젝트
-- [(20210709) - 회의1 내용](https://github.com/bumrei/mini-project1/blob/main/%ED%9A%8C%EC%9D%98%EA%B8%B0%EB%A1%9D/0709%ED%9A%8C%EC%9D%98.txt)
+- [(20210709) - 회의1 내용](https://github.com/bumrei/mini-project1/blob/main/%ED%9A%8C%EC%9D%98%EA%B8%B0%EB%A1%9D/%ED%9A%8C%EC%9D%981_0709.txt)
 - [(20210712) - 회의2 내용](https://github.com/bumrei/mini-project1/blob/main/%ED%9A%8C%EC%9D%98%EA%B8%B0%EB%A1%9D/%ED%9A%8C%EC%9D%982_0712.txt)
 - [(20210713) - 회의3 내용](https://github.com/bumrei/mini-project1/blob/main/%ED%9A%8C%EC%9D%98%EA%B8%B0%EB%A1%9D/%ED%9A%8C%EC%9D%983_0713.txt)
 - [(20210714) - 회의4 내용](https://github.com/bumrei/mini-project1/blob/main/%ED%9A%8C%EC%9D%98%EA%B8%B0%EB%A1%9D/%ED%9A%8C%EC%9D%984_0714.txt)
