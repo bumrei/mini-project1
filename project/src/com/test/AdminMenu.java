@@ -10,24 +10,13 @@ import java.util.Scanner;
 ///////////Admin/////////////
 public class AdminMenu {
 
-  Connection CN = null;
-  Statement ST = null;
-  ResultSet RS = null;
-  String sql = null;
+  Connection CN ;
+  Statement ST;
+  ResultSet RS;
+  String sql , uName , uID,  uPsw , uEmail , userID , ucmt , delId , userPsw ;
   Scanner sc = new Scanner(System.in);
-  int uMemno;
-  String uName = null;
-  String uID = null;
-  String uPsw = null;
-  String uEmail = null;
-  Date uCdate = null;
-  int uScore;
-  int uadmin;
-  String userID = null;
-  String userPsw = null;
-  int userAdmin;
-  String ucmt = null;
-  String delId = null;
+  int uScore, uadmin, userAdmin, uMemno ;
+  Date uCdate;
 
   public void dbConnect() throws Exception {
     Class.forName("oracle.jdbc.driver.OracleDriver");

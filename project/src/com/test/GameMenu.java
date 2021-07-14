@@ -8,12 +8,12 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 public class GameMenu {
-  Connection CN = null;
-  Statement ST = null;
-  ResultSet RS = null;
-  PreparedStatement pstmt = null;
+  Connection CN ;
+  Statement ST ;
+  ResultSet RS ;
+  PreparedStatement pstmt ;
   Scanner sc = new Scanner(System.in);
-  String msg = null;
+  String msg ;
 
   public void dbConnect() throws Exception {
     Class.forName("oracle.jdbc.driver.OracleDriver");

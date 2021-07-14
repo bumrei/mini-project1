@@ -19,10 +19,10 @@ import java.util.concurrent.TimeoutException;
 
 public class Game {
 
-  Connection CN = null; 
-  Statement ST = null; 
-  PreparedStatement PST = null ;
-  ResultSet RS = null; 
+  Connection CN ; 
+  Statement ST ; 
+  PreparedStatement PST ;
+  ResultSet RS ; 
   String msg = "isud = crud쿼리문기술";
   Scanner sc = new Scanner(System.in);
   String userID = LogInMenu.userID;
