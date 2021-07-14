@@ -39,35 +39,36 @@ public class WordMemorising {
   public void printSeperate() {
     if (ENG.length() < 8) {
       System.out.println("\t\t\t\t" + ENG+ "\t\t\t" + KOR);
-
     } else {
       System.out.println("\t\t\t\t" + ENG+ "\t\t" + KOR);
-
-
     }
-
-    System.out.println("\n\t\t\t\t[Enter]   [8. 뒤로가기]\n\n\n\n\n\n\n\n");
+    System.out.println("\n\n\t\t\t\t[Enter. 다음]   [2. 이전]   [8. 뒤로가기]\n\n\n\n\n\n\n\n");
     String command = sc.nextLine();
-
     for (int i = 0; i <30; i++) {
       System.out.println("\n\n\n");
     }
-
     switch(command) {
       case "1":
         break;
+      case "2":
+        if (engin > 0) {
+          engin -= 2;
+        } else if (engin == 0) {
+          engin -= 1;
+        }
+        break;
       case "8":
         System.out.println("종료합니다.");
-        System.exit(0);;
+        System.exit(0);
       default :
     }
   }
 
   public void printWords()  throws Exception {
     int[] num = randomNum();
-
-    for (int engin = 0; engin < Gtotal(); engin++) {
+    for (engin = 0; engin < Gtotal(); engin++) {
       enginStart();
+      System.out.println("\t\t\t\t(" + (engin+1) + ")\n");
       System.out.println("\t\t\t\t[단 어]\t\t\t[ 뜻 ]\n\t\t\t\t______________________________\n");
       msg = "select ENG,KOR from word where WORDNUM =" + num[engin];
       RS = ST.executeQuery(msg);
@@ -84,7 +85,7 @@ public class WordMemorising {
 
   public void enginStart() {
     if (engin == 0) {
-      for (int i = 0; i <5; i++) {
+      for (int i = 0; i < 7; i++) {
         System.out.println("\n");
       }
     }
@@ -106,7 +107,7 @@ public class WordMemorising {
 
   public void back() {
     while(true) {
-      System.out.println("[8. 뒤로가기]");
+      System.out.println("[8. 뒤로가기]\n>>> ");
       String command = sc.nextLine();
       if (command.equals("8")) {
         return;
@@ -121,5 +122,4 @@ public class WordMemorising {
     WordMemorising wd = new WordMemorising();
     wd.printWords();
   }
-
 }
