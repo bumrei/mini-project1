@@ -23,25 +23,25 @@ public class GameMenu {
   }// dbConnect End
 
   public void goIntoTheGame() throws Exception {
-//    System.out.print("\n\n게임 로딩중  "); Thread.sleep(500);
-//    System.out.print("▰"); Thread.sleep(100);
-//    System.out.print("▰▰"); Thread.sleep(100);
-//    System.out.print("▰▰▰▰▰▰▰"); Thread.sleep(1000);
-//    System.out.print("▰"); Thread.sleep(100);
-//    System.out.print("▰"); Thread.sleep(100);
-//    System.out.print("▰"); Thread.sleep(500);
-//    System.out.print("▰"); Thread.sleep(500);
-//    System.out.print("▰"); Thread.sleep(100);
-//    System.out.print("▰"); Thread.sleep(100);
-//    System.out.print("▰"); Thread.sleep(100);
-//    System.out.print("▰"); Thread.sleep(1000);
-//    System.out.print("▰"); Thread.sleep(100);
-//    System.out.print("▰"); Thread.sleep(100);
-//    System.out.print("▰"); Thread.sleep(100);
-//    System.out.print("▰"); Thread.sleep(100);
-//    System.out.print("▰"); Thread.sleep(500);
-//    System.out.print("▰▰▰▰▰▰"); Thread.sleep(500);
-//    System.out.println("꧁ଘ(੭ˊ꒳ˋ)੭✧\n");
+    //    System.out.print("\n\n게임 로딩중  "); Thread.sleep(500);
+    //    System.out.print("▰"); Thread.sleep(100);
+    //    System.out.print("▰▰"); Thread.sleep(100);
+    //    System.out.print("▰▰▰▰▰▰▰"); Thread.sleep(1000);
+    //    System.out.print("▰"); Thread.sleep(100);
+    //    System.out.print("▰"); Thread.sleep(100);
+    //    System.out.print("▰"); Thread.sleep(500);
+    //    System.out.print("▰"); Thread.sleep(500);
+    //    System.out.print("▰"); Thread.sleep(100);
+    //    System.out.print("▰"); Thread.sleep(100);
+    //    System.out.print("▰"); Thread.sleep(100);
+    //    System.out.print("▰"); Thread.sleep(1000);
+    //    System.out.print("▰"); Thread.sleep(100);
+    //    System.out.print("▰"); Thread.sleep(100);
+    //    System.out.print("▰"); Thread.sleep(100);
+    //    System.out.print("▰"); Thread.sleep(100);
+    //    System.out.print("▰"); Thread.sleep(500);
+    //    System.out.print("▰▰▰▰▰▰"); Thread.sleep(500);
+    //    System.out.println("꧁ଘ(੭ˊ꒳ˋ)੭✧\n");
     Thread.sleep(700);
     game();
   }
@@ -76,13 +76,25 @@ public class GameMenu {
   }
 
   public void ranking() throws Exception {
-    msg = "select ID, score from member order by score desc";
+    //msg = "select ID, score from member order by score desc";
+    msg = "select rownum, m.* from (select id, score, rank() over (order by score desc) rank from member) m where rownum <=10";
     RS = ST.executeQuery(msg);
-    System.out.println("아이디\t점 수");
+    System.out.println("랭킹\t아이디\t점 수");
     while (RS.next() == true) {
+      int uranking = RS.getInt("rank");
       String uid = RS.getString("ID");
       int uscore = RS.getInt("score");
-      System.out.println(uid+"\t" + uscore);
+      System.out.println(uranking + "\t"+uid+"\t" + uscore);
+    }
+
+    msg = "select rownum, m.* from (select id, score, rank() over (order by score desc) rank from member) m where id = '"+ LogInMenu.userID+"'";
+    RS = ST.executeQuery(msg);
+    System.out.println("내랭킹\t아이디\t점수");
+    while (RS.next() == true) {
+      int uranking = RS.getInt("rank");
+      String uid = RS.getString("ID");
+      int uscore = RS.getInt("score");
+      System.out.printf("%d\t%s\t%d\n",uranking,uid,uscore);
     }
   }
 
