@@ -13,6 +13,8 @@ create table member (
   cdate date not null ,
   score number(4) default(0) ,
   comnt varchar(100) ,
+  com nvarchar2(100),
+  ldate date
   constraint pk_member_ID primary key(ID)
 );
 
@@ -29,14 +31,17 @@ commit ;
 
 --member insert ºÎºÐ/////////////////////////////////////////////////////////////////////////////////////////////////////
 
-insert into member(memNo, name, ID, psw, email, cdate)
- values(member_seq.nextval, '±èÇÏÇÏ', 'ID1', '12345', 'hahahaha@gmail.com', sysdate);
+insert into member(memNo, name, ID, psw, email, cdate, ldate)
+ values(member_seq.nextval, '±èÇÏÇÏ', 'ID1', '12345', 'hahahaha@gmail.com',  '2021-07-10', '2021-07-12');
 
 insert into member(memNo, name, ID, psw, email, cdate)
  values(member_seq.nextval, '±èÈ£È£', 'ID2', '12345', 'ggggjjj@gmail.com', sysdate);
 
 insert into member(memNo, name, ID, psw, email, cdate)
  values(member_seq.nextval, '±èÈ÷È÷', 'ID3', '12345', 'ggggjjj@gmail.com', sysdate);
+
+insert into member(memNo, name, ID, psw, email, cdate, ldate)
+ values(member_seq.nextval, 'a', 'a', 'a', 'ggggjjj@gmail.com', '2021-07-10', '2021-07-14');
 
 
 --////////////////////////////////////////////////////////////////////////////////////////////////////////////////
