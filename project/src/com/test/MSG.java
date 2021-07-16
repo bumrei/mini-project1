@@ -64,8 +64,12 @@ public class MSG {
       String  tid, mess ;
       System.out.println("  [쪽지보내기]");
       while(true) { 
-        System.out.print("\n쪽지를 받을 ID를 입력해주세요\n >>> ");
+        System.out.print("\n쪽지를 받을 ID를 입력해주세요 (8: 뒤로가기)\n >>> ");
         tid = sc.nextLine();
+
+        if (tid.equals("8")) {
+          break;
+        }
 
         msg = "select * from member where id = '" + tid +"'";
         RS = ST.executeQuery(msg);
