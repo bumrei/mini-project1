@@ -15,7 +15,7 @@ public class MainMenu {
   String userID ;
   String uID , uPsw ,uName , uEmail, userPsw ;
   String fname , femail ,fID , fpsw , rpsw;
- Scanner sc = new Scanner(System.in);
+  Scanner sc = new Scanner(System.in);
 
   public void dbConnect() throws Exception {
     Class.forName("oracle.jdbc.driver.OracleDriver");

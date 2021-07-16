@@ -49,8 +49,8 @@ public class LogInMenu {
         gm.goIntoTheGame();
         return;
       } else {
-        System.out.println("아이디 혹은 비밀번호가 일치하지 않습니다.");
-        continue;
+        System.out.println("아이디 혹은 비밀번호가 일치하지 않습니다.\n");
+        return;
       }
     }
   }
