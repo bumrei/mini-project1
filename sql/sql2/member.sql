@@ -1,5 +1,6 @@
 drop table answerRate;
 drop table transaction ;
+drop table message;
 drop table member ;
 drop sequence member_seq;
 drop sequence message_seq;
