@@ -59,7 +59,7 @@ public class GameMenu {
     while(true) {
       System.out.println("\n-------------------------\n");
       System.out.print("[1. 단어 암기] \n\n[2. 단어 게임 시작]\n\n[3. 랭킹]\n\n[4. 내 정보]"
-          + "\n\n[5. 상점]\n\n[7. 공지사항]\n\n[9. 로그아웃]\n\n[0. 게임 종료]");
+          + "\n\n[5. 인벤토리]\n\n[6. 상점]\n\n[7. 공지사항]\n\n[8. 로그아웃]\n\n[9. 게임 종료]");
 
       System.out.print("\n\n>>> ");
       String command = sc.nextLine();
@@ -69,9 +69,9 @@ public class GameMenu {
         case "2": game.wordTest();  break;
         case "3": ranking(); back();  break;
         case "4": ai.info();  break;
-        case "5": em.emojiShop(); break;
-        case "6": System.out.println("쪽지함?");/*message();*/ break;
-        case "7": notification();  break;
+        case "5": em.inventory(); back(); break;
+        case "6": em.emojiShop(); break;
+        case "8": notification();  break;
         case "9": System.out.println("로그아웃 합니다.");  return;
         case "0": System.out.println("게임을 종료합니다.");  System.exit(0);
         default : System.out.println("올바른 번호를 입력해 주세요.  !!!( •̀ ᴗ •́ )و!!!");
