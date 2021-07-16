@@ -2,6 +2,7 @@ package com.test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Scanner;
@@ -11,18 +12,21 @@ public class Emoticon {
   Connection CN = null;
   Statement ST = null;
   ResultSet RS = null;
+  PreparedStatement PST ;
+
   String msg = "";
   String userID = LogInMenu.userID;;
   int urownum;
   int urow;
   int ucol;
+  int upoint;
   Scanner sc = new Scanner(System.in);
   int[] price = new int[3];
   String[][] ars = new String[3][5];
   boolean[][] arb = new boolean[3][5];
 
   public void arrContents() {
-    ars[0][0] = "   -_-^    "; ars[0][1] = "  ∙̑◡∙̑    "; ars[0][2] = "      ᵔ︡⌔ᵔ︠   ";
+    ars[0][0] = "   ᵔεᵔ     "; ars[0][1] = "  ∙̑◡∙̑    "; ars[0][2] = "      ᵔ︡⌔ᵔ︠   ";
     ars[0][3] = "  •ܫ•      "; ars[0][4] = "   ◠‿◠     "; ars[1][0] = " (´•̥ω•̥`) ";
     ars[1][1] = " ( ˃̣̣̥᷄⌓˂̣̣̥᷅ )            "; ars[1][2] = " (๑•̀ω•́)۶ "; ars[1][3] = "♪(๑ᴖ◡ᴖ๑)♪  ";
     ars[1][4] = "( ⁎ ᵕᴗᵕ ⁎ )"; ars[2][0] = "( ⁎ ᵕᴗᵕ ⁎ )"; ars[2][1] = "( ⁎ ᵕᴗᵕ ⁎ )";
@@ -35,58 +39,95 @@ public class Emoticon {
     arrContents();
     selectItem();
     System.out.println("단어상점에 오신것을 환영합니다!!\n");
-    System.out.println("[진열장]");
-    for (int i = 0; i < ars.length; i++) {
-      if (i == 0) {
-        System.out.println("┌───────────────┬───────────────┬───────────────┬───────────────┬───────────────┐");
+    Loop: while(true) {
+      System.out.println("[1. 이모티콘 구매]   [2. 인벤토리 확인]   [8. 뒤로가기]");
+      String ans = sc.nextLine();
+      if (ans.equals("2")) {
+        inventory(); break;
+      } else if (ans.equals("1")){
+        showcase(); break;
+      } else if (ans.equals("8")) {
+        break Loop;
       } else {
-        System.out.println("├───────────────┼───────────────┼───────────────┼───────────────┼───────────────┤");
+        System.out.println("메뉴선택 다시");
+        continue;
       }
-      System.out.print("│");
-      for (int a = 0; a < ars[i].length; a++) {
-        if (arb[i][a] == true) {
-          System.out.print("    [" + ((i*5)+(a+1)) + "] ■ \t│");
-        } else {
-          System.out.print("    [" + ((i*5)+(a+1)) + "] □ \t│");
-        }
-      }
-      System.out.println("\n├───────────────┼───────────────┼───────────────┼───────────────┼───────────────┤");
-      System.out.print("│");
-      for (int j = 0; j < ars[i].length; j++) {
-        System.out.print("  " +ars[i][j] + "\t│");
-      } 
-      System.out.println();
-      System.out.print("│");
-      for (int b = 0; b < ars[i].length; b++) {
-        System.out.print("    [" + price[i] + "원]" + "\t│");
-      } 
-      System.out.println();
     }
-    System.out.println("└───────────────┴───────────────┴───────────────┴───────────────┴───────────────┘\n");
-    purchase();
+  }
+
+  public void showcase() {
+    try {
+      System.out.println(userID+" 님의 보유 포인트: "+ upoint);
+      System.out.println("\n[진열장]");
+      System.out.println("-----------------------------------------------------------------------------------------");
+      System.out.println("\t    1행\t\t    2행\t\t    3행\t\t    4행\t\t    5행\t\t|");
+      System.out.println("-----------------------------------------------------------------------------------------");
+      System.out.println("     |\t\t\t\t\t\t\t\t\t\t\t|");
+      for (int i = 0; i < ars.length; i++) {
+        System.out.print((i+1)+ "열  |\t");
+        for (int j = 0; j < ars[i].length; j++) {
+          if (arb[i][j] == true) {
+            System.out.print("■ " + ars[i][j] + "\t");
+          } else {
+            System.out.print("□ " + ars[i][j] + "\t");
+          }
+        } 
+        System.out.print("|");
+        System.out.println();
+        System.out.print("     |\t");
+        for (int b = 0; b < ars[i].length; b++) {
+          System.out.print("    [" + price[i] + "원]" + "\t");
+        } 
+        System.out.print("|");
+        System.out.println("\n     |\t\t\t\t\t\t\t\t\t\t\t|");
+      }
+      System.out.println("-----------------------------------------------------------------------------------------\n");
+      purchase();
+    }catch(Exception e) {}
   }
 
   public void purchase() throws Exception {
     while(true) {
       try {
+        if (upoint <= 0) {
+          System.out.println("구매할 포인트가 없습니다.");
+          back();
+        }
+
         int userrow = 0, usercol = 0;
-        System.out.println("구매하실 물품을 입력해 주세요");
+        System.out.println("\n구매하실 물품을 입력해 주세요");
         int num = Integer.parseInt(sc.nextLine());
 
         userrow = (num-1) / 5;
         usercol = (num-1) % 5;
-
         if (num > 15 || num <= 0) {
           System.out.println("잘못 입력하셨습니다.");
+          continue;
+        } else if (num == 1) {
+          System.out.println("기본 아이템입니다.");
           continue;
         } else if (arb[userrow][usercol] == true) {
           System.out.println("이미 구매하신 상품입니다.");
           continue;
-        }
+        } 
 
         msg = "insert into transaction values('" + userID + "'," + userrow + "," + usercol + ")";
         int a = ST.executeUpdate(msg);
         if (a == 1) {
+          if (num <6) {
+            upoint -= 10;
+          } else if (num <11) {
+            upoint -= 30;
+          } else {
+            upoint -= 50;
+          }
+
+          msg = "update member set point = ? where id = ?";
+          PST = CN.prepareStatement(msg);
+          PST.setInt(1, upoint);
+          PST.setString(2, userID);
+          PST.executeUpdate();
+
           System.out.println("구매를 완료하셨습니다. 인벤토리에서 확인하세요.");
           break;
         } else {
@@ -122,6 +163,12 @@ public class Emoticon {
       ucol = RS.getInt("JCOLUMN");
       arb[urow][ucol] = true;
     }
+
+    msg = "select * from member where id = '" + userID + "'";
+    RS = ST.executeQuery(msg);
+    while(RS.next() == true) {
+      upoint = RS.getInt("point");
+    }
   }
 
 
@@ -130,6 +177,14 @@ public class Emoticon {
     String url = "jdbc:oracle:thin:@localhost:1521:XE";
     CN = DriverManager.getConnection(url, "system", "1234");
     ST = CN.createStatement();
+  }
+
+  public void back() {
+    System.out.println("\n[8. 뒤로가기]");
+    String command = sc.nextLine();
+    if (command.equals("8")) {
+      return;
+    }
   }
 
 }
