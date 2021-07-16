@@ -88,7 +88,7 @@ public class Emoticon {
           continue;
         }
 
-        msg = "insert into transaction values('" + userID + "'," + userrow + "," + usercol + ")";
+        msg = "insert into transaction values('" + userID + "'," + (userrow) + "," + (usercol) + ")";
         int a = ST.executeUpdate(msg);
         if (a == 1) {
           System.out.println("구매를 완료하셨습니다. 인벤토리에서 확인하세요.");
