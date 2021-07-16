@@ -14,7 +14,8 @@ create table member (
   score number(4) default(0) ,
   comnt varchar(100) ,
   com nvarchar2(100),
-  ldate date
+  ldate date ,
+  mychar number(4) ,
   constraint pk_member_ID primary key(ID)
 );
 
@@ -48,15 +49,9 @@ insert into member(memNo, name, ID, psw, email, cdate, ldate)
 
 --transaction insert ºÎºÐ////////////////////////////////////////////////////////////////////////////////////////
 
-insert into transaction values('ID1', 1,1) ;
-insert into transaction values('ID1', 1,2) ;
-insert into transaction values('ID1', 1,3) ;
-insert into transaction values('ID2', 1,2) ;
-insert into transaction values('ID2', 1,3) ;
-insert into transaction values('ID3', 2,1) ;
-insert into transaction values('ID3', 3,3) ;
-insert into transaction values('ID3', 2,2) ;
-insert into transaction values('ID3', 2,4) ;
+insert into transaction values('ID1', 0,0) ;
+insert into transaction values('ID2', 0,0) ;
+insert into transaction values('ID3', 0,0) ;
 
 --//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

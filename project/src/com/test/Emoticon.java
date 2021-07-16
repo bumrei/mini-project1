@@ -22,7 +22,7 @@ public class Emoticon {
   boolean[][] arb = new boolean[3][5];
 
   public void arrContents() {
-    ars[0][0] = "   ᵔεᵔ     "; ars[0][1] = "  ∙̑◡∙̑    "; ars[0][2] = "      ᵔ︡⌔ᵔ︠   ";
+    ars[0][0] = "   -_-^    "; ars[0][1] = "  ∙̑◡∙̑    "; ars[0][2] = "      ᵔ︡⌔ᵔ︠   ";
     ars[0][3] = "  •ܫ•      "; ars[0][4] = "   ◠‿◠     "; ars[1][0] = " (´•̥ω•̥`) ";
     ars[1][1] = " ( ˃̣̣̥᷄⌓˂̣̣̥᷅ )            "; ars[1][2] = " (๑•̀ω•́)۶ "; ars[1][3] = "♪(๑ᴖ◡ᴖ๑)♪  ";
     ars[1][4] = "( ⁎ ᵕᴗᵕ ⁎ )"; ars[2][0] = "( ⁎ ᵕᴗᵕ ⁎ )"; ars[2][1] = "( ⁎ ᵕᴗᵕ ⁎ )";
@@ -58,7 +58,11 @@ public class Emoticon {
       System.out.println();
       System.out.print("│");
       for (int b = 0; b < ars[i].length; b++) {
-        System.out.print("    [" + price[i] + "원]" + "\t│");
+        if (i == 0 && b == 0) {
+          System.out.print("    [기본]\t│");
+        } else {
+          System.out.print("    [" + price[i] + "원]" + "\t│");
+        }
       } 
       System.out.println();
     }
