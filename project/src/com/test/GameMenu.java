@@ -69,19 +69,12 @@ public class GameMenu {
         case "2": game.wordTest();  break;
         case "3": ranking(); back();  break;
         case "4": ai.info();  break;
-<<<<<<< HEAD
         case "5": em.inventory(); back(); break;
         case "6": em.emojiShop(); break;
         case "7": notification();  break;
         case "8": System.out.println("로그아웃 합니다.");  return;
         case "9": System.out.println("게임을 종료합니다.");  System.exit(0);
         default : System.out.println("올바른 번호를 입력해 주세요.  !!!( •̀ ᴗ •́ )و!!!");
-=======
-        case "5": notification();  break;
-        case "8": System.out.println("\n로그아웃 합니다.");  return;
-        case "9": System.out.println("\n게임을 종료합니다.");  System.exit(0);
-        default : System.out.println("\n올바른 번호를 입력해 주세요.  !!!( •̀ ᴗ •́ )و!!!");
->>>>>>> 359328d5684974e30b4290cbb375e0935d3ff714
       }
     }
   }
