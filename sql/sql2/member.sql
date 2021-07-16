@@ -1,10 +1,11 @@
 drop table answerRate;
+drop table transaction ;
 drop table member ;
 drop sequence member_seq;
 
 create sequence member_seq ;
 
-create table member2 (
+create table member (
   memNo number(4) not null ,
   name nvarchar2(10) not null ,
   ID varchar(10) primary key ,
