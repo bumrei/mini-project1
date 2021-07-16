@@ -75,7 +75,6 @@ public class GameMenu {
         case "8": System.out.println("로그아웃 합니다.");  return;
         case "9": System.out.println("게임을 종료합니다.");  System.exit(0);
         default : System.out.println("올바른 번호를 입력해 주세요.  !!!( •̀ ᴗ •́ )و!!!");
-
       }
     }
   }
