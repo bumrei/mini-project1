@@ -66,18 +66,16 @@ public class Emoticon {
     while(true) {
       try {
         int userrow = 0, usercol = 0;
-        System.out.println("구매하실 물품을 입력해 주세요  (행열)");
-        String str = sc.nextLine();
-        String[] rowcol = str.split("");
-        userrow = Integer.parseInt(rowcol[0]);
-        usercol = Integer.parseInt(rowcol[1]);
-        if (str.length() > 2) {
+        System.out.println("구매하실 물품을 입력해 주세요");
+        int num = Integer.parseInt(sc.nextLine());
+
+        userrow = (num-1) / 5;
+        usercol = (num-1) % 5;
+
+        if (num > 15 || num <= 0) {
           System.out.println("잘못 입력하셨습니다.");
           continue;
-        } else if (userrow > 3 || userrow < 1|| usercol > 5 || usercol < 1) {
-          System.out.println("잘못 입력하셨습니다.");
-          continue;
-        } else if (arb[userrow-1][usercol-1] == true) {
+        } else if (arb[userrow][usercol] == true) {
           System.out.println("이미 구매하신 상품입니다.");
           continue;
         }
@@ -106,7 +104,7 @@ public class Emoticon {
       urownum = RS.getInt("ROWNUM");
       urow = RS.getInt("IROW");
       ucol = RS.getInt("JCOLUMN");
-      System.out.println(urownum + ": \t[\t" + ars[urow-1][ucol-1] + "\t]");
+      System.out.println(urownum + ": \t[\t" + ars[urow][ucol] + "\t]");
     }
 
   }
@@ -118,7 +116,7 @@ public class Emoticon {
     while (RS.next() == true) {
       urow = RS.getInt("IROW");
       ucol = RS.getInt("JCOLUMN");
-      arb[urow-1][ucol-1] = true;
+      arb[urow][ucol] = true;
     }
   }
 
