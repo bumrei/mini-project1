@@ -1,11 +1,8 @@
-drop table message ;
 drop table transaction ;
 drop table member ;
 drop sequence member_seq;
-drop sequence message_seq;
 
 create sequence member_seq ;
-create sequence message_seq ;
 
 create table member (
   memNo number(4) not null ,
@@ -17,9 +14,8 @@ create table member (
   score number(4) default(0) ,
   comnt varchar(100) ,
   com nvarchar2(100),
-  ldate date,
-  point number(5) default(0),
-  mychar number(4) default(1),
+  ldate date ,
+  mychar number(4) ,
   constraint pk_member_ID primary key(ID)
 );
 
@@ -31,23 +27,13 @@ create table transaction (
       references member(ID) on delete cascade
 );
 
-create table message (
-  code number(4) not null,
-  ID varchar(10) not null,
-  mess nvarchar2(100) ,
-  mdate date ,
-  ToID varchar(10) not null ,
-  constraint fk_message_ID foreign key(ID)
-      references member(ID) on delete cascade
-);
-
 
 commit ;
 
 --member insert ∫Œ∫–/////////////////////////////////////////////////////////////////////////////////////////////////////
 
-insert into member(memNo, name, ID, psw, email, cdate, ldate, point)
- values(member_seq.nextval, '±Ë«œ«œ', 'ID1', '12345', 'hahahaha@gmail.com',  '2021-07-10', '2021-07-12', 100);
+insert into member(memNo, name, ID, psw, email, cdate, ldate)
+ values(member_seq.nextval, '±Ë«œ«œ', 'ID1', '12345', 'hahahaha@gmail.com',  '2021-07-10', '2021-07-12');
 
 insert into member(memNo, name, ID, psw, email, cdate)
  values(member_seq.nextval, '±Ë»£»£', 'ID2', '12345', 'ggggjjj@gmail.com', sysdate);
@@ -63,17 +49,9 @@ insert into member(memNo, name, ID, psw, email, cdate, ldate)
 
 --transaction insert ∫Œ∫–////////////////////////////////////////////////////////////////////////////////////////
 
-
 insert into transaction values('ID1', 0,0) ;
-
 insert into transaction values('ID2', 0,0) ;
-
 insert into transaction values('ID3', 0,0) ;
-
---//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
---message insert ∫Œ∫– ///////////////////////////////////////////////////////////////////////////////////////////
-inset into message values(message_seq.nextval, ID1, 'hi hahahahahahaha', sysdate, 'ID2');
 
 --//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -82,7 +60,5 @@ commit ;
 select * from member;
 
 select * from transaction ;
-
-select * from message ;
 
   
