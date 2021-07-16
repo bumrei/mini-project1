@@ -36,29 +36,33 @@ public class Emoticon {
     selectItem();
     System.out.println("단어상점에 오신것을 환영합니다!!\n");
     System.out.println("[진열장]");
-    System.out.println("-----------------------------------------------------------------------------------------");
-    System.out.println("\t    1행\t\t    2행\t\t    3행\t\t    4행\t\t    5행\t\t|");
-    System.out.println("-----------------------------------------------------------------------------------------");
-    System.out.println("     |\t\t\t\t\t\t\t\t\t\t\t|");
     for (int i = 0; i < ars.length; i++) {
-      System.out.print((i+1)+ "열  |\t");
-      for (int j = 0; j < ars[i].length; j++) {
-        if (arb[i][j] == true) {
-          System.out.print("■ " + ars[i][j] + "\t");
+      if (i == 0) {
+        System.out.println("┌───────────────┬───────────────┬───────────────┬───────────────┬───────────────┐");
+      } else {
+        System.out.println("├───────────────┼───────────────┼───────────────┼───────────────┼───────────────┤");
+      }
+      System.out.print("│");
+      for (int a = 0; a < ars[i].length; a++) {
+        if (arb[i][a] == true) {
+          System.out.print("    [" + ((i*5)+(a+1)) + "] ■ \t│");
         } else {
-          System.out.print("□ " + ars[i][j] + "\t");
+          System.out.print("    [" + ((i*5)+(a+1)) + "] □ \t│");
         }
+      }
+      System.out.println("\n├───────────────┼───────────────┼───────────────┼───────────────┼───────────────┤");
+      System.out.print("│");
+      for (int j = 0; j < ars[i].length; j++) {
+        System.out.print("  " +ars[i][j] + "\t│");
       } 
-      System.out.print("|");
       System.out.println();
-      System.out.print("     |\t");
+      System.out.print("│");
       for (int b = 0; b < ars[i].length; b++) {
-        System.out.print("    [" + price[i] + "원]" + "\t");
+        System.out.print("    [" + price[i] + "원]" + "\t│");
       } 
-      System.out.print("|");
-      System.out.println("\n     |\t\t\t\t\t\t\t\t\t\t\t|");
+      System.out.println();
     }
-    System.out.println("-----------------------------------------------------------------------------------------\n");
+    System.out.println("└───────────────┴───────────────┴───────────────┴───────────────┴───────────────┘\n");
     purchase();
   }
 
