@@ -12,7 +12,7 @@ public class Emoticon {
   Statement ST = null;
   ResultSet RS = null;
   String msg = "";
-  String userID = "ID1";
+  String userID = LogInMenu.userID;;
   int urownum;
   int urow;
   int ucol;
@@ -30,24 +30,6 @@ public class Emoticon {
     price[0] = 10; price[1] = 30; price[2] = 50;
   }
 
-  public static void main(String[] args) throws Exception {
-    Emoticon em = new Emoticon();
-    em.dbConnect();
-    while(true) {
-      System.out.println("[1. 상점]   [2. 인벤토리]   [9. 종료]");
-      String command = em.sc.nextLine();
-
-      switch(command) {
-        case "1": em.emojiShop(); em.purchase(); break;
-        case "2": em.inventory(); em.back(); break;
-        case "9":
-          System.out.println("종료합니다.");
-          System.exit(0);
-        default:
-          System.out.println("옳바른 번호를 입력해 주십시오.");
-      }
-    }
-  }
 
   public void emojiShop() throws Exception {
     arrContents();
@@ -77,6 +59,7 @@ public class Emoticon {
       System.out.println("\n     |\t\t\t\t\t\t\t\t\t\t\t|");
     }
     System.out.println("-----------------------------------------------------------------------------------------\n");
+    purchase();
   }
 
   public void purchase() throws Exception {
@@ -113,7 +96,9 @@ public class Emoticon {
   }
 
   public void inventory() throws Exception {
+    dbConnect();
     selectItem();
+    arrContents();
     System.out.println("인벤토리입니다.");
     msg = "select ROWNUM,IROW,JCOLUMN from transaction where ID = '" + userID + "'";
     RS = ST.executeQuery(msg);
@@ -127,6 +112,7 @@ public class Emoticon {
   }
 
   public void selectItem() throws Exception {
+    dbConnect();
     msg = "select IROW,JCOLUMN from transaction where ID = '" + userID + "'";
     RS = ST.executeQuery(msg);
     while (RS.next() == true) {
@@ -142,14 +128,6 @@ public class Emoticon {
     String url = "jdbc:oracle:thin:@localhost:1521:XE";
     CN = DriverManager.getConnection(url, "system", "1234");
     ST = CN.createStatement();
-  }
-
-  public void back() { // 다른 클래스랑 중복됨
-    System.out.println("[8. 뒤로가기]");
-    String command = sc.nextLine();
-    if (command.equals("8")) {
-      return;
-    }
   }
 
 }
