@@ -1,3 +1,4 @@
+drop table transaction ;
 drop table member ;
 drop sequence member_seq;
 
@@ -6,22 +7,27 @@ create sequence member_seq ;
 create table member (
   memNo number(4) not null ,
   name varchar(9) not null ,
-  ID varchar(6) primary key ,
+  ID varchar(10) ,
   psw varchar(6) not null ,
   email varchar(20) not null ,
   cdate date not null ,
   score number(4) default(0) ,
-  comnt varchar(100)  
+  comnt varchar(100) ,
+  constraint pk_member_ID primary key(ID)
 );
 
-set pagesize 1000;
-set linesize 1000;
+create table transaction (
+  ID varchar(10) not null,
+  irow number(3) ,
+  jcolumn number(3) ,
+  constraint fk_transaction_ID foreign key(ID)
+      references member(ID) on delete cascade
+);
+
 
 commit ;
 
-desc member
-
---insert 부분/////////////////////////////////////////////////////////////////////////////////////////////////////
+--member insert 부분/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 insert into member(memNo, name, ID, psw, email, cdate)
  values(member_seq.nextval, '김하하', 'ID1', '12345', 'hahahaha@gmail.com', sysdate);
@@ -32,9 +38,27 @@ insert into member(memNo, name, ID, psw, email, cdate)
 insert into member(memNo, name, ID, psw, email, cdate)
  values(member_seq.nextval, '김히히', 'ID3', '12345', 'ggggjjj@gmail.com', sysdate);
 
+
 --////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+--transaction insert 부분////////////////////////////////////////////////////////////////////////////////////////
+
+insert into transaction values('ID1', 1,1) ;
+insert into transaction values('ID1', 1,2) ;
+insert into transaction values('ID1', 1,3) ;
+insert into transaction values('ID2', 1,2) ;
+insert into transaction values('ID2', 1,3) ;
+insert into transaction values('ID3', 2,1) ;
+insert into transaction values('ID3', 3,3) ;
+insert into transaction values('ID3', 2,2) ;
+insert into transaction values('ID3', 2,4) ;
+
+--//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 commit ;
 select * from member;
+
+select * from transaction ;
 
   
