@@ -1,4 +1,4 @@
-package com.test2;
+package com.test3;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.Scanner;
 
 ///////////Admin/////////////
-public class AdminMenu2 {
+public class AdminMenu {
 
   Connection CN ;
   Statement ST;
@@ -17,12 +17,10 @@ public class AdminMenu2 {
   Scanner sc = new Scanner(System.in);
   int uScore, uadmin, userAdmin, uMemno ;
   Date uCdate;
+  
+  public AdminMenu() { }
 
-  public AdminMenu2() {
-
-  }
-
-  public AdminMenu2(String userID) {
+  public AdminMenu(String userID) {
     this.userID = userID;
   }
 
@@ -95,10 +93,10 @@ public class AdminMenu2 {
 
   public void listMember() throws Exception {
     System.out.println("\n[회원 리스트]");
-    sql = "select MEMNO,NAME,ID,EMAIL,CDATE from member";
+    sql = "select MEMNO,NAME,ID,EMAIL,CDATE,SCORE from member";
     RS = ST.executeQuery(sql);
 
-    System.out.println("[No.]\t[Name]\t[ID]\t[Email]\t\t\t[Created Date]");
+    System.out.println("[No.]\t[Name]\t[ID]\t[Email]\t\t\t[Created Date]\t[Score]");
 
     while(RS.next() == true) {
       uMemno = RS.getInt("MEMNO");
@@ -111,7 +109,8 @@ public class AdminMenu2 {
           uName  + "\t" + 
           uID    + "\t" + 
           uEmail + "\t" + 
-          uCdate);
+          uCdate + "\t" + 
+          uScore);
     }
   }//listMember end
 
@@ -172,7 +171,6 @@ public class AdminMenu2 {
       printcomnt(ucmt);
     }
 
-
     loop : while(true) {
       System.out.println("\n수행하실 작업을 선택해 주십시오.");
       System.out.print("[1. 건의사항 답변 ]   [2. 건의사항 삭제]   [8. 뒤로가기]\n >>> ");
@@ -185,7 +183,7 @@ public class AdminMenu2 {
       }
     }
   }
-
+  
   public void delcomnt() throws Exception {
     System.out.println("\n[건의사항 삭제]");
     while(true) {
@@ -242,8 +240,6 @@ public class AdminMenu2 {
     } catch(Exception e) {System.out.println("errorcom: "+e);}
   }
 
-
-
   public void printcomnt(String ucmt) {
     int len = ucmt.length();
     if (len>25) {
@@ -260,6 +256,7 @@ public class AdminMenu2 {
     } 
   }
 
+  
   //[3. 단어 관리]//////////////////////////////////////////////////
   public void manageWord() {
     System.out.println("\n[단어 관리]");

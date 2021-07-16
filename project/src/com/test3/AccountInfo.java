@@ -1,4 +1,4 @@
-package com.test2;
+package com.test3;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
-public class AccountInfo2 {
+public class AccountInfo {
 
   Connection CN ;
   Statement ST ;
@@ -19,14 +19,12 @@ public class AccountInfo2 {
   String msg , ans, cEmail , sPsw , upsw, fpsw;
   String uID , uPsw ,uName , uEmail, userPsw, ucom ;
   Date udate, ldate, ndate;
-  String userID = LogInMenu2.userID;
+  String userID;
   JoinMember jm = new JoinMember();
 
-  public AccountInfo2() {
-    // TODO Auto-generated constructor stub
-  }
+  public AccountInfo() { }
 
-  public AccountInfo2(String userID) {
+  public AccountInfo(String userID) {
     this.userID = userID;
   }
 
@@ -50,11 +48,10 @@ public class AccountInfo2 {
       userID = RS.getString("ID");
       String userEmail = RS.getString("EMAIL");
       int userScore = RS.getInt("SCORE");
+      int userPoint = RS.getInt("point");
       ucom = RS.getString("com");
       udate = RS.getDate("cdate");
       ldate = RS.getDate("ldate");
-
-      //여기부터추가
       int questionTotalCnt = RS.getInt("questionTotalCnt");
       int answerTotalCnt = RS.getInt("answerTotalCnt");
       int questionCnt1 = RS.getInt("questionCnt1");
@@ -69,12 +66,14 @@ public class AccountInfo2 {
       int answerRate3 = RS.getInt("answerRate3");
       int exp = RS.getInt("exp");
       String memLevel = RS.getString("memLevel");
-      //여기까지 추가
 
       System.out.println("  Name   :\t"+ userName );
       System.out.println("  I  D   :\t"+ userID );
       System.out.println("  Email  :\t"+ userEmail );
       System.out.println("  SCORE  :\t"+ userScore );
+      System.out.println("  POINT  :\t"+ userPoint );
+      System.out.println("  LEVEL  :\t"+ memLevel );
+      System.out.println("  E X P  :\t"+ exp );
       System.out.println("가입일자 :\t"+ udate );
       System.out.println("마지막로그인날짜 :\t"+ ldate );
       SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); // 소문자mm으로 할 경우 분을 의미한다.
@@ -84,20 +83,17 @@ public class AccountInfo2 {
       long calDate = currentDate.getTime() - udate.getTime(); 
       calDateDays = calDate / ( 24*60*60*1000); 
       System.out.println("\t\t저희와 함깨한지 "+ calDateDays + " 일째 입니다" );
-      //여기부터추가
-      System.out.println("  LEVEL  :\t"+ memLevel );
-      System.out.println("  E X P  :\t"+ exp );
+
       System.out.println("\n\n               정답률              ");
       System.out.println("─────────────────────────────────────── ");
       System.out.printf("  TOTAL  : 총 %s문제 중 %s개 정답, 정답률: %s%%\n",questionTotalCnt,answerTotalCnt,answerTotalRate);
       System.out.printf("  Lv. 1  : 총 %s문제 중 %s개 정답, 정답률: %s%%\n",questionCnt1,answerCnt1,answerRate1);
       System.out.printf("  Lv. 2  : 총 %s문제 중 %s개 정답, 정답률: %s%%\n",questionCnt2,answerCnt2,answerRate2);
       System.out.printf("  Lv. 3  : 총 %s문제 중 %s개 정답, 정답률: %s%%\n\n",questionCnt3,answerCnt3,answerRate3);
-      //여기까지 추가
 
       if(RS.getString("comnt") != null ) {
         String usercomnt = RS.getString("comnt");
-        System.out.print(" Comment :\t" );
+        System.out.print(" Comment :\t\n" );
         printcomnt(usercomnt);
         System.out.print(" 답  변  :\t");
         if(RS.getString("com") != null ) {
@@ -106,18 +102,16 @@ public class AccountInfo2 {
         } else { System.out.println("\t현재 등록된 답변이 없습니다.");}
       }
 
-
       Loop: while(true) {
-        System.out.println("\n\n[1. 이메일 변경]   [2. 비밀번호 변경]   [3. 점수 초기화]   [4. 건의사항]"
-            + "   [5. 회원탈퇴]   [8. 뒤로가기]");
+        System.out.println("\n\n[1. 이메일 변경]   [2. 비밀번호 변경]   [3. 건의사항]"
+            + "   [4. 회원탈퇴]   [8. 뒤로가기]");
         System.out.print(" >>> ");
         String command = sc.nextLine();
         switch (command) {
           case "1": chgEmail();  break;
           case "2": chgPasswd();  break;
-          case "3": resetScore();  break;
-          case "4": comnt();  break;
-          case "5": delId();  System.out.println("\n\n안녕히가세요!"); System.exit(0);
+          case "3": comnt();  break;
+          case "4": delId();  System.out.println("\n\n안녕히가세요!"); System.exit(0);
           case "8": System.out.println("\n뒤로가기\n");  break Loop;
           default : System.out.println("\n번호를 잘못입력하셨습니다 다시 입력해주세요. "); break;
         }  
@@ -139,7 +133,6 @@ public class AccountInfo2 {
     } else {System.out.println(usercomnt.substring(0,usercomnt.length())); 
     } //25이하      
   }
-
 
   public void chgEmail() {
     try {
@@ -197,21 +190,6 @@ public class AccountInfo2 {
     } catch(Exception e) {System.out.println("error: " + e);}
   }
 
-  public void resetScore() {
-    try {
-      System.out.println("\n  [점수 초기화]");
-      System.out.print("\n점수를 초기화 하시겠습니까? (y/N)\n >>> ");
-      ans = sc.nextLine();
-      if (ans.equals("y")) {
-        msg = "update member set score = 0 where id = '" + userID + "'";
-        ST.executeUpdate(msg);
-        System.out.println("\n점수가 초기화되었습니다.");
-      } else {
-        System.out.println("\n초기화 취소");
-      }
-    } catch(Exception e) {System.out.println("error: " + e);}
-  }
-
   public void comnt() {
     try {
       String  comnt = "";
@@ -259,7 +237,7 @@ public class AccountInfo2 {
         }//else 
       } 
     }  
-    MainMenu2 mm = new MainMenu2();
+    MainMenu mm = new MainMenu();
     mm.mainmenu();
   }//delId
 

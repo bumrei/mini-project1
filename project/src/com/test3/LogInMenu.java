@@ -1,4 +1,4 @@
-package com.test2;
+package com.test3;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,7 +12,7 @@ import java.util.Scanner;
 //Class Login, Join, Find
 
 ///////////LogIn/////////////
-public class LogInMenu2 {
+public class LogInMenu {
   Connection CN ;
   Statement ST ;
   ResultSet RS;
@@ -24,7 +24,6 @@ public class LogInMenu2 {
   Date udate, ldate, ndate;
   int uscord;
 
-
   public void dbConnect() throws Exception {
     Class.forName("oracle.jdbc.driver.OracleDriver");
     String url = "jdbc:oracle:thin:@localhost:1521:XE";
@@ -33,23 +32,14 @@ public class LogInMenu2 {
   }// dbConnect End
 
   public void login() throws Exception {
-    // AdminMenu am = new AdminMenu();
-    //  GameMenu gm = new GameMenu();
     this.dbConnect();
     while (true) {
       System.out.println("\n  [로그인]");   
-
       System.out.print("\n  ID>>> ");
-
       userID = sc.nextLine();
 
-      AdminMenu2 am = new AdminMenu2(userID);
-      GameMenu2 gm = new GameMenu2(userID);
-      AccountInfo2 ac = new AccountInfo2(userID);
-      Game2 g = new Game2(userID);
-      AccountInfo2 a = new AccountInfo2(userID);
-
-
+      AdminMenu am = new AdminMenu(userID);
+      GameMenu gm = new GameMenu(userID);
 
       if (userID.equals("Admin")) {
         am.adminLogin();
@@ -59,7 +49,6 @@ public class LogInMenu2 {
       userPsw = sc.nextLine();
       matchLoginFromDB();
 
-      if (userID.equals(uID) && userPsw.equals(uPsw)) {
         if (userID.equals(uID) && userPsw.equals(uPsw)) {
           System.out.println("\n" +uName +"님 환영합니다");
 
@@ -74,10 +63,9 @@ public class LogInMenu2 {
           gm.goIntoTheGame();
           return;
         } else {
-          System.out.println("아이디 혹은 비밀번호가 일치하지 않습니다.");
-          continue;
+          System.out.println("아이디 혹은 비밀번호가 일치하지 않습니다.\n");
+          return;
         }
-      }
     }
   }
 
@@ -91,11 +79,8 @@ public class LogInMenu2 {
     if (RS.next() == true) {
       ndate = RS.getDate("cdate");}  // 
 
-
-
     long calDate = ndate.getTime() - ldate.getTime(); //udate 공지 날짜에 넣어줘야함
     calDateDays = calDate / ( 24*60*60*1000);
-
 
     return calDateDays;
   }
@@ -107,13 +92,10 @@ public class LogInMenu2 {
       uName = RS.getString("name");
       uID = RS.getString("ID");
       uPsw = RS.getString("PSW");
-      uID = RS.getString("ID");
-      uPsw = RS.getString("PSW");
       uscord = RS.getInt("score");
       ucom = RS.getString("com");
       udate = RS.getDate("cdate");
       ldate = RS.getDate("ldate");
-
     }
   }
 }
@@ -229,8 +211,10 @@ class JoinMember {
 
   //문자체크 null,빈문자,공백
   public boolean stringCheck(String string) {
-    boolean check = string == null || string.isEmpty()
-        || string.indexOf(" ") != -1;
+    boolean check = string == null || string.isEmpty() || string.indexOf(" ") != -1;
+    if(check) {
+      System.out.println("\n양식이 잘못되었습니다. 다시 입력해주세요.");
+    }
     return check;
   }//stringCheck end
 
@@ -268,15 +252,11 @@ class JoinMember {
     PST.setString(4, email);
     PST.executeUpdate();
 
-    sql = "INSERT INTO score(ID) VALUES(?)";
+    sql = "INSERT INTO answerRate(ID) VALUES(?)";
     PST = CN.prepareStatement(sql);
     PST.setString(1, id);
   }//insertMember end
-
 }//JoinMember Class END
-
-
-
 
 ///////////Find/////////////
 class FindMember {

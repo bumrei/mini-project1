@@ -1,4 +1,4 @@
-package com.test2;
+package com.test3;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Scanner;
 
-public class MainMenu2 {
+public class MainMenu {
 
   Connection CN ;
   Statement ST ;
@@ -15,7 +15,7 @@ public class MainMenu2 {
   String userID ;
   String uID , uPsw ,uName , uEmail, userPsw ;
   String fname , femail ,fID , fpsw , rpsw;
- Scanner sc = new Scanner(System.in);
+  Scanner sc = new Scanner(System.in);
 
   public void dbConnect() throws Exception {
     Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -25,13 +25,13 @@ public class MainMenu2 {
   }// dbConnect End
 
   public static void main(String[] args) throws Exception {
-    MainMenu2 mm = new MainMenu2();
+    MainMenu mm = new MainMenu();
     mm.dbConnect();
     mm.mainmenu();
   }
 
   public void mainmenu() throws Exception {
-    LogInMenu2 lm = new LogInMenu2();
+    LogInMenu lm = new LogInMenu();
     JoinMember jm = new JoinMember();
     FindMember fm = new FindMember();
 
