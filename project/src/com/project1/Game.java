@@ -1,4 +1,4 @@
-package com.test;
+package com.project1;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -166,10 +166,11 @@ public class Game {
   public int getDBScore() {
     int score = 0;
     try {
-      msg = "select * from member where id = ?";
+      msg = "select score from member where id = ?";
       PST = CN.prepareStatement(msg);
       PST.setString(1, userID);
       RS = PST.executeQuery();
+
       if(RS.next() == true) {
         score = RS.getInt("score");
       }//if end
@@ -177,32 +178,17 @@ public class Game {
     return score;
   }//getDBScore end
 
-  public int getDBPoint() {
-    int point = 0;
-    try {
-      msg = "select * from member where id = ?";
-      PST = CN.prepareStatement(msg);
-      PST.setString(1, userID);
-      RS = PST.executeQuery();
-      if(RS.next() == true) {
-        point = RS.getInt("point");
-      }//if end
-    }catch(Exception ex) { }
-    return point;
-  }
-
   //정답채점해서 DB에 점수저장
   public void answerCheck(String userAnswer, int number) {
     int score = getDBScore();
-    int point = getDBPoint();
     String answer = getWord("kor", number);
 
     if(answer.equals(userAnswer)) {
       System.out.println("정답입니다.");
       switch(level) {
-        case 1: score++; point += (int)(Math.random()*10) + 1; break;
-        case 2: score += 2; point += (int)(Math.random()*10) + 11; break;
-        case 3: score += 3; point += (int)(Math.random()*10) + 21; break;
+        case 1: score++; break;
+        case 2: score += 2; break;
+        case 3: score += 3; break;
       }//switch end
     }else {
       System.out.println("틀렸습니다. 정답은 '" + answer + "'입니다.");
@@ -215,11 +201,10 @@ public class Game {
     System.out.println("현재점수는 " + score + "점입니다.");
 
     try {
-      msg = "update member set score = ? , point = ? where id = ?";
+      msg = "update member set score = ? where id = ?";
       PST = CN.prepareStatement(msg);
       PST.setInt(1, score);
-      PST.setInt(2, point);
-      PST.setString(3, userID);
+      PST.setString(2, userID);
       PST.executeUpdate();
     }catch(Exception ex) { }
   }//answerCheck end

@@ -1,4 +1,4 @@
-package com.test;
+package com.project1;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -37,26 +37,25 @@ public class AccountInfo {
       userID = RS.getString("ID");
       String userEmail = RS.getString("EMAIL");
       int userScore = RS.getInt("SCORE");
-      int userPoint = RS.getInt("point");
 
       System.out.println("  Name   :\t"+ userName );
       System.out.println("  I  D   :\t"+ userID );
       System.out.println("  Email  :\t"+ userEmail );
       System.out.println("  SCORE  :\t"+ userScore );
-      System.out.println("  POINT  :\t"+ userPoint );
 
       if(RS.getString("comnt") != null ) {
         String usercomnt = RS.getString("comnt");
         System.out.println(" Comment :\t"+ usercomnt );
       }
       Loop: while(true) {
-        System.out.println("\n\n[1. 이메일 변경]   [2. 비밀번호 변경]   [4. 건의사항]"
+        System.out.println("\n\n[1. 이메일 변경]   [2. 비밀번호 변경]   [3. 점수 초기화]   [4. 건의사항]"
             + "   [5. 회원탈퇴]   [8. 뒤로가기]");
         System.out.print(" >>> ");
         String command = sc.nextLine();
         switch (command) {
           case "1": chgEmail();  break;
           case "2": chgPasswd();  break;
+          case "3": resetScore();  break;
           case "4": comnt();  break;
           case "5": delId();  System.out.println("\n\n안녕히가세요!"); System.exit(0);
           case "8": System.out.println("\n뒤로가기\n");  break Loop;
@@ -119,6 +118,21 @@ public class AccountInfo {
             continue;
           }//if end
         }
+      }
+    } catch(Exception e) {System.out.println("error: " + e);}
+  }
+
+  public void resetScore() {
+    try {
+      System.out.println("\n  [점수 초기화]");
+      System.out.print("\n점수를 초기화 하시겠습니까? (y/N)\n >>> ");
+      ans = sc.nextLine();
+      if (ans.equals("y")) {
+        msg = "update member set score = 0 where id = '" + userID + "'";
+        ST.executeUpdate(msg);
+        System.out.println("\n점수가 초기화되었습니다.");
+      } else {
+        System.out.println("\n초기화 취소");
       }
     } catch(Exception e) {System.out.println("error: " + e);}
   }
