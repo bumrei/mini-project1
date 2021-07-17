@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.Scanner;
 
 public class GameMenu {
@@ -110,24 +111,28 @@ public class GameMenu {
 
   public void notification() {
     try{
-      msg = "select code, title, content from notice order by code";
+      msg = "select * from notice order by code asc";
       RS = ST.executeQuery(msg);
-      System.out.println("\nNo. \t Title \t\t\t\t\t Content");
-      System.out.println("-------------------------------------------------------------------------------");
+      System.out.println("\nNo.\t  Date  \t Title");
+      System.out.println("------------------------------------------------------------");
       while(RS.next() == true) {
         int pcode = RS.getInt("code");
+        Date pdate = RS.getDate("cdate");
         String ptitle = RS.getString("title");
-        String pcontent = RS.getString("content");
-        System.out.println(pcode + "\t" + ptitle + " \t\t\t\t\t " + pcontent);
+        System.out.println(pcode + "\t  " + pdate + "  \t " + ptitle);
       }
     } catch(Exception e) {}
   }
 
   public void back() {
-    System.out.println("\n[8. 뒤로가기]");
-    String command = sc.nextLine();
-    if (command.equals("8")) {
-      return;
+    while(true) {
+      System.out.println("\n[9. 뒤로가기]");
+      String command = sc.nextLine();
+      if (command.equals("9")) {
+        return;
+      } else {
+        continue;
+      }
     }
   }
 

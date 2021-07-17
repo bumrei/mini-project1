@@ -261,14 +261,15 @@ public class AdminMenu {
             System.out.println("공지 등록 완료");
             break;
           case "2":
-            msg = "select code, title, content from notice order by code";
+            msg = "select * from notice order by code asc";
             RS = ST.executeQuery(msg);
-            System.out.println("\nNo. \t Title \t\t\t\t\t Content");
+            System.out.println("\nNo.\t  Date  \t Title");
+            System.out.println("------------------------------------------------------------");
             while(RS.next() == true) {
               int pcode = RS.getInt("code");
+              Date pdate = RS.getDate("cdate");
               String ptitle = RS.getString("title");
-              String pcontent = RS.getString("content");
-              System.out.println(pcode + "\t" + ptitle + " \t\t\t\t\t " + pcontent);
+              System.out.println(pcode + "\t  " + pdate + "  \t " + ptitle);
             }
             break;
           case "8":

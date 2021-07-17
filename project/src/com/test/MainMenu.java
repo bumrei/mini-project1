@@ -37,9 +37,9 @@ public class MainMenu {
 
     while (true) {
       System.out.print("  [1. 로그인]   [2. 회원가입]   [3. 아이디 / 비밀번호 찾기]   [9. 종료] \n  >>> ");
-      String command = sc.nextLine();
+      String menu = sc.nextLine();
 
-      switch (command) {
+      switch (menu) {
         case "1" : lm.login(); break;
         case "2" : jm.join(); break;
         case "3": fm.findDb(); break;

@@ -113,13 +113,26 @@ public class Emoticon {
 
         msg = "insert into transaction values('" + userID + "'," + userrow + "," + usercol + ")";
         int a = ST.executeUpdate(msg);
+
         if (a == 1) {
           if (num <6) {
-            upoint -= 10;
+            if (upoint >= 10) {
+              upoint -= 10;              
+            } else {
+              System.out.println("포인트가 모자랍니다.");
+            }
           } else if (num <11) {
-            upoint -= 30;
+            if (upoint >= 30) {
+              upoint -= 30;              
+            } else {
+              System.out.println("포인트가 모자랍니다.");
+            }
           } else {
-            upoint -= 50;
+            if (upoint >= 50) {
+              upoint -= 50;              
+            } else {
+              System.out.println("포인트가 모자랍니다.");
+            }
           }
 
           msg = "update member set point = ? where id = ?";

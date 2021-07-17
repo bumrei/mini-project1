@@ -233,15 +233,15 @@ class FindMember {
     Loop: while(true) {
       System.out.print("\n[1. 아이디 찾기]   [2. 비밀번호 찾기]   [8. 뒤로가기]\n >>> ");
 
-      int menu = Integer.parseInt(sc.nextLine());
+      String menu = sc.nextLine();
       switch(menu) {
-        case 1:
+        case "1":
           findId();
           break;
-        case 2:
+        case "2":
           findPsw();
           break;
-        case 8:
+        case "9":
           System.out.println("\n뒤로가기");
           break Loop;
         default:
