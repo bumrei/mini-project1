@@ -26,7 +26,7 @@ public class Emoticon {
     ars[0][3] = "  •ܫ•      "; ars[0][4] = "   ◠‿◠     "; ars[1][0] = " (´•̥ω•̥`) ";
     ars[1][1] = " ( ˃̣̣̥᷄⌓˂̣̣̥᷅ )            "; ars[1][2] = " (๑•̀ω•́)۶ "; ars[1][3] = "♪(๑ᴖ◡ᴖ๑)♪  ";
     ars[1][4] = "( ⁎ ᵕᴗᵕ ⁎ )"; ars[2][0] = "( ⁎ ᵕᴗᵕ ⁎ )"; ars[2][1] = "( ⁎ ᵕᴗᵕ ⁎ )";
-    ars[2][2] = "( ⁎ ᵕᴗᵕ ⁎ )"; ars[2][3] = "( ⁎ ᵕᴗᵕ ⁎ )"; ars[2][4] = "( ⁎ ᵕᴗᵕ ⁎ )";
+    ars[2][2] = "( ⁎ ᵕᴗᵕ ⁎ )"; ars[2][3] = "( ⁎ ᵕᴗᵕ ⁎ )"; ars[2][4] = "  준비중  ";
     price[0] = 10; price[1] = 30; price[2] = 50;
   }
 
@@ -74,7 +74,7 @@ public class Emoticon {
     while(true) {
       try {
         int userrow = 0, usercol = 0;
-        System.out.println("구매하실 물품을 입력해 주세요");
+        System.out.println("구매하실 물품을 입력해 주세요  [8. 뒤로가기]\n >>> ");
         int num = Integer.parseInt(sc.nextLine());
 
         userrow = (num-1) / 5;
@@ -114,6 +114,45 @@ public class Emoticon {
       ucol = RS.getInt("JCOLUMN");
       System.out.println(urownum + ": \t[\t" + ars[urow][ucol] + "\t]");
     }
+    while (true) {
+      System.out.println("[1. 케릭터 선택]   [0. 뒤로가기]");
+      String command = sc.nextLine();
+
+      switch (command) {
+        case "1":
+          while (true) {
+            //            try {
+            System.out.print("캐릭터를 선택해 주세요.  [0. 뒤로가기]\n >> ");
+            command = sc.nextLine();
+            if (command.equals("0")) {
+              break;
+            }
+
+            msg = "select a.* from (select rownum as rnum, IROW, JCOLUMN from transaction where id = '" + userID + "') a where a.rnum =" + command;
+            RS = ST.executeQuery(msg);
+            if (RS.next() == true) {
+              int usrow = RS.getInt("IROW");
+              int uscol = RS.getInt("JCOLUMN");
+              System.out.println(ars[usrow][uscol]);
+            } else {
+              System.out.println("잘못 입력하셨습니다.");
+              continue;
+            }
+            break;
+            //            }catch (Exception e) {System.out.println("잘못 입력하셨습니다.");}
+          }
+
+          break;
+        case "0":
+          return;
+        default :
+          System.out.println("옳바른 번호를 입력해 주세요.");
+          continue;
+      }
+    }
+
+
+
 
   }
 

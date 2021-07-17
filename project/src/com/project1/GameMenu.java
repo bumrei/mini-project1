@@ -69,7 +69,7 @@ public class GameMenu {
         case "2": game.wordTest();  break;
         case "3": ranking(); back();  break;
         case "4": ai.info();  break;
-        case "5": em.inventory(); back(); break;
+        case "5": em.inventory(); break;
         case "6": em.emojiShop(); break;
         case "7": notification();  break;
         case "8": System.out.println("로그아웃 합니다.");  return;

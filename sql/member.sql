@@ -1,5 +1,6 @@
-drop table message ;
+drop table answerRate;
 drop table transaction ;
+drop table message;
 drop table member ;
 drop sequence member_seq;
 drop sequence message_seq;
@@ -9,13 +10,15 @@ create sequence message_seq ;
 
 create table member (
   memNo number(4) not null ,
-  name varchar(9) not null ,
+  name nvarchar2(10) not null ,
   ID varchar(10) ,
-  psw varchar(6) not null ,
-  email varchar(20) not null ,
+  psw varchar(15) not null ,
+  email varchar(25) not null ,
   cdate date not null ,
   score number(4) default(0) ,
-  comnt varchar(100) ,
+  memLevel varchar(10) default('Bronze'),
+  exp number(4) default(0),
+  comnt nvarchar2(100),
   com nvarchar2(100),
   ldate date,
   point number(5) default(0),
@@ -41,6 +44,22 @@ create table message (
       references member(ID) on delete cascade
 );
 
+create table answerRate(
+  ID varchar(10) primary key ,
+  questionTotalCnt number(4) default(0),
+  questionCnt1 number(4) default(0),
+  questionCnt2 number(4) default(0),
+  questionCnt3 number(4) default(0),
+  answerTotalCnt number(4) default(0),
+  answerCnt1 number(4) default(0),
+  answerCnt2 number(4) default(0),
+  answerCnt3 number(4) default(0),
+  answerTotalRate number(4,2) default(0),
+  answerRate1 number(4,2) default(0),
+  answerRate2 number(4,2) default(0),
+  answerRate3 number(4,2) default(0),
+  CONSTRAINT fk_ID FOREIGN KEY(ID) REFERENCES member(ID) ON DELETE CASCADE
+);
 
 commit ;
 
@@ -57,7 +76,6 @@ insert into member(memNo, name, ID, psw, email, cdate)
 
 insert into member(memNo, name, ID, psw, email, cdate, ldate)
  values(member_seq.nextval, 'a', 'a', 'a', 'ggggjjj@gmail.com', '2021-07-10', '2021-07-14');
-
 
 --////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -77,6 +95,12 @@ insert into message values(message_seq.nextval, 'ID1', 'hi hahahahahahaha', sysd
 
 --//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+--answerRate insert ºÎºÐ/////////////////////////////////////////////////////////////////////////////////////////
+INSERT INTO answerRate(ID) VALUES('ID1');
+INSERT INTO answerRate(ID) VALUES('ID2');
+INSERT INTO answerRate(ID) VALUES('ID3');
+INSERT INTO answerRate(ID) VALUES('a');
+--////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 commit ;
 select * from member;
@@ -85,4 +109,4 @@ select * from transaction ;
 
 select * from message ;
 
-  
+select * from answerRate;
