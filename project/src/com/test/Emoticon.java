@@ -15,7 +15,7 @@ public class Emoticon {
   PreparedStatement PST ;
 
   String msg = "";
-  String userID = LogInMenu.userID;;
+  String userID ;
   int urownum;
   int urow;
   int ucol;
@@ -24,6 +24,11 @@ public class Emoticon {
   int[] price = new int[3];
   String[][] ars = new String[3][5];
   boolean[][] arb = new boolean[3][5];
+
+  public Emoticon(String userID) {
+    this.userID = userID;
+    // TODO Auto-generated constructor stub
+  }
 
   public void arrContents() {
     ars[0][0] = "   ᵔεᵔ     "; ars[0][1] = "  ∙̑◡∙̑    "; ars[0][2] = "      ᵔ︡⌔ᵔ︠   ";
@@ -117,21 +122,24 @@ public class Emoticon {
         if (a == 1) {
           if (num <6) {
             if (upoint >= 10) {
-              upoint -= 10;              
+              upoint -= price[0];              
             } else {
               System.out.println("포인트가 모자랍니다.");
+              continue;
             }
           } else if (num <11) {
             if (upoint >= 30) {
-              upoint -= 30;              
+              upoint -= price[1];              
             } else {
               System.out.println("포인트가 모자랍니다.");
+              continue;
             }
           } else {
             if (upoint >= 50) {
-              upoint -= 50;              
+              upoint -= price[2];              
             } else {
               System.out.println("포인트가 모자랍니다.");
+              continue;
             }
           }
 

@@ -1,8 +1,6 @@
 package com.test;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,18 +15,38 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+
 public class Game {
 
   Connection CN ; 
   Statement ST ; 
   PreparedStatement PST ;
   ResultSet RS ; 
-  String msg = "isud = crud쿼리문기술";
+  String sql = "isud = crud쿼리문기술";
   Scanner sc = new Scanner(System.in);
-  String userID = LogInMenu.userID;
-  String uanswer = "사용자입력값";
-  int level;
+
+  String userID;
+  int score, level ,point;
+
+  double answerRate1, answerRate2, answerRate3, answerTotalRate;
+  int exp;//유저경험치
+  String memLevel;//유저레벨
+  int quCount;//현재 플레이동안 푼 문제개수
+  int anCount;//현재 플레이동안 맞춘 문제개수
   int[] questionNum = new int[6];
+  Dao d = new Dao(userID);
+
+  public Game() { }
+
+  public Game(String userID) {
+    this.userID = userID;
+  }
+
+  public void dbclose() throws Exception {
+    RS.close();
+    ST.close();
+    CN.close();
+  }
 
   public void dbConnect() throws Exception {
     Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -38,79 +56,73 @@ public class Game {
   }// dbConnect End
 
   public void wordTest() throws Exception { //게임종료 후 리플레이와 뒤로가기 구현필요
-    this.dbConnect();
     test: while(true) {
-      System.out.println("난이도를 선택해주세요.(1~3)");
+      System.out.println("\n\n영어단어 암기게임에 오신 것을 환영합니다!");
+      System.out.println("플레이하실 난이도를 선택해주세요.(1~3)");
       System.out.print("난이도>> ");
-      level = Integer.parseInt(sc.nextLine());
+      try{level = Integer.parseInt(sc.nextLine());
+      if(level<1 || level>3) {
+        System.out.println("1~3 사이의 숫자를 입력해주세요.\n");
+        continue;
+      }
+      }catch(Exception ex) { System.out.println("숫자를 입력해주세요.\n"); continue;}
 
       System.out.println("영어단어테스트를 시작합니다.");
       System.out.println("문제당 제한시간은 10초입니다.");
       System.out.println("테스트중간에 그만두고 싶으시다면 'end'를 입력해주세요.\n");
       try {
-        //안내사항 확인위한 시간텀
         Thread.sleep(2000);
-
-        //랜덤문제생성
+        dbConnect();
         randomSetting();
 
-        //테스트 5번 반복
         for(int i =0 ; i<questionNum.length; i++) {
-          //문제랜덤출력
           System.out.printf("문제>> %s\n",getWord("eng", i));
           System.out.print("정답>> ");
 
-          //제한시간 10초설정
           ExecutorService ex = Executors.newSingleThreadExecutor();
-          //쓰레드 1개인 ExecutorService를 리턴합니다. 싱글 쓰레드에서 동작해야하는 작업을 처리할 때 사용합니다.
-
+          String uanswer = "사용자 답변";
           try {
-            Future<String> result = ex.submit(new InputAnswer()); // 정답함수 받아서 쓰레드에 전달
-            //submit은 Runnable 또는 Callable을 받는다. Runnable은 리턴값이 없고 Callable은 리턴값이 있다.
+            Future<String> result = ex.submit(new InputAnswer()); 
             try {
               uanswer = result.get(10, TimeUnit.SECONDS);
-              //필요에 따라서 최대지정된 시간, 계산이 완료할 때까지 대기해, 그 후, 계산 결과가 이용 가능한 경우는 결과를 가져옵니다.
-              //게임도중 종료
               if(uanswer.equals("end")) {
                 break;
               }//if end
-            } catch (ExecutionException e) { // 작업도중에 에러가 발생한 경우에 발생
-              e.getCause().printStackTrace(); // 오류출력
-            } catch (TimeoutException e){ //대기시간이 초과된 경우에 발생
-              System.out.println("\n입력시간이 초과됐습니다."); // 시간초과
+            } catch (ExecutionException e) { 
+              e.getCause().printStackTrace(); 
+            } catch (TimeoutException e){ 
+              System.out.println("\n입력시간이 초과됐습니다."); 
               answerCheck(uanswer, i);
               System.out.println();
               continue;
-            } catch (InterruptedException e){ //현재 스레드가 인터럽트된 경우에 발생
+            } catch (InterruptedException e){  
               System.out.println("interrupted?");
-              e.getCause().printStackTrace(); // 오류출력
+              e.getCause().printStackTrace();  
             }//try end
           } finally {
-            ex.shutdownNow(); //진행중인거 강제 종료
-            //스레드 풀의 스레드는 기본적으로 데몬 스레드가 아니기 때문에 main 스레드가 종료되더라도 작업을 처리하기 위해 계속 실행 상태로 남아있습니다.
-            //프로세스를 종료시키려면 스레드 풀을 종료시켜 스레드들이 종료 상태가 되도록 처리필요
+            ex.shutdownNow();  
           }//try end
-
           answerCheck(uanswer, i);
           System.out.println();
         }//for end
       }catch(Exception ex) {System.out.println("에러이유: "+ex);}
 
       System.out.println("테스트가 끝났습니다.\n");
+      Result();      
+      setEXP();
+      quCount = 0;
+      anCount = 0;
 
-      //게임종료 후 메뉴선택
       while(true) {
-        System.out.println("1.리플레이 2.이전메뉴");
+        System.out.println("[1.리플레이]   [2.이전메뉴]");
         System.out.print("메뉴>> ");
         String menu = sc.nextLine();
 
         switch(menu) {
           case "1":
             continue test;
-            //break;
           case "2":
             return;
-            //break;
           default:
             System.out.println("잘못입력하셨습니다.\n");
             continue;
@@ -119,17 +131,18 @@ public class Game {
     }//while end
   }//wordTest end
 
-  //문제 총 개수반환
   public int getTotalWordNum() {
     int count = 0;
     try {
-      msg = "select count(*) from word where wordlevel = ?";
-      PST = CN.prepareStatement(msg);
+      dbConnect();
+      sql = "select count(*) from word where wordlevel = ?";
+      PST = CN.prepareStatement(sql);
       PST.setInt(1, level);
       RS = PST.executeQuery();
       if( RS.next() == true) {
         count = RS.getInt("count(*)");
       }//if end
+      dbclose();
     }catch(Exception ex) { }
     return count;
   }//getTotalNumber end
@@ -143,18 +156,19 @@ public class Game {
         }//if end
       }//for end
     }//for end
+
   }//print[] END
 
-  //데이터베이스 단어 가져오기
   public String getWord(String type, int number) {
     String word = "단어";
+
     try {
-      msg = "select " + type + " from "
+      dbConnect();
+      sql = "select * from "
           + "(select row_number() over(partition by wordlevel order by wordNum) as row_num, b.* "
           + "from word b) a "
           + "where wordlevel = " + level + " and a.row_num = " + questionNum[number];
-      RS = ST.executeQuery(msg);
-
+      RS = ST.executeQuery(sql);
       if( RS.next() == true) {
         word = RS.getString(type);
       }//if end
@@ -162,68 +176,127 @@ public class Game {
     return word;
   }//getQuestion end
 
-  //데이터베이스 점수 가져오기
-  public int getDBScore() {
-    int score = 0;
-    try {
-      msg = "select * from member where id = ?";
-      PST = CN.prepareStatement(msg);
-      PST.setString(1, userID);
-      RS = PST.executeQuery();
-      if(RS.next() == true) {
-        score = RS.getInt("score");
-      }//if end
-    }catch(Exception ex) { }
-    return score;
-  }//getDBScore end
-
-  public int getDBPoint() {
-    int point = 0;
-    try {
-      msg = "select * from member where id = ?";
-      PST = CN.prepareStatement(msg);
-      PST.setString(1, userID);
-      RS = PST.executeQuery();
-      if(RS.next() == true) {
-        point = RS.getInt("point");
-      }//if end
-    }catch(Exception ex) { }
-    return point;
-  }
-
-  //정답채점해서 DB에 점수저장
-  public void answerCheck(String userAnswer, int number) {
-    int score = getDBScore();
-    int point = getDBPoint();
+  public void answerCheck(String userAnswer, int number) throws Exception {
+    dbConnect();
+    d.select(userID);
+    d.questionTotalCnt++;
+    quCount++;
     String answer = getWord("kor", number);
 
     if(answer.equals(userAnswer)) {
       System.out.println("정답입니다.");
+      d.answerTotalCnt++;
+      anCount++;
+
       switch(level) {
-        case 1: score++; point += (int)(Math.random()*10) + 1; break;
-        case 2: score += 2; point += (int)(Math.random()*10) + 11; break;
-        case 3: score += 3; point += (int)(Math.random()*10) + 21; break;
+        case 1:
+          d.uScore++; d.point += (int)(Math.random()*10) + 1;
+          d.questionCnt1++; d.answerCnt1++;
+          break;
+        case 2:
+          d.uScore += 2; d.point += (int)(Math.random()*10) + 11;
+          d.questionCnt2++; d.answerCnt2++;
+          break;
+        case 3:
+          d.uScore += 3; d.point += (int)(Math.random()*10) + 21;
+          d.questionCnt3++; d.answerCnt3++;
+          break;
       }//switch end
     }else {
       System.out.println("틀렸습니다. 정답은 '" + answer + "'입니다.");
       switch(level) {
-        case 1: score--; break;
-        case 2: score -= 2; break;
-        case 3: score -= 3; break;
+        case 1: d.uScore --; d.questionCnt1++; break;
+        case 2: d.uScore -= 2; d.questionCnt2++; break;
+        case 3: d.uScore -= 3; d.questionCnt3++; break;
       }//switch end
     }//if end
-    System.out.println("현재점수는 " + score + "점입니다.");
+    System.out.println("현재점수는 " + d.uScore + "점입니다.");
 
-    try {
-      msg = "update member set score = ? , point = ? where id = ?";
-      PST = CN.prepareStatement(msg);
-      PST.setInt(1, score);
-      PST.setInt(2, point);
-      PST.setString(3, userID);
-      PST.executeUpdate();
-    }catch(Exception ex) { }
+    setDBData(userID);
+
   }//answerCheck end
-}
+
+  public void Result() throws Exception {
+    d.select(userID);
+    System.out.printf("-----------lv.%d 테스트 결과-----------\n", level);
+    System.out.printf("문제 %s개 중 정답 %s개, 정답률: %s%%\n\n", quCount, anCount,
+        ((double)Math.round((double)anCount/quCount*10000)/100));
+    int questionCount = 0; int answerCount = 0; double rate = 0;
+    d.answerTotalRate = ((double)Math.round((double)d.answerTotalCnt/d.questionTotalCnt*10000)/100);
+    switch(level) {
+      case 1:
+        questionCount = d.questionCnt1;
+        answerCount = d.answerCnt1;
+        d.answerRate1 = ((double)Math.round((double)d.answerCnt1/d.questionCnt1*10000)/100);
+        rate = d.answerRate1;
+        break;
+      case 2:
+        questionCount = d.questionCnt2;
+        answerCount =d.answerCnt2;
+        d.answerRate2 = ((double)Math.round((double)d.answerCnt2/d.questionCnt2*10000)/100);
+        rate = d.answerRate2;
+        break;
+      case 3:
+        questionCount =d.questionCnt3;
+        answerCount = d.answerCnt3;
+        d.answerRate3 = ((double)Math.round((double)d.answerCnt3/d.questionCnt3*10000)/100);
+        rate = d.answerRate3;
+        break;
+    }
+
+    System.out.printf("-----------lv.%d 누적  결과-----------\n", level);
+    System.out.printf("총문제 %s개 중 정답 %s개, 정답률: %s%%\n\n", questionCount, answerCount, rate);
+
+    setDBData(userID);
+  }//Result end
+
+
+  public void setEXP() throws Exception {
+    String tmp =d.memLevel ;
+    d.select(userID);
+    d.exp = d.exp + (anCount * level);
+    if(d.exp<10) {d.memLevel = "Bronze";//40
+    }else if(d.exp<100) {d.memLevel = "Silver";
+    }else if(d.exp<200) {d.memLevel = "Gold";
+    }else if(d.exp<400) {d.memLevel = "Platinum";
+    }else if(d.exp<800) {d.memLevel = "Diamond";
+    }else {d.memLevel = "Mster";}//if end
+
+    if(!d.memLevel.equals(tmp)) {
+      System.out.printf("\nLevel Up!!   %s ==> %s\n\n\n", tmp, d.memLevel);
+    }//if end
+
+    setDBData(userID);
+  }//setEXP end
+
+  public void setDBData(String userID) {
+    try {
+      sql = "update member set score = ?, memLevel = ?, exp = ?, point = ? where ID = ?";
+      PST = CN.prepareStatement(sql);
+      PST.setInt(1, d.uScore); PST.setString(2, d.memLevel); PST.setInt(3, d.exp);
+      PST.setInt(4, d.point); PST.setString(5, userID);
+      PST.executeUpdate();
+
+      sql = "update answerRate set "
+          + "questionTotalCnt = ?, questionCnt1 = ?, questionCnt2 = ?, questionCnt3 = ?,"
+          + "answerTotalCnt = ?,answerCnt1 = ?, answerCnt2 = ?, answerCnt3 = ?,"
+          + "answerTotalRate = ?, answerRate1 = ?, answerRate2 = ?, answerRate3 = ? "
+          + "where ID = ?";
+      PST = CN.prepareStatement(sql);
+      PST.setInt(1, d.questionTotalCnt); PST.setInt(2, d.questionCnt1);
+      PST.setInt(3, d.questionCnt2); PST.setInt(4, d.questionCnt3);
+      PST.setInt(5, d.answerTotalCnt); PST.setInt(6, d.answerCnt1);
+      PST.setInt(7, d.answerCnt2); PST.setInt(8, d.answerCnt3);
+      PST.setDouble(9, d.answerTotalRate); PST.setDouble(10, d.answerRate1);
+      PST.setDouble(11, d.answerRate2); PST.setDouble(12, d.answerRate3);
+      PST.setString(13, userID);
+      PST.executeUpdate();
+
+    }catch(Exception ex) {}
+  }//setDBData end
+}//Game class end
+
+
 
 class WordList {
   Connection CN = null;
@@ -324,27 +397,17 @@ class WordList {
   }
 }//WordTest Class END
 
+
+
 class InputAnswer implements Callable<String> { // 값 입력받기
   @Override
   public String call() throws IOException {
 
-    //    Scanner sc = new Scanner(System.in);
-    //    String input = "사용자입력값";
-    //    input = sc.nextLine();
+    Scanner sc = new Scanner(System.in);
+    String input = "사용자입력값";
+    input = sc.nextLine();
 
-    BufferedReader inp = new BufferedReader(new InputStreamReader(System.in));
-    String input = "";
-    while ("".equals(input)) {
-      try {
-        while (!inp.ready()) {
-          Thread.sleep(100);
-        }//while end
-        input = inp.readLine();
-      } catch (InterruptedException e) {
-        return null;
-      }//try end
-    } //while end
-
+    sc.close();
     return input;
   }//call end
 }//InputAnswer Class END

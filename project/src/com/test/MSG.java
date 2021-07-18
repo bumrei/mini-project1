@@ -12,8 +12,7 @@ public class MSG {
   ResultSet RS;
   String msg;
   Scanner sc = new Scanner(System.in);
-
-  String userID = "ID1";
+  String userID = "ID1"; // 이건 로그인시 or 쪽지함 메뉴 선택할때 넣어주면될듯
 
   public void dbConnect() throws Exception {
     Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -70,7 +69,7 @@ public class MSG {
         if (tid.equals("8")) {
           break;
         }
-
+//d.select(tid) != null 로하면 될거같은데.. 없어서 테스트는 내일!
         msg = "select * from member where id = '" + tid +"'";
         RS = ST.executeQuery(msg);
         if (RS.next() == true) {
