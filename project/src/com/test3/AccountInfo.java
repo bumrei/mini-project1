@@ -1,8 +1,5 @@
 package com.test3;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.ParseException;
@@ -19,7 +16,8 @@ public class AccountInfo {
   String userID;
   JoinMember jm = new JoinMember();
   Dao d = new Dao(userID);
-  
+  Emoticon em = new Emoticon(userID);
+
   public AccountInfo() { }
 
   public AccountInfo(String userID) {
@@ -27,52 +25,52 @@ public class AccountInfo {
   }
 
   public void info() throws Exception {
-    
+    d.select(userID);
+    System.out.println("\n\n   " + em.printChar2(d.getMychar()));
     System.out.println("\n\n               내정보              ");
     System.out.println("───────────────────────────────────────────────── ");
-    d.select(userID);
-      System.out.println("\t"+ d.getuName() +" 님과 함께한지 "+  datedif(d.getuDate()) + " 일째 입니다" );
-      System.out.println("  Name   :\t"+ d.getuName() );
-      System.out.println("  I  D   :\t"+ d.getuId() );
-      System.out.println("  Email  :\t" + d.getuEmail());
-      System.out.println("  SCORE  :\t" + d.getuScore());
-      System.out.println("  POINT  :\t" + d.getPoint());
-      System.out.println("  LEVEL  :\t" + d.getMemLevel ());
-      System.out.println("  E X P  :\t" + d.getExp() );
-     
-      if( d.getUcomnt() != null ) {
-        System.out.print(" Comment :\t" );
-        printcomnt(d.getUcomnt());
-          System.out.print(" 답  변  :\t");
-          if( d.getCom() != null ) {
-            printcomnt(d.getCom());
-          } else { System.out.println("현재 등록된 답변이 없습니다.");}
-      }
-      System.out.println("\n\n               정답률              ");
-      System.out.println("───────────────────────────────────────────────── ");
-      System.out.printf("  TOTAL  : 총 %s문제 중 %s개 정답, 정답률: %s%%\n", d.getQuestionTotalCnt(),d.getAnswerTotalCnt(),d.getAnswerTotalRate());
-      System.out.printf("  Lv. 1  : 총 %s문제 중 %s개 정답, 정답률: %s%%\n",d.getQuestionCnt1(),d.getAnswerCnt1(),d.getAnswerRate1());
-      System.out.printf("  Lv. 2  : 총 %s문제 중 %s개 정답, 정답률: %s%%\n", d.getQuestionCnt2(),d.getAnswerCnt2(),d.getAnswerRate2());
-      System.out.printf("  Lv. 3  : 총 %s문제 중 %s개 정답, 정답률: %s%%\n\n",d.getQuestionCnt3(),d.getAnswerCnt3(),d.getAnswerRate3());
-      
+    System.out.println("\t"+ d.getuName() +"님과 함께한지 "+  datedif(d.getuDate()) + " 일째 입니다" );
+    System.out.println("  Name   :\t"+ d.getuName() );
+    System.out.println("  I  D   :\t"+ d.getuId() );
+    System.out.println("  Email  :\t" + d.getuEmail());
+    System.out.println("  SCORE  :\t" + d.getuScore());
+    System.out.println("  POINT  :\t" + d.getPoint());
+    System.out.println("  LEVEL  :\t" + d.getMemLevel ());
+    System.out.println("  E X P  :\t" + d.getExp() );
 
-      Loop: while(true) {
-        System.out.println("\n\n[1. 이메일 변경]   [2. 비밀번호 변경]   [3. 건의사항]"
-            + "   [4. 회원탈퇴]   [8. 뒤로가기]");
-        System.out.print(" >>> ");
-        String command = sc.nextLine();
-        switch (command) {
-          case "1": chgEmail();  break;
-          case "2": chgPasswd();  break;
-          case "3": comnt();  break;
-          case "4": delId(); break;
-          case "8": System.out.println("\n뒤로가기\n");  break Loop;
-          default : System.out.println("\n번호를 잘못입력하셨습니다 다시 입력해주세요. "); break;
-        }  
-      }
-    }//if
+    if( d.getUcomnt() != null ) {
+      System.out.print(" Comment :\t" );
+      printcomnt(d.getUcomnt());
+      System.out.print(" 답  변  :\t");
+      if( d.getCom() != null ) {
+        printcomnt(d.getCom());
+      } else { System.out.println("현재 등록된 답변이 없습니다.");}
+    }
+    System.out.println("\n\n               정답률              ");
+    System.out.println("───────────────────────────────────────────────── ");
+    System.out.printf("  TOTAL  : 총 %s문제 중 %s개 정답, 정답률: %s%%\n", d.getQuestionTotalCnt(),d.getAnswerTotalCnt(),d.getAnswerTotalRate());
+    System.out.printf("  Lv. 1  : 총 %s문제 중 %s개 정답, 정답률: %s%%\n",d.getQuestionCnt1(),d.getAnswerCnt1(),d.getAnswerRate1());
+    System.out.printf("  Lv. 2  : 총 %s문제 중 %s개 정답, 정답률: %s%%\n", d.getQuestionCnt2(),d.getAnswerCnt2(),d.getAnswerRate2());
+    System.out.printf("  Lv. 3  : 총 %s문제 중 %s개 정답, 정답률: %s%%\n\n",d.getQuestionCnt3(),d.getAnswerCnt3(),d.getAnswerRate3());
 
-// 현재 날짜 비교 함수
+
+    Loop: while(true) {
+      System.out.println("\n\n[1. 이메일 변경]   [2. 비밀번호 변경]   [3. 건의사항]"
+          + "   [4. 회원탈퇴]   [8. 뒤로가기]");
+      System.out.print(" >>> ");
+      String command = sc.nextLine();
+      switch (command) {
+        case "1": chgEmail();  break;
+        case "2": chgPasswd();  break;
+        case "3": comnt();  break;
+        case "4": delId(); break;
+        case "8": System.out.println("\n뒤로가기\n");  break Loop;
+        default : System.out.println("\n번호를 잘못입력하셨습니다 다시 입력해주세요. "); break;
+      }  
+    }
+  }//if
+
+  // 현재 날짜 비교 함수
   public long datedif(Date date) throws ParseException {
     long calDateDays = 0;
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); // 소문자mm으로 할 경우 분을 의미한다.
@@ -83,7 +81,7 @@ public class AccountInfo {
     calDateDays = calDate / ( 24*60*60*1000); 
     return calDateDays+1;
   }
-  
+
 
   public void printcomnt(String usercomnt) {
     if (usercomnt.length()>25) {
@@ -118,7 +116,7 @@ public class AccountInfo {
         System.out.println("\n변경이 완료되었습니다.");
         break Loop;
       }
-      } catch(Exception e) {System.out.println("errordd: " + e);}
+    } catch(Exception e) {System.out.println("errordd: " + e);}
 
   }
 
@@ -154,9 +152,9 @@ public class AccountInfo {
         }
       }
       d.dbclose();
-      } catch(Exception e) {System.out.println("error: " + e);}
+    } catch(Exception e) {System.out.println("error: " + e);}
   }
-  
+
 
   public void comnt() {
     try {
@@ -180,21 +178,21 @@ public class AccountInfo {
     System.out.println("회원정보를 입력하세요.");
     while(true) {
       System.out.print("패스워드  : " );
-       fpsw = sc.nextLine();
-       d.select(userID);
-        if (fpsw.equals(d.getuPsw())) {
-          msg = "delete from member where ID = '" + userID + "'";
-          System.out.print("정말 탈퇴 하시겠습니까? (y/N)>>> " );
-          String a = sc.nextLine();
-                  if (a.equals("y")) {
-                    d.dbConnect();
-                    d.ST.executeUpdate(msg);
-                    System.out.println("회원 탈퇴가 완료되었습니다.");
-                     break;
-                  } else {System.out.println("회원 탈퇴를 취소하셨습니다.");break;}
-        }  System.out.println("비밀번호를를 다시 확인하십시오.");
-          continue;
-        }//else 
+      fpsw = sc.nextLine();
+      d.select(userID);
+      if (fpsw.equals(d.getuPsw())) {
+        msg = "delete from member where ID = '" + userID + "'";
+        System.out.print("정말 탈퇴 하시겠습니까? (y/N)>>> " );
+        String a = sc.nextLine();
+        if (a.equals("y")) {
+          d.dbConnect();
+          d.ST.executeUpdate(msg);
+          System.out.println("회원 탈퇴가 완료되었습니다.");
+          break;
+        } else {System.out.println("회원 탈퇴를 취소하셨습니다.");break;}
+      }  System.out.println("비밀번호를를 다시 확인하십시오.");
+      continue;
+    }//else 
 
     MainMenu mm = new MainMenu();
     mm.mainmenu();

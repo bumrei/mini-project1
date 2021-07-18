@@ -18,7 +18,7 @@ public class AdminMenu {
   int uScore, uadmin, userAdmin, uMemno ;
   Date uCdate;
   Dao d = new Dao(userID);
-  
+
   public AdminMenu() { }
 
   public AdminMenu(String userID) {
@@ -95,84 +95,84 @@ public class AdminMenu {
   public void listMember() throws Exception {
     System.out.println("\n[회원 리스트]");
     System.out.println("[No.]\t[Name]\t[ID]\t[Email]\t\t\t[Created Date]\t[Score]");
-     d.select(userID);
+    d.select(userID);
   }//listMember end
 
   //1. 회원 삭제//////////////////////////////////////////////////
   public void deleteMember() throws Exception {
- 
+
     System.out.println("\n[회원 삭제]");
     while(true) {
       System.out.print("\n삭제하실 아이디를 입력하여 주십시오.\n >>> ");
- 
-        String  deleteID = sc.nextLine();
-        Dao d = new Dao(deleteID);
-         d.select(deleteID);
-         if (deleteID.equals("Admin")) {
+
+      String  deleteID = sc.nextLine();
+      Dao d = new Dao(deleteID);
+      d.select(deleteID);
+      if (deleteID.equals("Admin")) {
         System.out.println("관리자는 삭제하실 수 없습니다.");
-         continue;
-       } else if (d.getuId() == null) {
-         System.out.println("\n아이디를 다시 확인하십시오.") ;
-         continue;
-       }    else {
-         d.dbConnect();
-            sql = "delete from member where ID = '" + deleteID + "'";
-            System.out.print("\n삭제하려는 아이디가 '"+ deleteID +"' 맞습니까? (y/N)>>> ");
-            String a = sc.nextLine();
-                    if (a.equals("y")) {
-                      d.ST.executeUpdate(sql);
-                      System.out.println("\n회원 삭제가 완료되었습니다.");
-                      return;
-                      }  else {System.out.println("회원 삭제를 취소하셨습니다.");break;
-                     } 
-          }//else
-         } 
-    }//deleteMember end
- 
-      
-      
-      
-      
-      
-      
-      
-//      String deleteID = sc.next();
-//      Dao d = new Dao(deleteID);
-//      d.select(deleteID);
-//      if (deleteID.equals("Admin")) {
-//        System.out.println("관리자는 삭제하실 수 없습니다.");
-//        return;
-//      } else if (d.getuId() != null) {
-//        sql = "delete from member where ID = '" + deleteID + "'";
-//        System.out.print("\n삭제하려는 아이디가 '"+ deleteID +"' 맞습니까? (y/N)>>> ");
-//         String p = sc.nextLine();
-//            if (p.equals("y")) {
-//              ST.executeUpdate(sql);
-//              System.out.println("\n회원 삭제가 완료되었습니다.");}
-//      } else {
-//        deleteID ="삭제불가";
-//        System.out.println("\n아이디를 다시 확인하십시오.");
-//        }
-       
+        continue;
+      } else if (d.getuId() == null) {
+        System.out.println("\n아이디를 다시 확인하십시오.") ;
+        continue;
+      }    else {
+        d.dbConnect();
+        sql = "delete from member where ID = '" + deleteID + "'";
+        System.out.print("\n삭제하려는 아이디가 '"+ deleteID +"' 맞습니까? (y/N)>>> ");
+        String a = sc.nextLine();
+        if (a.equals("y")) {
+          d.ST.executeUpdate(sql);
+          System.out.println("\n회원 삭제가 완료되었습니다.");
+          return;
+        }  else {System.out.println("회원 삭제를 취소하셨습니다.");break;
+        } 
+      }//else
+    } 
+  }//deleteMember end
+
+
+
+
+
+
+
+
+  //      String deleteID = sc.next();
+  //      Dao d = new Dao(deleteID);
+  //      d.select(deleteID);
+  //      if (deleteID.equals("Admin")) {
+  //        System.out.println("관리자는 삭제하실 수 없습니다.");
+  //        return;
+  //      } else if (d.getuId() != null) {
+  //        sql = "delete from member where ID = '" + deleteID + "'";
+  //        System.out.print("\n삭제하려는 아이디가 '"+ deleteID +"' 맞습니까? (y/N)>>> ");
+  //         String p = sc.nextLine();
+  //            if (p.equals("y")) {
+  //              ST.executeUpdate(sql);
+  //              System.out.println("\n회원 삭제가 완료되었습니다.");}
+  //      } else {
+  //        deleteID ="삭제불가";
+  //        System.out.println("\n아이디를 다시 확인하십시오.");
+  //        }
+
 
 
   //테스트용 임시삽입 delete(SqlDb)
-//  public void delete(String id) {
-//    try {
-////      sql = "select * from member where ID = '" + id + "'";
-////      RS = ST.executeQuery(sql);
-////      while(RS.next() == true) {
-////        delId = RS.getString("ID");
-////      }
-////      
-//
-////      String p = sc.nextLine();
-//      Dao d = new Dao(id);
-//      if () {
-//      
-//     }
-//    } catch(Exception e) { System.out.println("error delete:" + e);  }
-//  }//Delete 
+  //  public void delete(String id) {
+  //    try {
+  ////      sql = "select * from member where ID = '" + id + "'";
+  ////      RS = ST.executeQuery(sql);
+  ////      while(RS.next() == true) {
+  ////        delId = RS.getString("ID");
+  ////      }
+  ////      
+  //
+  ////      String p = sc.nextLine();
+  //      Dao d = new Dao(id);
+  //      if () {
+  //      
+  //     }
+  //    } catch(Exception e) { System.out.println("error delete:" + e);  }
+  //  }//Delete 
 
 
   //[2. 코멘트 확인]////////////////////////////////////////////////
@@ -201,7 +201,7 @@ public class AdminMenu {
       }
     }
   }
-  
+
   public void delcomnt() throws Exception {
     System.out.println("\n[건의사항 삭제]");
     while(true) {
@@ -232,22 +232,22 @@ public class AdminMenu {
         System.out.println("답변할 ID를 입력해주세요");
         tid = sc.nextLine();
 
-          if(d.getUcomnt()!=null && d.getuId().equals(tid)) {
+        if(d.getUcomnt()!=null && d.getuId().equals(tid)) {
+          System.out.print("\n답변을 입력해주세요.\n >>> ");
+
+          com = sc.nextLine();
+          while(com.length()>100) {
+            System.out.println("\n100자이내로 작성해주세요");
             System.out.print("\n답변을 입력해주세요.\n >>> ");
-           dbConnect();    
             com = sc.nextLine();
-            while(com.length()>100) {
-              System.out.println("\n100자이내로 작성해주세요");
-              System.out.print("\n답변을 입력해주세요.\n >>> ");
-              com = sc.nextLine();
-              continue; } 
-            sql = "update member set com = '"+ com +"' where id = '"+tid+"'";
-            d.ST.executeUpdate(sql);
-            System.out.println("\n답변을" + tid +"에게 전송했습니다."); return; }
-          else {
-            System.out.println("ID를 다시 확인해주세요");
-          }
-        
+            continue; } 
+          sql = "update member set com = '"+ com +"' where id = '"+tid+"'";
+          ST.executeUpdate(sql);
+          System.out.println("\n답변을" + tid +"에게 전송했습니다."); return; }
+        else {
+          System.out.println("ID를 다시 확인해주세요");
+        }
+
 
       } 
     } catch(Exception e) {System.out.println("errorcom: "+e);}
@@ -268,6 +268,7 @@ public class AdminMenu {
     } else {System.out.println("\t"+ucmt.substring(0,len)); 
     } 
   }
+
 
   //[3. 단어 관리]//////////////////////////////////////////////////
   public void manageWord() {

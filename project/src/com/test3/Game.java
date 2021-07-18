@@ -30,11 +30,12 @@ public class Game {
 
   double answerRate1, answerRate2, answerRate3, answerTotalRate;
   int exp;//유저경험치
- String memLevel;//유저레벨
+  String memLevel;//유저레벨
   int quCount;//현재 플레이동안 푼 문제개수
   int anCount;//현재 플레이동안 맞춘 문제개수
   int[] questionNum = new int[6];
   Dao d = new Dao(userID);
+  Emoticon em = new Emoticon(userID);
 
   public Game() { }
 
@@ -48,8 +49,8 @@ public class Game {
     CN.close();
   }
 
-  
-  
+
+
   public void dbConnect() throws Exception {
     Class.forName("oracle.jdbc.driver.OracleDriver");
     String url = "jdbc:oracle:thin:@localhost:1521:XE";
@@ -59,24 +60,27 @@ public class Game {
 
   public void wordTest() throws Exception { //게임종료 후 리플레이와 뒤로가기 구현필요
 
- 
     test: while(true) {
-      System.out.println("\n\n영어단어 암기게임에 오신 것을 환영합니다!");
-      System.out.println("플레이하실 난이도를 선택해주세요.(1~3)");
-      System.out.print("난이도>> ");
+      d.select(userID);
+      System.out.println("\t    ┌───────────────────────────────────────────┐");
+      System.out.print(em.printChar(d.getMychar()));
+      System.out.println("<  영어단어 암기게임에 오신 것을 환영합니다! │");
+      System.out.println("\t    │ 플레이하실 난이도를 선택해주세요.(1~3)\t│");
+      System.out.println("\t    └───────────────────────────────────────────┘");
+      System.out.print("\t    난이도 >>> ");
       try{level = Integer.parseInt(sc.nextLine());
+      System.out.println("\n\n");
       if(level<1 || level>3) {
         System.out.println("1~3 사이의 숫자를 입력해주세요.\n");
         continue;
       }
       }catch(Exception ex) { System.out.println("숫자를 입력해주세요.\n"); continue;}
 
+
       System.out.println("영어단어테스트를 시작합니다.");
       System.out.println("문제당 제한시간은 10초입니다.");
       System.out.println("테스트중간에 그만두고 싶으시다면 'end'를 입력해주세요.\n");
       try {
-        //안내사항 확인위한 시간텀
-        Thread.sleep(2000);
         dbConnect();
         //랜덤문제생성
         randomSetting();
@@ -117,8 +121,8 @@ public class Game {
             //스레드 풀의 스레드는 기본적으로 데몬 스레드가 아니기 때문에 main 스레드가 종료되더라도 작업을 처리하기 위해 계속 실행 상태로 남아있습니다.
             //프로세스를 종료시키려면 스레드 풀을 종료시켜 스레드들이 종료 상태가 되도록 처리필요
           }//try end
-           answerCheck(uanswer, i);
-           System.out.println();
+          answerCheck(uanswer, i);
+          System.out.println();
         }//for end
       }catch(Exception ex) {System.out.println("에러이유: "+ex);}
 
@@ -152,7 +156,7 @@ public class Game {
 
   //문제 총 개수반환
   public int getTotalWordNum() {
-    
+
     int count = 0;
     try {
       dbConnect();
@@ -177,13 +181,13 @@ public class Game {
         }//if end
       }//for end
     }//for end
-  
+
   }//print[] END
 
   //데이터베이스 단어 가져오기
   public String getWord(String type, int number) {
     String word = "단어";
-    
+
     try {
       dbConnect();
       sql = "select * from "
@@ -194,7 +198,7 @@ public class Game {
       if( RS.next() == true) {
         word = RS.getString(type);
       }//if end
-      }catch(Exception ex) { }
+    }catch(Exception ex) { }
     return word;
   }//getQuestion end
 
@@ -236,9 +240,9 @@ public class Game {
       }//switch end
     }//if end
     System.out.println("현재점수는 " + d.uScore + "점입니다.");
-    
+
     setDBData(userID);
-    
+
   }//answerCheck end
 
   public void Result() throws Exception {
@@ -271,10 +275,9 @@ public class Game {
 
     System.out.printf("-----------lv.%d 누적  결과-----------\n", level);
     System.out.printf("총문제 %s개 중 정답 %s개, 정답률: %s%%\n\n", questionCount, answerCount, rate);
- 
+
     setDBData(userID);
   }//Result end
-  
 
   public void setEXP() throws Exception {
     String tmp =d.memLevel ;
@@ -290,7 +293,7 @@ public class Game {
     if(!d.memLevel.equals(tmp)) {
       System.out.printf("\nLevel Up!!   %s ==> %s\n\n\n", tmp, d.memLevel);
     }//if end
-    
+
     setDBData(userID);
   }//setEXP end
 
@@ -301,7 +304,7 @@ public class Game {
       PST.setInt(1, d.uScore); PST.setString(2, d.memLevel); PST.setInt(3, d.exp);
       PST.setInt(4, d.point); PST.setString(5, userID);
       PST.executeUpdate();
-      
+
       sql = "update answerRate set "
           + "questionTotalCnt = ?, questionCnt1 = ?, questionCnt2 = ?, questionCnt3 = ?,"
           + "answerTotalCnt = ?,answerCnt1 = ?, answerCnt2 = ?, answerCnt3 = ?,"
@@ -333,7 +336,14 @@ class WordList {
   String msg = null;
   int engin;
   String ENG;
+  String userID;
   String KOR;
+  Dao d = new Dao(userID);
+  Emoticon em = new Emoticon(userID);
+
+  public WordList(String userID) {
+    this.userID = userID;
+  }
 
   public void dbConnect() throws Exception {
     Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -346,6 +356,10 @@ class WordList {
     int[] num = randomNum();
     Loop: for (engin = 0; engin < Gtotal(); engin++) {
       enginStart();
+
+      d.select(userID);
+      System.out.println("\t\t\t    " + em.printChar2(d.getMychar()) + "\n");
+
       System.out.println("\t\t\t\t(" + (engin+1) + ")\n");
       System.out.println("\t\t\t\t[단 어]\t\t\t[ 뜻 ]\n\t\t\t\t______________________________\n");
       msg = "select ENG,KOR from word where WORDNUM =" + num[engin];
@@ -372,7 +386,7 @@ class WordList {
             }
             break;
           case "8":
-            System.out.println("종료합니다.");
+            System.out.println("종료합니다.\n\n\n");
             break Loop;
           default :
 
@@ -432,7 +446,19 @@ class InputAnswer implements Callable<String> { // 값 입력받기
     String input = "사용자입력값";
     input = sc.nextLine();
 
-    sc.close();
+    //    BufferedReader inp = new BufferedReader(new InputStreamReader(System.in));
+    //    String input = "";
+    //    while ("".equals(input)) {
+    //      try {
+    //        while (!inp.ready()) {
+    //          Thread.sleep(100);
+    //        }//while end
+    //        input = inp.readLine();
+    //      } catch (InterruptedException e) {
+    //        return null;
+    //      }//try end
+    //    } //while end
+
     return input;
   }//call end
 }//InputAnswer Class END

@@ -19,7 +19,7 @@ public class LogInMenu {
   String msg;
   Scanner sc = new Scanner(System.in);
   String uID , uPsw ,uName , uEmail, userPsw ;
-  String userID ;
+  private String userID ;
   String fname , femail ,fID , fpsw , rpsw, ucom;
   Date udate, ldate, ndate;
   int uscord;
@@ -41,8 +41,8 @@ public class LogInMenu {
       AdminMenu am = new AdminMenu(userID);
       GameMenu gm = new GameMenu(userID);
       Game game = new Game(userID);
-      
-      
+      Emoticon em = new Emoticon(userID);
+
       if (userID.equals("Admin")) {
         am.adminLogin();
         return;
@@ -51,29 +51,29 @@ public class LogInMenu {
       userPsw = sc.nextLine();
       matchLoginFromDB();
 
-        if (userID.equals(uID) && userPsw.equals(uPsw)) {
-          System.out.println("\n" +uName +"님 환영합니다");
+      if (userID.equals(uID) && userPsw.equals(uPsw)) {
+        System.out.println("\n" +uName +"님 환영합니다");
 
-          if (ucom != null) {
-            System.out.println("\n건의사항 답변이 도착했습니다");
-          }
-
-          if (ldate()>0) {
-            System.out.println("\n새로운 공지사항이 있습니다.");
-
-          } 
-          gm.goIntoTheGame();
-          return;
-        } else {
-          System.out.println("아이디 혹은 비밀번호가 일치하지 않습니다.\n");
-          return;
+        if (ucom != null) {
+          System.out.println("\n건의사항 답변이 도착했습니다");
         }
+
+        if (ldate()>0) {
+          System.out.println("\n새로운 공지사항이 있습니다.");
+
+        } 
+        gm.goIntoTheGame();
+        return;
+      } else {
+        System.out.println("아이디 혹은 비밀번호가 일치하지 않습니다.\n");
+        return;
+      }
     }
   }
 
   public long ldate() throws Exception {
     dbConnect();
-  
+
     // 날짜 차이를 담을 변수 생성
     long calDateDays = 0;
     msg = "select cdate from notice order by cdate desc";
@@ -242,6 +242,7 @@ class JoinMember {
     return check;
   }//emailCheck end
 
+
   public void insertMember() throws SQLException {
     sql = "INSERT INTO member(memNo, name, ID, psw, email, cdate) "
         + "VALUES(member_seq.nextval, ?, ?, ?, ?,sysdate)";
@@ -251,12 +252,18 @@ class JoinMember {
     PST.setString(3, psw);
     PST.setString(4, email);
     PST.executeUpdate();
-    
+
+    sql = "insert into Transaction values(?,?,?)";
+    PST = CN.prepareStatement(sql);
+    PST.setString(1, id);
+    PST.setInt(2, 0);
+    PST.setInt(3, 0);
+    PST.executeUpdate();
+
     sql = "INSERT INTO answerRate(ID) VALUES(?)";
     PST = CN.prepareStatement(sql);
     PST.setString(1, id);
     PST.executeUpdate();
-    
   }//insertMember end
 }//JoinMember Class END
 
