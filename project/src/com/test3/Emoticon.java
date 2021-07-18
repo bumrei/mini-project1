@@ -15,7 +15,7 @@ public class Emoticon {
   PreparedStatement PST ;
 
   String msg = "";
-  String userID = LogInMenu.userID;;
+  String userID ;
   int urownum;
   int urow;
   int ucol;
@@ -24,6 +24,15 @@ public class Emoticon {
   int[] price = new int[3];
   String[][] ars = new String[3][5];
   boolean[][] arb = new boolean[3][5];
+  
+  
+  
+  
+  
+  public Emoticon(String userID) {
+    this.userID = userID;
+    // TODO Auto-generated constructor stub
+  }
 
   public void arrContents() {
     ars[0][0] = "   ᵔεᵔ     "; ars[0][1] = "  ∙̑◡∙̑    "; ars[0][2] = "      ᵔ︡⌔ᵔ︠   ";

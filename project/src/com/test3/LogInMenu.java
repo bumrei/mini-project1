@@ -19,7 +19,7 @@ public class LogInMenu {
   String msg;
   Scanner sc = new Scanner(System.in);
   String uID , uPsw ,uName , uEmail, userPsw ;
-  static String userID ;
+  String userID ;
   String fname , femail ,fID , fpsw , rpsw, ucom;
   Date udate, ldate, ndate;
   int uscord;
@@ -40,7 +40,9 @@ public class LogInMenu {
 
       AdminMenu am = new AdminMenu(userID);
       GameMenu gm = new GameMenu(userID);
-
+      Game game = new Game(userID);
+      
+      
       if (userID.equals("Admin")) {
         am.adminLogin();
         return;
@@ -71,17 +73,16 @@ public class LogInMenu {
 
   public long ldate() throws Exception {
     dbConnect();
+  
     // 날짜 차이를 담을 변수 생성
     long calDateDays = 0;
-
     msg = "select cdate from notice order by cdate desc";
     RS = ST.executeQuery(msg);
     if (RS.next() == true) {
-      ndate = RS.getDate("cdate");}  // 
-
-    long calDate = ndate.getTime() - ldate.getTime(); //udate 공지 날짜에 넣어줘야함
+      ndate = RS.getDate("cdate");}  // 가입일자
+    long calDate = ndate.getTime() - ldate.getTime(); 
+    //udate 공지 날짜에 넣어줘야함
     calDateDays = calDate / ( 24*60*60*1000);
-
     return calDateDays;
   }
 
