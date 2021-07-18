@@ -231,7 +231,7 @@ public class AdminMenu {
         System.out.println("\n  [건의사항 답변]");
         System.out.println("답변할 ID를 입력해주세요");
         tid = sc.nextLine();
-
+        d.select(tid);
         if(d.getUcomnt()!=null && d.getuId().equals(tid)) {
           System.out.print("\n답변을 입력해주세요.\n >>> ");
 
