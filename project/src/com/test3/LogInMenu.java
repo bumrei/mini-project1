@@ -256,6 +256,7 @@ class JoinMember {
     PST = CN.prepareStatement(sql);
     PST.setString(1, id);
     PST.executeUpdate();
+    
   }//insertMember end
 }//JoinMember Class END
 

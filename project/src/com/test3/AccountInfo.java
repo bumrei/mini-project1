@@ -9,7 +9,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
-import oracle.security.o5logon.d;
 
 public class AccountInfo {
 
@@ -28,12 +27,11 @@ public class AccountInfo {
   }
 
   public void info() throws Exception {
-
     
     System.out.println("\n\n               내정보              ");
     System.out.println("───────────────────────────────────────────────── ");
     d.select(userID);
-      System.out.println("\t"+ d.getuName() +"님과 함께한지 "+  datedif(d.getuDate()) + " 일째 입니다" );
+      System.out.println("\t"+ d.getuName() +" 님과 함께한지 "+  datedif(d.getuDate()) + " 일째 입니다" );
       System.out.println("  Name   :\t"+ d.getuName() );
       System.out.println("  I  D   :\t"+ d.getuId() );
       System.out.println("  Email  :\t" + d.getuEmail());

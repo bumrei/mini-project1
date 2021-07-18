@@ -53,7 +53,6 @@ public class Dao {
       return;
       }
     
-    
     msg = "select * from member, answerRate where member.ID = answerRate.ID and member.ID = '" + userID + "'";
     RS = ST.executeQuery(msg);
     while (RS.next() == true) {

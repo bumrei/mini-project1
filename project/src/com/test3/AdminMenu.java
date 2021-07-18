@@ -269,7 +269,6 @@ public class AdminMenu {
     } 
   }
 
-  
   //[3. 단어 관리]//////////////////////////////////////////////////
   public void manageWord() {
     System.out.println("\n[단어 관리]");

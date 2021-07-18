@@ -274,6 +274,7 @@ public class Game {
  
     setDBData(userID);
   }//Result end
+  
 
   public void setEXP() throws Exception {
     String tmp =d.memLevel ;
@@ -431,19 +432,7 @@ class InputAnswer implements Callable<String> { // 값 입력받기
     String input = "사용자입력값";
     input = sc.nextLine();
 
-    //    BufferedReader inp = new BufferedReader(new InputStreamReader(System.in));
-    //    String input = "";
-    //    while ("".equals(input)) {
-    //      try {
-    //        while (!inp.ready()) {
-    //          Thread.sleep(100);
-    //        }//while end
-    //        input = inp.readLine();
-    //      } catch (InterruptedException e) {
-    //        return null;
-    //      }//try end
-    //    } //while end
-
+    sc.close();
     return input;
   }//call end
 }//InputAnswer Class END

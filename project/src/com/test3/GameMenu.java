@@ -16,6 +16,7 @@ public class GameMenu {
   String msg ;
   String userID;
 
+  
   public GameMenu() { }
 
   public GameMenu(String userID) {
