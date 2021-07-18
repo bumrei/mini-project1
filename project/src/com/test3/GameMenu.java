@@ -97,9 +97,9 @@ public class GameMenu {
       String uid = RS.getString("ID");
       int uscore = RS.getInt("score");
       System.out.println("\t  "+uranking + "\t "+uid+"\t  " + uscore);
-      if(uranking  ==10 ) {
-        rank10 = uscore ;
-      }
+        if(uranking  == 10 ) {
+          rank10 = uscore ;
+        }
     }
     System.out.println("\t------------------------");
     msg = "select rownum, m.* from (select id, score, rank() over (order by score desc) rank from member) m where id = '"+ userID+"'";
@@ -115,8 +115,7 @@ public class GameMenu {
       if (uranking > 10) {
         int n = uranking -10;
         int x = rank10 - uscore ; 
-        System.out.println("\n top10 에 올라가기까지 " + n + "등 남았습니다");
-        System.out.println("top10 에 올라가기까지 " + x + "점 남았습니다");
+        System.out.println("\n top10 에 올라가기까지 " + n + "등"+ x + "점 남았습니다");
       }
     }
   }

@@ -33,7 +33,7 @@ public class AccountInfo {
     System.out.println("\n\n               내정보              ");
     System.out.println("───────────────────────────────────────────────── ");
     d.select(userID);
-      System.out.println("\t저희와 함깨한지 "+  datedif(d.getuDate()) + " 일째 입니다" );
+      System.out.println("\t"+ d.getuName() +"함께한지 "+  datedif(d.getuDate()) + " 일째 입니다" );
       System.out.println("  Name   :\t"+ d.getuName() );
       System.out.println("  I  D   :\t"+ d.getuId() );
       System.out.println("  Email  :\t" + d.getuEmail());
@@ -83,7 +83,7 @@ public class AccountInfo {
     // Date로 변환된 두 날짜를 계산한 후, 리턴값으로 long type 변수를 초기화
     long calDate = currentDate.getTime() - date.getTime(); 
     calDateDays = calDate / ( 24*60*60*1000); 
-    return calDateDays;
+    return calDateDays+1;
   }
   
 

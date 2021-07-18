@@ -245,17 +245,17 @@ class JoinMember {
   public void insertMember() throws SQLException {
     sql = "INSERT INTO member(memNo, name, ID, psw, email, cdate) "
         + "VALUES(member_seq.nextval, ?, ?, ?, ?,sysdate)";
-
     PST = CN.prepareStatement(sql);
     PST.setString(1, name);
     PST.setString(2, id);
     PST.setString(3, psw);
     PST.setString(4, email);
     PST.executeUpdate();
-
+    
     sql = "INSERT INTO answerRate(ID) VALUES(?)";
     PST = CN.prepareStatement(sql);
     PST.setString(1, id);
+    PST.executeUpdate();
   }//insertMember end
 }//JoinMember Class END
 

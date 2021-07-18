@@ -20,7 +20,8 @@ create table member (
   exp number(4) default(0),
   comnt nvarchar2(100),
   com nvarchar2(100),
-  ldate date,
+  ldate date default('2020-01-01') ,
+  adate date default('2020-01-01') ,
   point number(5) default(0),
   mychar number(4) default(1),
   constraint pk_member_ID primary key(ID)
