@@ -99,15 +99,15 @@ public class AccountInfo {
   }
 
   public void chgEmail() {
+    JoinMember jm = new JoinMember();
     try {
       d.dbConnect();
       Loop: while(true) {
         System.out.println("\n  [이메일 변경]");
-        System.out.print("\n변경할 이메일을 입력하세요.\n >>> ");
+        System.out.print("\n변경할 이메일을 입력하세요. (12-25자,공백X,한글X)\n >>> ");
         cEmail = sc.nextLine();
-        if(jm.stringCheck(cEmail)&&cEmail.length()<25) {continue;}
-        if((!cEmail.contains("@"))) {
-          System.out.println("양식이 잘못되었습니다. 다시 입력해주세요.");
+        if(jm.stringCheck(cEmail, 12, 25) || jm.emailCheck(cEmail) || cEmail.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
+          System.out.println("\n정확히 입력하셨는지 다시 확인해주세요.");
           continue;
         }
         msg = "update member set email = '"+cEmail+"' where id = '"+userID+"'";
@@ -121,19 +121,30 @@ public class AccountInfo {
   }
 
   public void chgPasswd() {
+    JoinMember jm = new JoinMember();
     try {
       Loop: while(true) {
         System.out.println("\n  [비밀번호 변경]");
-        System.out.print("\n현재 비밀번호를 입력해주세요\n >>> ");
+        System.out.print("\n현재 비밀번호를 입력해주세요. [8.뒤로가기]\n >>> ");
         ans = sc.nextLine();
+        if(ans.equals("8")) {
+          return;
+        }
         d.select(userID);
         if (!ans.equals(d.getuPsw())) {
           System.out.println("입력한 비밀번호를 다시 확인하세요.");
           continue;
         }
-        System.out.print("\n변경할 비밀번호를 입력하세요.\n >>> ");
-        String sPsw = sc.nextLine();
-        if(jm.stringCheck(sPsw)) {continue;}
+        String sPsw ="변경할 비밀번호";
+        while(true) {
+          System.out.print("\n변경할 비밀번호를 입력하세요. (8-15자,공백X,한글X)\n >>> ");
+          sPsw = sc.nextLine();
+          if(jm.stringCheck(sPsw, 8, 15) || sPsw.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
+            System.out.println("\n양식이 잘못되었습니다. 다시 입력해주세요.");
+            continue;
+          }
+          break;
+        }//while end
         while(true) {
           System.out.print("\n비밀번호 재확인\n >>> ");
           String tmp = sc.nextLine();
@@ -177,8 +188,11 @@ public class AccountInfo {
     System.out.println("\n[회원탈퇴]");
     System.out.println("회원정보를 입력하세요.");
     while(true) {
-      System.out.print("패스워드  : " );
+      System.out.print("패스워드 [8.뒤로가기] : " );
       fpsw = sc.nextLine();
+      if(fpsw.equals("8")) {
+        return;
+      }
       d.select(userID);
       if (fpsw.equals(d.getuPsw())) {
         msg = "delete from member where ID = '" + userID + "'";

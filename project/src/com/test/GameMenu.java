@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.Scanner;
 
 public class GameMenu {
@@ -127,20 +128,59 @@ public class GameMenu {
   }
 
   public void notification() {
-    try{
+    AdminMenu am = new AdminMenu();
+    notice: while(true) {
+      try{
+        update();
+        msg = "select * from notice order by code asc";
+        RS = ST.executeQuery(msg);
+        System.out.println("\nNo.\t  Date  \t Title");
+        System.out.println("------------------------------------------------------------");
+        while(RS.next() == true) {
+          int pcode = RS.getInt("code");
+          Date pdate = RS.getDate("cdate");
+          String ptitle = RS.getString("title");
+          System.out.println(pcode + "\t  " + pdate + "  \t " + ptitle);
+        }
+      } catch(Exception e) {}
+      while(true) {
+        System.out.println("\n\n[1. 공지 목록]   [2. 공지 상세조회]   [3. 공지 검색]   [9. 뒤로가기]");
+        System.out.print(" >>> ");
+        String menu = sc.nextLine();
+        switch (menu) {
+          case "1": continue notice;
+          case "2": am.detailsNotice(); break;
+          case "3": searchNotice(); break;
+          case "9": break notice;
+          default : System.out.println("\n번호를 잘못입력하셨습니다 다시 입력해주세요. "); continue;
+        }//switch end
+      }//while end
+    }//while end
+  }//notification end
 
-      msg = "select code, title, content from notice order by code";
+  public void searchNotice() {
+    int pcode = 0;
+    String input = null, ptitle = "제목";
+    Date pdate;
+    try {
+      System.out.println("검색할 단어를 입력해주세요.");
+      input = sc.nextLine();
+      msg = "select * from notice where title like '%" + input+ "%'"
+          + "or content like '%" + input +"%'";
       RS = ST.executeQuery(msg);
-      System.out.println("\nNo. \t Title \t\t\t\t\t Content");
-      System.out.println("-------------------------------------------------------------------------------");
-      while(RS.next() == true) {
-        int pcode = RS.getInt("code");
-        String ptitle = RS.getString("title");
-        String pcontent = RS.getString("content");
-        System.out.println(pcode + "\t" + ptitle + " \t\t\t\t\t " + pcontent);
-      }
-    } catch(Exception e) {}
-  }
+      System.out.println("\nNo.\t  Date  \t Title");
+      System.out.println("------------------------------------------------------------");
+      while (RS.next() == true) {
+        pcode = RS.getInt("code");
+        ptitle = RS.getString("title");
+        pdate = RS.getDate("cdate");
+        System.out.println(pcode + "\t  " + pdate + "  \t " + ptitle);
+      }//while end
+      if(pcode == 0) {
+        System.out.println("\n조회결과가 없습니다.");
+      }//if end
+    }catch(Exception ex) { }
+  }//searchNotice end
 
   public void update() throws Exception{
     dbConnect();

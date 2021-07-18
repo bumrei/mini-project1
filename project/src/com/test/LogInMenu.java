@@ -202,7 +202,7 @@ class JoinMember {
     while(true) {
       System.out.print("\n  email (12-25자,공백X,한글X) \n>>");
       email = sc.nextLine();
-      if(stringCheck(email, 12, 25) || emailCheck() || email.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
+      if(stringCheck(email, 12, 25) || emailCheck(email) || email.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
         System.out.println("\n정확히 입력하셨는지 다시 확인해주세요.");
         continue;
       }
@@ -228,7 +228,7 @@ class JoinMember {
   }//stringCheck end
 
   //이메일에크 @있는지,@뒤에 '.'이 있는지 @앞에 1글자이상 있는지, @뒤에 5글자이상 있는지
-  public boolean emailCheck() {
+  public boolean emailCheck(String email) {
     boolean check = true;
     if(email.contains("@")) {
       int index = email.indexOf("@");
@@ -380,11 +380,19 @@ class FindMember {
   }
 
   public void resetPsw() {
+    JoinMember jm = new JoinMember();
     try {
-      System.out.println("\n비밀번호를 재설정합니다.");
-      System.out.print(" 새로운 비밀번호를 입력해주세요\n >>> ");
-      rpsw = sc.nextLine();
+      while(true) {
+        System.out.println("\n비밀번호를 재설정합니다.(8-15자,공백X,한글X)");
+        System.out.print(" 새로운 비밀번호를 입력해주세요\n >>> ");
+        rpsw = sc.nextLine();
 
+        if(jm.stringCheck(rpsw, 8, 15) || rpsw.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
+          System.out.println("\n비밀번호 양식이 잘못되었습니다.");
+          continue;
+        }
+        break;
+      }//while end
       msg = "update member set psw = '"+rpsw+"' where id = '"+fID+"'";
       ST.executeUpdate(msg);
 
