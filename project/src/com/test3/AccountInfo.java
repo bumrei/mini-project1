@@ -33,7 +33,7 @@ public class AccountInfo {
     System.out.println("\n\n               내정보              ");
     System.out.println("───────────────────────────────────────────────── ");
     d.select(userID);
-      System.out.println("\t"+ d.getuName() +"함께한지 "+  datedif(d.getuDate()) + " 일째 입니다" );
+      System.out.println("\t"+ d.getuName() +"님과 함께한지 "+  datedif(d.getuDate()) + " 일째 입니다" );
       System.out.println("  Name   :\t"+ d.getuName() );
       System.out.println("  I  D   :\t"+ d.getuId() );
       System.out.println("  Email  :\t" + d.getuEmail());
@@ -120,8 +120,7 @@ public class AccountInfo {
         System.out.println("\n변경이 완료되었습니다.");
         break Loop;
       }
-      d.dbclose();
-      } catch(Exception e) {System.out.println("error: " + e);}
+      } catch(Exception e) {System.out.println("errordd: " + e);}
 
   }
 
@@ -175,7 +174,6 @@ public class AccountInfo {
       d.dbConnect();
       d.ST.executeUpdate(msg);
       System.out.println("\n건의사항을 관리자에게 전송했습니다.");
-      d.dbclose();
     } catch(Exception e) {System.out.println("error: 건의사항 "+e);}
   }
 

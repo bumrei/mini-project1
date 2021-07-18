@@ -279,8 +279,6 @@ public class Game {
     String tmp =d.memLevel ;
     d.select(userID);
     d.exp = d.exp + (anCount * level);
-
-
     if(d.exp<10) {d.memLevel = "Bronze";//40
     }else if(d.exp<100) {d.memLevel = "Silver";
     }else if(d.exp<200) {d.memLevel = "Gold";
@@ -291,6 +289,8 @@ public class Game {
     if(!d.memLevel.equals(tmp)) {
       System.out.printf("\nLevel Up!!   %s ==> %s\n\n\n", tmp, d.memLevel);
     }//if end
+    
+    setDBData(userID);
   }//setEXP end
 
   public void setDBData(String userID) {
