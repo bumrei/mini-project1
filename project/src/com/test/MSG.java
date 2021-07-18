@@ -12,6 +12,7 @@ public class MSG {
   ResultSet RS;
   String msg;
   Scanner sc = new Scanner(System.in);
+
   String userID = "ID1"; // 이건 로그인시 or 쪽지함 메뉴 선택할때 넣어주면될듯
 
   public void dbConnect() throws Exception {

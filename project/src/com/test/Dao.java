@@ -11,25 +11,28 @@ public class Dao {
   int questionTotalCnt , answerTotalCnt, questionCnt1, questionCnt2,questionCnt3 ;
   int answerCnt1, answerCnt2, answerCnt3, exp  ; 
   double answerRate1, answerRate2, answerRate3, answerTotalRate ;
-  Date uDate, lDate, nDate;
-  String uId , uPsw ,uName , uEmail, msg, ucomnt, com, memLevel ;
-  int uScore, uMemno, point ;
+  private Date uDate, lDate, nDate;
+  private String uId , uPsw ,uName , uEmail, msg, ucomnt, com;
+  private int  uMemno, mychar;
+  int uScore, point;
+  String memLevel;
   String userID;
   Connection CN ;
   Statement ST ;
   ResultSet RS ;
 
- Dao(String userID) {
-   this.userID = userID;
+
+  Dao(String userID) {
+    this.userID = userID;
   }
-  
+
   public void dbConnect() throws Exception {
     Class.forName("oracle.jdbc.driver.OracleDriver");
     String url = "jdbc:oracle:thin:@localhost:1521:XE";
     CN = DriverManager.getConnection(url, "system", "1234");
     ST = CN.createStatement(); 
   }// dbConneuMemno = RS.getInt("MEMNO");ct End
-  
+
   public void dbclose() throws Exception {
     RS.close();
     ST.close();
@@ -39,7 +42,7 @@ public class Dao {
 
   public void select(String userID) throws Exception{
     dbConnect();
-    
+
     if(userID.equals("Admin")) {
       msg = "select MEMNO,NAME,ID,EMAIL,CDATE,SCORE from member";
       RS = ST.executeQuery(msg);
@@ -51,8 +54,9 @@ public class Dao {
             RS.getDate("CDATE") + "\t" + 
             RS.getInt("SCORE"));}
       return;
-      }
-    
+    }
+
+
     msg = "select * from member, answerRate where member.ID = answerRate.ID and member.ID = '" + userID + "'";
     RS = ST.executeQuery(msg);
     while (RS.next() == true) {
@@ -66,6 +70,8 @@ public class Dao {
       setlDate( RS.getDate("ldate"));    
       setuPsw(RS.getString("psw"));
       setPoint( RS.getInt("point"));
+      setMychar( RS.getInt("MYCHAR"));
+      setCom(RS.getString("COM"));
       setQuestionTotalCnt(RS.getInt("questionTotalCnt"));
       setAnswerTotalCnt(RS.getInt("answerTotalCnt"));
       setQuestionCnt1(RS.getInt("questionCnt1"));
@@ -82,12 +88,17 @@ public class Dao {
       setMemLevel(RS.getString("memLevel"));    
     }
     dbclose();
-    
+
   }
 
 
-  
-  
+  public int getMychar() {
+    return mychar;
+  }
+
+  public void setMychar(int mychar) {
+    this.mychar = mychar;
+  }
 
   public int getPoint() {
     return point;
@@ -185,7 +196,7 @@ public class Dao {
     this.uScore = uScore;
   }
 
-  
+
   public String getMemLevel() {
     return memLevel;
   }
@@ -297,29 +308,28 @@ public class Dao {
   public void setExp(int exp) {
     this.exp = exp;
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }// class
-  
-  
+

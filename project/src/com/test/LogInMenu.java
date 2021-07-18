@@ -19,7 +19,7 @@ public class LogInMenu {
   String msg;
   Scanner sc = new Scanner(System.in);
   String uID , uPsw ,uName , uEmail, userPsw ;
-  String userID ;
+  private String userID ;
   String fname , femail ,fID , fpsw , rpsw, ucom;
   Date udate, ldate, ndate;
   int uscord;
@@ -35,27 +35,32 @@ public class LogInMenu {
     this.dbConnect();
     while (true) {
       System.out.println("\n  [로그인]");   
-      System.out.print("\n  ID >>> ");
+      System.out.print("\n  ID>>> ");
       userID = sc.nextLine();
 
       AdminMenu am = new AdminMenu(userID);
       GameMenu gm = new GameMenu(userID);
+      Game game = new Game(userID);
+      Emoticon em = new Emoticon(userID);
 
       if (userID.equals("Admin")) {
         am.adminLogin();
         return;
       }
-      System.out.print("  Password >>> ");
+      System.out.print("  Password>>> ");
       userPsw = sc.nextLine();
       matchLoginFromDB();
 
       if (userID.equals(uID) && userPsw.equals(uPsw)) {
-        System.out.println("\n" +uName+"님 환영합니다.");
+        System.out.println("\n" +uName +"님 환영합니다");
+
         if (ucom != null) {
-          System.out.println("\n건의사항 답변이 도착했습니다.");
+          System.out.println("\n건의사항 답변이 도착했습니다");
         }
+
         if (ldate()>0) {
           System.out.println("\n새로운 공지사항이 있습니다.");
+
         } 
         gm.goIntoTheGame();
         return;
@@ -98,13 +103,16 @@ public class LogInMenu {
 
 ///////////Join/////////////
 class JoinMember {
-  Connection CN; 
-  Statement ST ; 
-  PreparedStatement PST ;
-  ResultSet RS ; 
-  String msg ;
+  Connection CN = null; //DB서버연결정보 서버ip주소 계정id,pwd
+  Statement ST = null; //ST=CN, createStatement() 명령어생성 삭제, 신규등록, 조회하라
+  PreparedStatement PST = null;
+  ResultSet RS = null; //select조회결과값 전체데이터를 기억
+  String sql = "isud = crud쿼리문기술";
   Scanner sc = new Scanner(System.in);
-  String id, psw, name, email;
+  String id;
+  String psw;
+  String name;
+  String email;
 
   public void dbConnect() throws Exception {
     Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -128,7 +136,7 @@ class JoinMember {
 
   public void setName() {
     while(true) {
-      System.out.print("\n  닉네임 (2-10자,공백X) \n >>>");
+      System.out.print("\n  닉네임 (2-10자,공백X) \n>>");
       name = sc.nextLine();
       if(stringCheck(name, 2, 10)) {
         System.out.println("\n양식이 잘못되었습니다. 다시 입력해주세요.");
@@ -142,7 +150,7 @@ class JoinMember {
   public void setID() {
     loop : while(true) {
       while(true) {
-        System.out.print("\n  아이디 (2-10자,공백X,한글X) \n >>>");
+        System.out.print("\n  아이디 (2-10자,공백X,한글X) \n>>");
         id = sc.nextLine();
         if(stringCheck(id, 2, 10) || id.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
           System.out.println("\n양식이 잘못되었습니다. 다시 입력해주세요.");
@@ -151,8 +159,8 @@ class JoinMember {
         break;
       }//while end
       try {
-        msg = "select * from member";
-        RS = ST.executeQuery(msg);
+        sql = "select * from member";
+        RS = ST.executeQuery(sql);
         while(RS.next()==true) {
           String tmpid = RS.getString("ID");
           if(id.equals(tmpid)) {
@@ -162,7 +170,7 @@ class JoinMember {
         }//while end
         System.out.println("\n아이디로 사용가능합니다.");
         break;
-      }catch(Exception ex) { }
+      }catch(Exception ex) {System.out.println("에러" + ex);}
     }//while end
   }//setID end
 
@@ -170,7 +178,7 @@ class JoinMember {
   public void setPSW() {
     while(true) {
       while(true) {
-        System.out.print("\n  비밀번호 (8-15자,공백X,한글X) \n >>>");
+        System.out.print("\n  비밀번호 (8-15자,공백X,한글X) \n>>");
         psw = sc.nextLine();
         if(stringCheck(psw, 8, 15) || psw.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
           System.out.println("\n양식이 잘못되었습니다. 다시 입력해주세요.");
@@ -192,7 +200,7 @@ class JoinMember {
 
   public void setEmail() {
     while(true) {
-      System.out.print("\n  email (12-25자,공백X,한글X) \n >>>");
+      System.out.print("\n  email (12-25자,공백X,한글X) \n>>");
       email = sc.nextLine();
       if(stringCheck(email, 12, 25) || emailCheck() || email.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
         System.out.println("\n정확히 입력하셨는지 다시 확인해주세요.");
@@ -234,34 +242,51 @@ class JoinMember {
     return check;
   }//emailCheck end
 
+
   public void insertMember() throws SQLException {
-    msg = "INSERT INTO member(memNo, name, ID, psw, email, cdate) "
+    sql = "INSERT INTO member(memNo, name, ID, psw, email, cdate) "
         + "VALUES(member_seq.nextval, ?, ?, ?, ?,sysdate)";
-    PST = CN.prepareStatement(msg);
+    PST = CN.prepareStatement(sql);
     PST.setString(1, name);
     PST.setString(2, id);
     PST.setString(3, psw);
     PST.setString(4, email);
     PST.executeUpdate();
 
-    msg = "INSERT INTO answerRate(ID) VALUES(?)";
-    PST = CN.prepareStatement(msg);
+    sql = "insert into Transaction values(?,?,?)";
+    PST = CN.prepareStatement(sql);
     PST.setString(1, id);
+    PST.setInt(2, 0);
+    PST.setInt(3, 0);
     PST.executeUpdate();
 
+    sql = "INSERT INTO answerRate(ID) VALUES(?)";
+    PST = CN.prepareStatement(sql);
+    PST.setString(1, id);
+    PST.executeUpdate();
   }//insertMember end
 }//JoinMember Class END
 
 ///////////Find/////////////
 class FindMember {
 
-  Connection CN;
-  Statement ST;
-  ResultSet RS;
-  String msg;
+  Connection CN = null;
+  Statement ST = null;
+  ResultSet RS = null;
+  String msg = null;
   Scanner sc = new Scanner(System.in);
-  String uID, uPsw, uName, uEmail, userID, userPsw; 
-  String fname, femail, fID, fpsw, rpsw;
+
+  String uID = null;
+  String uPsw = null;
+  String uName = null;
+  String uEmail = null;
+  String userID = null;
+  String userPsw = null;
+  String fname = "찾기용이름";
+  String femail = "찾기용메일";
+  String fID = "찾기용아이디";
+  String fpsw = "찾기용비번";
+  String rpsw = "바꾸기용비번";
 
   public void dbConnect() throws Exception {
     Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -285,14 +310,22 @@ class FindMember {
     this.dbConnect();
     System.out.println("\n[아이디 / 비밀번호 찾기]");
     Loop: while(true) {
-      System.out.print("\n[1. 아이디 찾기]   [2. 비밀번호 찾기]   [9. 뒤로가기]\n >>> ");
+      System.out.print("\n[1. 아이디 찾기]   [2. 비밀번호 찾기]   [8. 뒤로가기]\n >>> ");
 
-      String menu = sc.nextLine();
+      int menu = Integer.parseInt(sc.nextLine());
       switch(menu) {
-        case "1": findId(); break;
-        case "2": findPsw(); break;
-        case "9": System.out.println("\n뒤로가기"); break Loop;
-        default: System.out.println("메뉴 번호 확인"); break;
+        case 1:
+          findId();
+          break;
+        case 2:
+          findPsw();
+          break;
+        case 8:
+          System.out.println("\n뒤로가기");
+          break Loop;
+        default:
+          System.out.println("메뉴 번호 확인");
+          break;
       }
     }
   }
@@ -318,7 +351,7 @@ class FindMember {
         return;
       } else {System.out.println("\n정보없음");}
       System.out.println();
-    } catch(Exception e) { }
+    } catch(Exception e) {System.out.println("error: "+e);}
   }
 
   public void findPsw() {
@@ -343,7 +376,7 @@ class FindMember {
         return;
       }  else {System.out.println("\n정보없음");}
       System.out.println();
-    } catch(Exception e) { }
+    } catch(Exception e) {System.out.println("error: "+e);}
   }
 
   public void resetPsw() {
@@ -357,6 +390,6 @@ class FindMember {
 
       System.out.println("\n\n변경이 완료되었습니다.");
       System.out.println("\n변경된 비밀번호는 " +rpsw+ " 입니다.");
-    } catch(Exception e) { }
+    } catch(Exception e) {System.out.println("error: "+e);}
   }
 }

@@ -34,9 +34,9 @@ public class AdminMenu {
 
   public void adminLogin() throws Exception {
     this.dbConnect();
-    System.out.print("  Passwords >>> ");
+    System.out.print("  Passwords>>> ");
     String adminPsw = sc.nextLine();
-    System.out.print("\n  Pin number >>> ");
+    System.out.print("\n  Pin number>>> ");
     String adminPin = sc.nextLine();
 
     if (adminPsw.equals("12345") && adminPin.equals("1234")) {
@@ -56,32 +56,38 @@ public class AdminMenu {
         System.out.print("\n[1. 회원 관리]   [2. 건의사항 확인]   [3. 단어 관리]   [4. 공지 관리]   "
             + "[9. 관리자 계정 로그아웃]\n >>> ");
 
-        String menu = sc.nextLine();
-        switch(menu) {
-          case "1":
+        int command = Integer.parseInt(sc.nextLine());
+        switch(command) {
+          case 1:
             try {
               System.out.println("\n[회원 관리]");
               loop2 : while(true) {
                 System.out.println("\n수행하실 작업을 선택해 주십시오.");
-                System.out.print("[1. 회원 리스트]   [2. 회원 삭제]   [9. 뒤로가기]\n >>> ");
-                String menu2 = sc.nextLine();
-                switch (menu2) {
-                  case "1": listMember(); continue;
-                  case "2": deleteMember(); continue;
-                  case "9": break loop2;
+                System.out.print("[1. 회원 리스트]   [2. 회원 삭제]   [8. 뒤로가기]\n >>> ");
+                int command2 = Integer.parseInt(sc.nextLine());
+                switch (command2) {
+                  case 1: listMember(); continue;
+                  case 2: deleteMember(); continue;
+                  case 8: break loop2;
                   default: System.out.println("번호를 잘못 입력하셨습니다."); continue;
                 }
               }
             }catch (Exception e) {System.out.println("error1: "+e);}
             break;
-          case "2": cmtMember(); break;
-          case "3": manageWord(); break;
-          case "4": notice(); break;
-          case "9": System.out.println("\n로그아웃"); break admin;
+          case 2:
+            cmtMember();
+            break;
+          case 3:
+            manageWord();
+            break;
+          case 4:
+            notice();
+            break;
+          case 9: System.out.println("\n로그아웃"); break admin;
           default:
             System.out.println("번호를 잘못 입력하셨습니다."); continue;
         }
-      }catch (Exception e) { }
+      }catch (Exception e) {System.out.println("error2: "+e);}
     }
 
   }// adminWork() End
@@ -98,6 +104,7 @@ public class AdminMenu {
     System.out.println("\n[회원 삭제]");
     while(true) {
       System.out.print("\n삭제하실 아이디를 입력하여 주십시오.\n >>> ");
+
       String  deleteID = sc.nextLine();
       Dao d = new Dao(deleteID);
       d.select(deleteID);
@@ -116,7 +123,7 @@ public class AdminMenu {
           d.ST.executeUpdate(sql);
           System.out.println("\n회원 삭제가 완료되었습니다.");
           return;
-        }  else {System.out.println("회원 삭제를 취소하셨습니다."); break;
+        }  else {System.out.println("회원 삭제를 취소하셨습니다.");break;
         } 
       }//else
     } 
@@ -227,7 +234,7 @@ public class AdminMenu {
 
         if(d.getUcomnt()!=null && d.getuId().equals(tid)) {
           System.out.print("\n답변을 입력해주세요.\n >>> ");
-          dbConnect();    
+
           com = sc.nextLine();
           while(com.length()>100) {
             System.out.println("\n100자이내로 작성해주세요");
@@ -235,7 +242,7 @@ public class AdminMenu {
             com = sc.nextLine();
             continue; } 
           sql = "update member set com = '"+ com +"' where id = '"+tid+"'";
-          d.ST.executeUpdate(sql);
+          ST.executeUpdate(sql);
           System.out.println("\n답변을" + tid +"에게 전송했습니다."); return; }
         else {
           System.out.println("ID를 다시 확인해주세요");
@@ -261,6 +268,7 @@ public class AdminMenu {
     } else {System.out.println("\t"+ucmt.substring(0,len)); 
     } 
   }
+
 
   //[3. 단어 관리]//////////////////////////////////////////////////
   public void manageWord() {

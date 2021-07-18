@@ -35,6 +35,7 @@ public class Game {
   int anCount;//현재 플레이동안 맞춘 문제개수
   int[] questionNum = new int[6];
   Dao d = new Dao(userID);
+  Emoticon em = new Emoticon(userID);
 
   public Game() { }
 
@@ -48,6 +49,8 @@ public class Game {
     CN.close();
   }
 
+
+
   public void dbConnect() throws Exception {
     Class.forName("oracle.jdbc.driver.OracleDriver");
     String url = "jdbc:oracle:thin:@localhost:1521:XE";
@@ -56,51 +59,67 @@ public class Game {
   }// dbConnect End
 
   public void wordTest() throws Exception { //게임종료 후 리플레이와 뒤로가기 구현필요
+
     test: while(true) {
-      System.out.println("\n\n영어단어 암기게임에 오신 것을 환영합니다!");
-      System.out.println("플레이하실 난이도를 선택해주세요.(1~3)");
-      System.out.print("난이도>> ");
+      d.select(userID);
+      System.out.println("\t    ┌───────────────────────────────────────────┐");
+      System.out.print(em.printChar(d.getMychar()));
+      System.out.println("<  영어단어 암기게임에 오신 것을 환영합니다! │");
+      System.out.println("\t    │ 플레이하실 난이도를 선택해주세요.(1~3)\t│");
+      System.out.println("\t    └───────────────────────────────────────────┘");
+      System.out.print("\t    난이도 >>> ");
       try{level = Integer.parseInt(sc.nextLine());
+      System.out.println("\n\n");
       if(level<1 || level>3) {
         System.out.println("1~3 사이의 숫자를 입력해주세요.\n");
         continue;
       }
       }catch(Exception ex) { System.out.println("숫자를 입력해주세요.\n"); continue;}
 
+
       System.out.println("영어단어테스트를 시작합니다.");
       System.out.println("문제당 제한시간은 10초입니다.");
       System.out.println("테스트중간에 그만두고 싶으시다면 'end'를 입력해주세요.\n");
       try {
-        Thread.sleep(2000);
         dbConnect();
+        //랜덤문제생성
         randomSetting();
 
+        //테스트 반복
         for(int i =0 ; i<questionNum.length; i++) {
+          //문제랜덤출력
           System.out.printf("문제>> %s\n",getWord("eng", i));
           System.out.print("정답>> ");
 
+          //제한시간 10초설정
           ExecutorService ex = Executors.newSingleThreadExecutor();
+          //쓰레드 1개인 ExecutorService를 리턴합니다. 싱글 쓰레드에서 동작해야하는 작업을 처리할 때 사용합니다.
           String uanswer = "사용자 답변";
           try {
-            Future<String> result = ex.submit(new InputAnswer()); 
+            Future<String> result = ex.submit(new InputAnswer()); // 정답함수 받아서 쓰레드에 전달
+            //submit은 Runnable 또는 Callable을 받는다. Runnable은 리턴값이 없고 Callable은 리턴값이 있다.
             try {
               uanswer = result.get(10, TimeUnit.SECONDS);
+              //필요에 따라서 최대지정된 시간, 계산이 완료할 때까지 대기해, 그 후, 계산 결과가 이용 가능한 경우는 결과를 가져옵니다.
+              //게임도중 종료
               if(uanswer.equals("end")) {
                 break;
               }//if end
-            } catch (ExecutionException e) { 
-              e.getCause().printStackTrace(); 
-            } catch (TimeoutException e){ 
-              System.out.println("\n입력시간이 초과됐습니다."); 
+            } catch (ExecutionException e) { // 작업도중에 에러가 발생한 경우에 발생
+              e.getCause().printStackTrace(); // 오류출력
+            } catch (TimeoutException e){ //대기시간이 초과된 경우에 발생
+              System.out.println("\n입력시간이 초과됐습니다."); // 시간초과
               answerCheck(uanswer, i);
               System.out.println();
               continue;
-            } catch (InterruptedException e){  
+            } catch (InterruptedException e){ //현재 스레드가 인터럽트된 경우에 발생
               System.out.println("interrupted?");
-              e.getCause().printStackTrace();  
+              e.getCause().printStackTrace(); // 오류출력
             }//try end
           } finally {
-            ex.shutdownNow();  
+            ex.shutdownNow(); //진행중인거 강제 종료
+            //스레드 풀의 스레드는 기본적으로 데몬 스레드가 아니기 때문에 main 스레드가 종료되더라도 작업을 처리하기 위해 계속 실행 상태로 남아있습니다.
+            //프로세스를 종료시키려면 스레드 풀을 종료시켜 스레드들이 종료 상태가 되도록 처리필요
           }//try end
           answerCheck(uanswer, i);
           System.out.println();
@@ -110,9 +129,11 @@ public class Game {
       System.out.println("테스트가 끝났습니다.\n");
       Result();      
       setEXP();
+      //현재 개수 초기화(리플레이시 반영위해)
       quCount = 0;
       anCount = 0;
 
+      //게임종료 후 메뉴선택
       while(true) {
         System.out.println("[1.리플레이]   [2.이전메뉴]");
         System.out.print("메뉴>> ");
@@ -121,8 +142,10 @@ public class Game {
         switch(menu) {
           case "1":
             continue test;
+            //break;
           case "2":
             return;
+            //break;
           default:
             System.out.println("잘못입력하셨습니다.\n");
             continue;
@@ -131,7 +154,9 @@ public class Game {
     }//while end
   }//wordTest end
 
+  //문제 총 개수반환
   public int getTotalWordNum() {
+
     int count = 0;
     try {
       dbConnect();
@@ -159,6 +184,7 @@ public class Game {
 
   }//print[] END
 
+  //데이터베이스 단어 가져오기
   public String getWord(String type, int number) {
     String word = "단어";
 
@@ -176,9 +202,12 @@ public class Game {
     return word;
   }//getQuestion end
 
+
+  //정답채점해서 DB에 점수저장
   public void answerCheck(String userAnswer, int number) throws Exception {
     dbConnect();
     d.select(userID);
+    //데이터 저장을 따로 빼서 전역변수로 선언함
     d.questionTotalCnt++;
     quCount++;
     String answer = getWord("kor", number);
@@ -250,7 +279,6 @@ public class Game {
     setDBData(userID);
   }//Result end
 
-
   public void setEXP() throws Exception {
     String tmp =d.memLevel ;
     d.select(userID);
@@ -308,7 +336,14 @@ class WordList {
   String msg = null;
   int engin;
   String ENG;
+  String userID;
   String KOR;
+  Dao d = new Dao(userID);
+  Emoticon em = new Emoticon(userID);
+
+  public WordList(String userID) {
+    this.userID = userID;
+  }
 
   public void dbConnect() throws Exception {
     Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -321,6 +356,10 @@ class WordList {
     int[] num = randomNum();
     Loop: for (engin = 0; engin < Gtotal(); engin++) {
       enginStart();
+
+      d.select(userID);
+      System.out.println("\t\t\t    " + em.printChar2(d.getMychar()) + "\n");
+
       System.out.println("\t\t\t\t(" + (engin+1) + ")\n");
       System.out.println("\t\t\t\t[단 어]\t\t\t[ 뜻 ]\n\t\t\t\t______________________________\n");
       msg = "select ENG,KOR from word where WORDNUM =" + num[engin];
@@ -347,7 +386,7 @@ class WordList {
             }
             break;
           case "8":
-            System.out.println("종료합니다.");
+            System.out.println("종료합니다.\n\n\n");
             break Loop;
           default :
 
@@ -407,7 +446,19 @@ class InputAnswer implements Callable<String> { // 값 입력받기
     String input = "사용자입력값";
     input = sc.nextLine();
 
-    sc.close();
+    //    BufferedReader inp = new BufferedReader(new InputStreamReader(System.in));
+    //    String input = "";
+    //    while ("".equals(input)) {
+    //      try {
+    //        while (!inp.ready()) {
+    //          Thread.sleep(100);
+    //        }//while end
+    //        input = inp.readLine();
+    //      } catch (InterruptedException e) {
+    //        return null;
+    //      }//try end
+    //    } //while end
+
     return input;
   }//call end
 }//InputAnswer Class END

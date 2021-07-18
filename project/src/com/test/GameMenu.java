@@ -15,10 +15,9 @@ public class GameMenu {
   Scanner sc = new Scanner(System.in);
   String msg ;
   String userID;
-
-
+  Dao d = new Dao(userID);
+  Emoticon em = new Emoticon(userID);
   public GameMenu() { }
-
   public GameMenu(String userID) {
     this.userID = userID;
   }
@@ -55,20 +54,24 @@ public class GameMenu {
   }
 
   public void game() throws Exception {
-    WordList wl = new WordList();
+    WordList wl = new WordList(userID);
     Game game = new Game(userID);
     AccountInfo ai = new AccountInfo(userID);
-    //Emoticon em = new Emoticon(userID);
+    Emoticon em = new Emoticon(userID);
 
     System.out.println("\n=================================================================================\n");
     System.out.println("҉ ٩(๑>ω<๑)۶҉     단어 맞추기 게임 월드에 오신것을 환영합니다.  ꉂ (๑¯ਊ¯)σ \n");
     System.out.println("\n=================================================================================\n");
     while(true) {
+      d.select(userID);
+      System.out.println(em.printChar2(d.getMychar()));
       System.out.println("\n-------------------------\n");
-      System.out.print("  [1. 단어 암기] \n\n  [2. 단어 게임 시작]\n\n  [3. 랭킹]\n\n  [4. 내 정보]"
-          + "\n\n  [5. 인벤토리]\n\n  [6. 상점]\n\n  [7. 공지사항]\n\n  [9. 로그아웃]\n\n  [0. 게임 종료]");
+      System.out.print("\t\t\t\t\t[보유 골드 : " + d.getPoint() + "]");
+      System.out.println("");
+      System.out.print("[1. 단어 암기] \n\n[2. 단어 게임 시작]\n\n[3. 랭킹]\n\n[4. 내 정보]"
+          + "\n\n[5. 인벤토리]\n\n[6. 상점]\n\n[8. 공지사항]\n\n[9. 로그아웃]\n\n[0. 게임 종료]");
 
-      System.out.print("\n\n >>> ");
+      System.out.print("\n\n>>> ");
       String command = sc.nextLine();
       this.dbConnect();
       switch (command) {
@@ -76,9 +79,10 @@ public class GameMenu {
         case "2": game.wordTest();  break;
         case "3": ranking(); back();  break;
         case "4": ai.info();  break;
-        case "5": /*인벤토리*/ break;
-        case "6": /*상점*/ break;
-        case "7": notification();  break;
+        case "5": em.inventory();  break;
+        case "6": em.emojiShop(); break;
+        case "7": System.out.println("쪽지함?");/*message();*/ break;
+        case "8": notification();  break;
         case "9": System.out.println("로그아웃 합니다.");  return;
         case "0": System.out.println("게임을 종료합니다.");  System.exit(0);
         default : System.out.println("올바른 번호를 입력해 주세요.  !!!( •̀ ᴗ •́ )و!!!");
@@ -87,6 +91,7 @@ public class GameMenu {
   }
 
   public void ranking() throws Exception {
+    System.out.println("\n\n  " + em.printChar2(d.getMychar()));
     msg = "select ID, score from member order by score desc";
     int rank10 = 0 ;
     System.out.println("\n\t      [ Top 10 ]");
@@ -145,9 +150,9 @@ public class GameMenu {
   }
 
   public void back() {
-    System.out.println("\n[9. 뒤로가기]");
+    System.out.println("\n[8. 뒤로가기]");
     String command = sc.nextLine();
-    if (command.equals("9")) {
+    if (command.equals("8")) {
       return;
     }
   }
