@@ -25,10 +25,6 @@ public class Emoticon {
   String[][] ars = new String[3][5];
   boolean[][] arb = new boolean[3][5];
   
-  
-  
-  
-  
   public Emoticon(String userID) {
     this.userID = userID;
     // TODO Auto-generated constructor stub
