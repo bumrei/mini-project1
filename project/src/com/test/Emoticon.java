@@ -28,7 +28,7 @@ public class Emoticon {
   }
 
   public void arrContents() {
-    ars[0][0] = "  ^_^+   "; ars[0][1] = "  ∙̑◡∙̑  "; ars[0][2] = "  ᵔ︡⌔ᵔ︠     ";
+    ars[0][0] = "  ^_^+   "; ars[0][1] = "  ∙̑◡∙̑  "; ars[0][2] = "   ᵔ︡⌔ᵔ︠     ";
     ars[0][3] = "  •ܫ•    "; ars[0][4] = "  ◠‿◠    "; ars[1][0] = "(´•̥ω•̥`)";
     ars[1][1] = "( ˃̣̣̥᷄⌓˂̣̣̥᷅ )         "; ars[1][2] = "(๑•̀ω•́)۶ "; ars[1][3] = "♪(๑ᴖ◡ᴖ๑)♪";
     ars[1][4] = "(๑˘ꇴ˘๑)  "; ars[2][0] = "Çっ•ﻌ•ʔっ "; ars[2][1] = "Ç •ɷ•ʔฅ  ";
@@ -48,7 +48,7 @@ public class Emoticon {
     selectItem();
     d.select(userID);
     System.out.println("\n  [진열장]\n");
-    System.out.print("\t\t\t\t\t\t\t\t[보유 골드 : " + d.getPoint() + "]\n");
+    System.out.print("\t\t\t\t\t\t\t\t[ 보유 골드 : " + d.getPoint() + " G ]\n");
     for (int i = 0; i < ars.length; i++) {
       if (i == 0) {
         System.out.println("┌───────────────┬───────────────┬───────────────┬───────────────┬───────────────┐");
@@ -74,7 +74,7 @@ public class Emoticon {
         if (i == 0 && b == 0) {
           System.out.print("    [기본]\t│");
         } else {
-          System.out.print("    [" + price[i] + "원]" + "\t│");
+          System.out.print("   [ " + price[i] + " G ]" + "\t│");
         }
       } 
       System.out.println();

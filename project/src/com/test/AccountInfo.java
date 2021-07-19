@@ -31,7 +31,7 @@ public class AccountInfo {
     System.out.print(em.printChar(d.getMychar()));
     System.out.println("  < " + em.saying());
     System.out.println(" \t    └────────────────────────────────────────────┘");
-    System.out.println("\n\n               내정보              ");
+    System.out.println("\n\n                    내정보              ");
     System.out.println("───────────────────────────────────────────────── ");
     System.out.println("\t"+ d.getuName() +" 님과 함께한지 "+  datedif(d.getuDate()) + " 일째 입니다 ❤" );
     System.out.println("  Name   :\t"+ d.getuName() );
@@ -51,7 +51,7 @@ public class AccountInfo {
         printcomnt(d.getCom());
       } else { System.out.println("현재 등록된 답변이 없습니다.");}
     }
-    System.out.println("\n\n               정답률              ");
+    System.out.println("\n\n                    정답률              ");
     System.out.println("───────────────────────────────────────────────── ");
     System.out.printf("  TOTAL  : 총 %s문제 중 %s개 정답, 정답률: %s%%\n", d.getQuestionTotalCnt(),d.getAnswerTotalCnt(),d.getAnswerTotalRate());
     System.out.printf("  Lv. 1  : 총 %s문제 중 %s개 정답, 정답률: %s%%\n",d.getQuestionCnt1(),d.getAnswerCnt1(),d.getAnswerRate1());

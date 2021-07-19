@@ -43,7 +43,7 @@ public class GameMenu {
       System.out.println("  < " + em.saying());
       System.out.println(" \t    └────────────────────────────────────────────┘");
       System.out.print("\n\t\t\t\t\t[보유 골드 : " + d.getPoint() + "]");
-      Thread.sleep(1000);
+      Thread.sleep(1500);
       System.out.print("\n\n  [1. 단어 암기] \n\n  [2. 단어 게임 시작]\n\n  [3. 랭킹]\n\n  [4. 내 정보]"
           + "\n\n  [5. 인벤토리]\n\n  [6. 상점]\n\n  [7. 공지사항]\n\n  [9. 로그아웃]\n\n  [0. 게임 종료]");
       System.out.print("\n\n >>> ");
@@ -79,7 +79,7 @@ public class GameMenu {
       int uranking = RS.getInt("rank");
       String uid = RS.getString("ID");
       int uscore = RS.getInt("score");
-      System.out.printf("\t  %d\t%10s\t%d\n", uranking, uid, uscore);
+      System.out.printf("\t  %d\t%-10s\t%d\n", uranking, uid, uscore);
       //      System.out.println("\t  "+uranking + "\t "+uid+"\t  " + uscore);
       if(uranking  == 10 ) {
         rank10 = uscore ;
@@ -93,7 +93,7 @@ public class GameMenu {
       int uranking = RS.getInt("rank");
       String uid = RS.getString("ID");
       int uscore = RS.getInt("score");
-      System.out.printf("\t→ %d\t%10s\t%d\n",uranking,uid,uscore);
+      System.out.printf("\t→ %d\t%-10s\t%d\n",uranking,uid,uscore);
       if (uranking == 1) {System.out.println("\n 현재 1등입니다!!");}
       if (uranking > 10) {
         int n = uranking -10;

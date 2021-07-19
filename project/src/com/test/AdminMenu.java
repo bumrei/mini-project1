@@ -54,7 +54,6 @@ public class AdminMenu {
         System.out.println("\n수행하실 작업을 선택해 주십시오.");
         System.out.print("\n[1. 회원 관리]   [2. 건의사항 확인]   [3. 단어 관리]   [4. 공지 관리]   "
             + "[9. 관리자 계정 로그아웃]\n >>> ");
-
         String menu = sc.nextLine();
         switch(menu) {
           case "1":
@@ -76,7 +75,7 @@ public class AdminMenu {
           case "2": cmtMember(); break;
           case "3": manageWord(); break;
           case "4": notice(); break;
-          case "9": System.out.println("\n로그아웃"); break admin;
+          case "9": System.out.println("\n로그아웃합니다.\n안녕히가세요!"); break admin;
           default: System.out.println("\n번호를 다시 확인해주세요."); continue;
         }
       }catch (Exception e) {System.out.println("error: "+e);}
@@ -133,14 +132,13 @@ public class AdminMenu {
       ucmt = RS.getString("comnt");
       uID = RS.getString("ID");
       String acom = RS.getString("com");
-      System.out.println("──────────────────────────────────────────────────────────────────────────────────────");
+      System.out.println("──────────────────────────────────────────────────────────────────────");
       System.out.printf("  %-5s \t",uID);
       printcomnt(ucmt);
-      if (acom != null) { System.out.println("──────────────────────────────────────────────────────────────────────────────────────");
+      if (acom != null) { System.out.println("──────────────────────────────────────────────────────────────────────");
       System.out.print(" >>> Admin답    ");  printcomnt(acom);
-      System.out.println();}
+      }
     } 
-
 
     loop : while(true) {
       System.out.println("\n수행하실 작업을 선택해 주십시오.");
@@ -183,6 +181,7 @@ public class AdminMenu {
       while(true) { 
         System.out.println("\n  [건의사항 답변]");
         System.out.println("\n답변할 ID를 입력해주세요");
+        System.out.print(" >>> ");
         tid = sc.nextLine();
         d.select(tid);
         if(d.getUcomnt()!=null && d.getuId().equals(tid)) {
@@ -195,9 +194,9 @@ public class AdminMenu {
             continue; } 
           msg = "update member set com = '"+ com +"' where id = '"+tid+"'";
           ST.executeUpdate(msg);
-          System.out.println("\n답변을" + tid +"에게 전송했습니다."); return; }
+          System.out.println("\n답변을 " + tid +" 에게 전송했습니다."); return; }
         else {
-          System.out.println("ID를 다시 확인해주세요");
+          System.out.println("\nID를 다시 확인해주세요.");
         }
       } 
     } catch(Exception e) {System.out.println("error: "+e);}
@@ -222,7 +221,7 @@ public class AdminMenu {
     //단어관리 수정/추가 기능
     word: while(true) {
       System.out.println();
-      System.out.print("[1. 단어 추가]   [2. 단어 삭제]   [3. 단어 목록]   [9. 뒤로가기]\n >>> ");
+      System.out.print("[1. 단어 추가]   [2. 단어 삭제]   [3. 단어 목록]   [4. 단어 검색]   [9. 뒤로가기]\n >>> ");
       String menu = sc.nextLine();
       switch(menu) {
         case "1": addWord(); break;
@@ -354,6 +353,7 @@ public class AdminMenu {
     try {
       while(true) {
         System.out.println("\n검색할 단어를 입력해주세요.");
+        System.out.print(" >>> ");
         sword = sc.nextLine();
         if(sword.matches("^[a-zA-Z]*$")) {type = "eng";
         }else if(sword.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {type = "kor";
@@ -362,12 +362,15 @@ public class AdminMenu {
       }
       msg = "select * from word where " + type + " like '%" + sword + "%'";
       RS = ST.executeQuery(msg);
-      System.out.println("레벨\t영어\t\t\t뜻\n");
-      System.out.println("------------------------------------------------------------");
+
       while(RS.next() == true) {
         level = RS.getInt("wordLevel");
         eng = RS.getString("eng");
         kor = RS.getString("kor");
+        if (!eng.equals("영단어")) {
+          System.out.println("\n레벨\t영어\t\t뜻");
+          System.out.println("---------------------------------");
+        }
         System.out.printf("%d\t%s\t\t%s\n\n", level, eng, kor);
       }//while end
       if(eng.equals("영단어")) {
