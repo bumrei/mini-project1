@@ -120,10 +120,8 @@ class JoinMember {
   ResultSet RS = null; //select조회결과값 전체데이터를 기억
   String sql = "isud = crud쿼리문기술";
   Scanner sc = new Scanner(System.in);
-  String id;
-  String psw;
-  String name;
-  String email;
+  String name, id, psw, email;
+  String tmp = "비밀번호재확인용";
 
   public void dbConnect() throws Exception {
     Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -134,12 +132,16 @@ class JoinMember {
 
   public void join() throws Exception {
     this.dbConnect();
-    System.out.println("\n  [회원가입]");
+    System.out.println("\n  [회원가입] [8. 뒤로가기]");
 
     setName();
+    if(name.equals("8")) {return;}
     setID();
+    if(id.equals("8")) {return;}
     setPSW();
+    if(psw.equals("8") || tmp.equals("8")) {return;}
     setEmail();
+    if(email.equals("8")) {return;}
 
     insertMember();
     System.out.println("\n회원가입이 완료되었습니다.");
@@ -149,7 +151,8 @@ class JoinMember {
     while(true) {
       System.out.print("\n  닉네임 (2-10자,공백X) \n>>");
       name = sc.nextLine();
-      if(stringCheck(name, 2, 10)) {
+      if(name.equals("8")) {return;
+      }else if(stringCheck(name, 2, 10)) {
         System.out.println("\n양식이 잘못되었습니다. 다시 입력해주세요.");
         continue;
       }
@@ -163,7 +166,8 @@ class JoinMember {
       while(true) {
         System.out.print("\n  아이디 (2-10자,공백X,한글X) \n>>");
         id = sc.nextLine();
-        if(stringCheck(id, 2, 10) || id.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
+        if(id.equals("8")) {return;
+        }else if(stringCheck(id, 2, 10) || id.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
           System.out.println("\n양식이 잘못되었습니다. 다시 입력해주세요.");
           continue;
         }
@@ -191,15 +195,17 @@ class JoinMember {
       while(true) {
         System.out.print("\n  비밀번호 (8-15자,공백X,한글X) \n>>");
         psw = sc.nextLine();
-        if(stringCheck(psw, 8, 15) || psw.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
+        if(psw.equals("8")) {return;
+        }else if(stringCheck(psw, 8, 15) || psw.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
           System.out.println("\n양식이 잘못되었습니다. 다시 입력해주세요.");
           continue;
         }
         break;
       }//while end
       System.out.print("\n  비밀번호 재확인 \n>>");
-      String tmp = sc.nextLine();
-      if(psw.equals(tmp)) {
+      tmp = sc.nextLine();
+      if(tmp.equals("8")) {return;
+      }else if(psw.equals(tmp)) {
         System.out.println("\n비밀번호가 일치합니다.");
         break;
       }else {
@@ -213,7 +219,8 @@ class JoinMember {
     while(true) {
       System.out.print("\n  email (12-25자,공백X,한글X) \n>>");
       email = sc.nextLine();
-      if(stringCheck(email, 12, 25) || emailCheck() || email.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
+      if(email.equals("8")) {return;
+      }else if(stringCheck(email, 12, 25) || emailCheck(email) || email.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
         System.out.println("\n정확히 입력하셨는지 다시 확인해주세요.");
         continue;
       }
@@ -239,7 +246,7 @@ class JoinMember {
   }//stringCheck end
 
   //이메일에크 @있는지,@뒤에 '.'이 있는지 @앞에 1글자이상 있는지, @뒤에 5글자이상 있는지
-  public boolean emailCheck() {
+  public boolean emailCheck(String email) {
     boolean check = true;
     if(email.contains("@")) {
       int index = email.indexOf("@");
@@ -390,10 +397,19 @@ class FindMember {
   }
 
   public void resetPsw() {
+    JoinMember jm = new JoinMember();
     try {
-      System.out.println("\n비밀번호를 재설정합니다.");
+      while(true) {
+      System.out.println("\n비밀번호를 재설정합니다.(8-15자,공백X,한글X)");
       System.out.print(" 새로운 비밀번호를 입력해주세요\n >>> ");
       rpsw = sc.nextLine();
+      
+      if(jm.stringCheck(rpsw, 8, 15) || rpsw.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
+        System.out.println("\n비밀번호 양식이 잘못되었습니다.");
+        continue;
+      }
+      break;
+    }//while end
 
       msg = "update member set psw = '"+rpsw+"' where id = '"+fID+"'";
       ST.executeUpdate(msg);
