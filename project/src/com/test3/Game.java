@@ -64,7 +64,7 @@ public class Game {
       d.select(userID);
       System.out.println("\t    ┌───────────────────────────────────────────┐");
       System.out.print(em.printChar(d.getMychar()));
-      System.out.println("<  영어단어 암기게임에 오신 것을 환영합니다! │");
+      System.out.println("  <  영어단어 암기게임에 오신 것을 환영합니다! │");
       System.out.println("\t    │ 플레이하실 난이도를 선택해주세요.(1~3)\t│");
       System.out.println("\t    └───────────────────────────────────────────┘");
       System.out.print("\t    난이도 >>> ");
@@ -127,6 +127,10 @@ public class Game {
       }catch(Exception ex) {System.out.println("에러이유: "+ex);}
 
       System.out.println("테스트가 끝났습니다.\n");
+      System.out.println(" \t    ┌────────────────────────────────────────────┐");
+      System.out.print(em.printChar(d.getMychar()));
+      System.out.println("  < " + em.saying());
+      System.out.println(" \t    └────────────────────────────────────────────┘\n");
       Result();      
       setEXP();
       //현재 개수 초기화(리플레이시 반영위해)
@@ -356,10 +360,12 @@ class WordList {
     int[] num = randomNum();
     Loop: for (engin = 0; engin < Gtotal(); engin++) {
       enginStart();
-
       d.select(userID);
-      System.out.println("\t\t\t    " + em.printChar2(d.getMychar()) + "\n");
-
+      System.out.println("  \t\t\t\t\t┌────────────────────────────────────────────┐");
+      System.out.print("\t\t\t" + em.printChar(d.getMychar()));
+      System.out.println("      < " + em.saying());
+      System.out.println("  \t\t\t\t\t└────────────────────────────────────────────┘\n\n");
+      
       System.out.println("\t\t\t\t(" + (engin+1) + ")\n");
       System.out.println("\t\t\t\t[단 어]\t\t\t[ 뜻 ]\n\t\t\t\t______________________________\n");
       msg = "select ENG,KOR from word where WORDNUM =" + num[engin];

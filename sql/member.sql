@@ -22,8 +22,9 @@ create table member (
   com nvarchar2(100),
   ldate date default('2020-01-01') ,
   adate date default('2020-01-01') ,
-  point number(5) default(0),
+  point number(5) default(1000),
   mychar number(4) default(1),
+  comdate date default(sysdate) ,
   constraint pk_member_ID primary key(ID)
 );
 
@@ -67,7 +68,7 @@ commit ;
 --member insert ∫Œ∫–/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 insert into member(memNo, name, ID, psw, email, cdate, ldate, point)
- values(member_seq.nextval, '±Ë«œ«œ', 'ID1', '12345', 'hahahaha@gmail.com',  '2021-07-10', '2021-07-12', 100);
+ values(member_seq.nextval, '±Ë«œ«œ', 'ID1', '12345', 'hahahaha@gmail.com',  '2021-07-10', '2021-07-12', 30000);
 
 insert into member(memNo, name, ID, psw, email, cdate)
  values(member_seq.nextval, '±Ë»£»£', 'ID2', '12345', 'ggggjjj@gmail.com', sysdate);

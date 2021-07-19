@@ -25,10 +25,12 @@ public class AccountInfo {
   }
 
   public void info() throws Exception {
-    GameMenu gm = new GameMenu(userID);
-    
     d.select(userID);
-    System.out.println("\n\n   " + em.printChar2(d.getMychar()));
+    GameMenu gm = new GameMenu(userID);
+    System.out.println(" \t    ┌────────────────────────────────────────────┐");
+    System.out.print(em.printChar(d.getMychar()));
+    System.out.println("  < " + em.saying());
+    System.out.println(" \t    └────────────────────────────────────────────┘");
     System.out.println("\n\n               내정보              ");
     System.out.println("───────────────────────────────────────────────── ");
     System.out.println("\t"+ d.getuName() +"님 과 함께한지 "+  datedif(d.getuDate()) + " 일째 입니다" );

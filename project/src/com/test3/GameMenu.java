@@ -64,8 +64,10 @@ public class GameMenu {
     System.out.println("\n=================================================================================\n");
     while(true) {
       d.select(userID);
-      System.out.println(em.printChar2(d.getMychar()));
-      System.out.println("\n-------------------------\n");
+      System.out.println(" \t    ┌────────────────────────────────────────────┐");
+      System.out.print(em.printChar(d.getMychar()));
+      System.out.println("  < " + em.saying());
+      System.out.println(" \t    └────────────────────────────────────────────┘");
       System.out.print("\t\t\t\t\t[보유 골드 : " + d.getPoint() + "]");
       System.out.println("");
       System.out.print("[1. 단어 암기] \n\n[2. 단어 게임 시작]\n\n[3. 랭킹]\n\n[4. 내 정보]"
@@ -80,7 +82,7 @@ public class GameMenu {
         case "3": ranking(); back();  break;
         case "4": ai.info();  break;
         case "5": em.inventory();  break;
-        case "6": em.emojiShop(); break;
+        case "6": em.purchase(); break;
         case "7": System.out.println("쪽지함?");/*message();*/ break;
         case "8": notification();  break;
         case "9": System.out.println("로그아웃 합니다.");  return;
@@ -91,7 +93,10 @@ public class GameMenu {
   }
 
   public void ranking() throws Exception {
-    System.out.println("\n\n  " + em.printChar2(d.getMychar()));
+    System.out.println(" \t    ┌────────────────────────────────────────────┐");
+    System.out.print(em.printChar(d.getMychar()));
+    System.out.println("  < " + em.saying());
+    System.out.println(" \t    └────────────────────────────────────────────┘\n");
     msg = "select ID, score from member order by score desc";
     int rank10 = 0 ;
     System.out.println("\n\t      [ Top 10 ]");
@@ -123,7 +128,7 @@ public class GameMenu {
         int x = rank10 - uscore ; 
         System.out.println("\n top10 에 올라가기까지 " + n + " 등"+ x + " 점 남았습니다");
       }
- 
+
     }
   }
 
