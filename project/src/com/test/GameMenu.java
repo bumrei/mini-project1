@@ -43,6 +43,7 @@ public class GameMenu {
       System.out.println("  < " + em.saying());
       System.out.println(" \t    └────────────────────────────────────────────┘");
       System.out.print("\n\t\t\t\t\t[보유 골드 : " + d.getPoint() + "]");
+      Thread.sleep(1000);
       System.out.print("\n\n  [1. 단어 암기] \n\n  [2. 단어 게임 시작]\n\n  [3. 랭킹]\n\n  [4. 내 정보]"
           + "\n\n  [5. 인벤토리]\n\n  [6. 상점]\n\n  [7. 공지사항]\n\n  [9. 로그아웃]\n\n  [0. 게임 종료]");
       System.out.print("\n\n >>> ");
