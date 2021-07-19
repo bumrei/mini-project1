@@ -26,10 +26,14 @@ public class AccountInfo {
 
   public void info() throws Exception {
     d.select(userID);
-    System.out.println("\n\n   " + em.printChar2(d.getMychar()));
+    GameMenu gm = new GameMenu(userID);
+    System.out.println(" \t    ┌────────────────────────────────────────────┐");
+    System.out.print(em.printChar(d.getMychar()));
+    System.out.println("  < " + em.saying());
+    System.out.println(" \t    └────────────────────────────────────────────┘");
     System.out.println("\n\n               내정보              ");
     System.out.println("───────────────────────────────────────────────── ");
-    System.out.println("\t"+ d.getuName() +"님과 함께한지 "+  datedif(d.getuDate()) + " 일째 입니다" );
+    System.out.println("\t"+ d.getuName() +" 님과 함께한지 "+  datedif(d.getuDate()) + " 일째 입니다 ❤" );
     System.out.println("  Name   :\t"+ d.getuName() );
     System.out.println("  I  D   :\t"+ d.getuId() );
     System.out.println("  Email  :\t" + d.getuEmail());
@@ -39,10 +43,11 @@ public class AccountInfo {
     System.out.println("  E X P  :\t" + d.getExp() );
 
     if( d.getUcomnt() != null ) {
-      System.out.print(" Comment :\t" );
+      System.out.print("  Comment :\t" );
       printcomnt(d.getUcomnt());
-      System.out.print(" 답  변  :\t");
+      System.out.print("  답  변  :\t");
       if( d.getCom() != null ) {
+        gm.update("adate",userID);
         printcomnt(d.getCom());
       } else { System.out.println("현재 등록된 답변이 없습니다.");}
     }
@@ -56,15 +61,15 @@ public class AccountInfo {
 
     Loop: while(true) {
       System.out.println("\n\n[1. 이메일 변경]   [2. 비밀번호 변경]   [3. 건의사항]"
-          + "   [4. 회원탈퇴]   [8. 뒤로가기]");
+          + "   [4. 회원탈퇴]   [9. 뒤로가기]");
       System.out.print(" >>> ");
-      String command = sc.nextLine();
-      switch (command) {
+      String menu = sc.nextLine();
+      switch (menu) {
         case "1": chgEmail();  break;
         case "2": chgPasswd();  break;
         case "3": comnt();  break;
         case "4": delId(); break;
-        case "8": System.out.println("\n뒤로가기\n");  break Loop;
+        case "9": System.out.println("\n뒤로가기\n");  break Loop;
         default : System.out.println("\n번호를 잘못입력하셨습니다 다시 입력해주세요. "); break;
       }  
     }
@@ -81,7 +86,6 @@ public class AccountInfo {
     calDateDays = calDate / ( 24*60*60*1000); 
     return calDateDays+1;
   }
-
 
   public void printcomnt(String usercomnt) {
     if (usercomnt.length()>25) {
@@ -116,7 +120,7 @@ public class AccountInfo {
         System.out.println("\n변경이 완료되었습니다.");
         break Loop;
       }
-    } catch(Exception e) {System.out.println("errordd: " + e);}
+    } catch(Exception e) {System.out.println("error: " + e);}
 
   }
 
@@ -125,9 +129,9 @@ public class AccountInfo {
     try {
       Loop: while(true) {
         System.out.println("\n  [비밀번호 변경]");
-        System.out.print("\n현재 비밀번호를 입력해주세요. [8.뒤로가기]\n >>> ");
+        System.out.print("\n현재 비밀번호를 입력해주세요. [9.뒤로가기]\n >>> ");
         ans = sc.nextLine();
-        if(ans.equals("8")) {
+        if(ans.equals("9")) {
           return;
         }
         d.select(userID);
@@ -177,39 +181,37 @@ public class AccountInfo {
         System.out.println("\n100자이내로 작성해주세요");
         System.out.print("\n건의사항을 입력해주세요.\n >>> ");
         comnt = sc.nextLine(); }
-      msg = "update member SET comnt = '"+ comnt +"'  where id = '"+userID+"' ";
+      msg = "update member SET comnt = '"+ comnt +"' , com = null  where id = '"+userID+"' ";
       d.dbConnect();
       d.ST.executeUpdate(msg);
       System.out.println("\n건의사항을 관리자에게 전송했습니다.");
-    } catch(Exception e) {System.out.println("error: 건의사항 "+e);}
+    } catch(Exception e) {System.out.println("error: "+e);}
   }
 
   public void delId() throws Exception {
     System.out.println("\n[회원탈퇴]");
-    System.out.println("회원정보를 입력하세요.");
+    System.out.println("\n회원정보를 입력하세요.");
     while(true) {
-      System.out.print("패스워드 [8.뒤로가기] : " );
+      System.out.print("  비밀번호 [9. 뒤로가기] >>> " );
       fpsw = sc.nextLine();
-      if(fpsw.equals("8")) {
-        return;
-      }
+      if(fpsw.equals("9")) { return; }
       d.select(userID);
       if (fpsw.equals(d.getuPsw())) {
         msg = "delete from member where ID = '" + userID + "'";
-        System.out.print("정말 탈퇴 하시겠습니까? (y/N)>>> " );
+        System.out.print("정말 탈퇴 하시겠습니까? (y/N) >>> " );
         String a = sc.nextLine();
         if (a.equals("y")) {
           d.dbConnect();
           d.ST.executeUpdate(msg);
-          System.out.println("회원 탈퇴가 완료되었습니다.");
+          System.out.println("\n\n회원 탈퇴가 완료되었습니다.");
+          System.out.println("안녕히가세요!\n\n\n\n\n\n");
           break;
-        } else {System.out.println("회원 탈퇴를 취소하셨습니다.");break;}
-      }  System.out.println("비밀번호를를 다시 확인하십시오.");
+        } else {System.out.println("\n회원 탈퇴를 취소했습니다.");break;}
+      }  System.out.println("\n비밀번호를 다시 확인하세요.");
       continue;
     }//else 
 
     MainMenu mm = new MainMenu();
     mm.mainmenu();
   }//delId
-
 }// Class END

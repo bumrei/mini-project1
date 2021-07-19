@@ -49,8 +49,6 @@ public class Game {
     CN.close();
   }
 
-
-
   public void dbConnect() throws Exception {
     Class.forName("oracle.jdbc.driver.OracleDriver");
     String url = "jdbc:oracle:thin:@localhost:1521:XE";
@@ -64,14 +62,14 @@ public class Game {
       d.select(userID);
       System.out.println("\t    ┌───────────────────────────────────────────┐");
       System.out.print(em.printChar(d.getMychar()));
-      System.out.println("<  영어단어 암기게임에 오신 것을 환영합니다! │");
+      System.out.println("  <  영어단어 암기게임에 오신 것을 환영합니다! │");
       System.out.println("\t    │ 플레이하실 난이도를 선택해주세요.(1~3)\t│");
       System.out.println("\t    └───────────────────────────────────────────┘");
       System.out.print("\t    난이도 >>> ");
       try{level = Integer.parseInt(sc.nextLine());
       System.out.println("\n\n");
       if(level<1 || level>3) {
-        System.out.println("1~3 사이의 숫자를 입력해주세요.\n");
+        System.out.println("1~3 사이의 숫자를 입력해주세요.\n\n");
         continue;
       }
       }catch(Exception ex) { System.out.println("숫자를 입력해주세요.\n"); continue;}
@@ -79,7 +77,7 @@ public class Game {
 
       System.out.println("영어단어테스트를 시작합니다.");
       System.out.println("문제당 제한시간은 10초입니다.");
-      System.out.println("테스트중간에 그만두고 싶으시다면 'end'를 입력해주세요.\n");
+      System.out.println("테스트중간에 그만두고 싶으시다면 'end'를 입력해주세요.\n\n");
       try {
         dbConnect();
         //랜덤문제생성
@@ -88,8 +86,8 @@ public class Game {
         //테스트 반복
         for(int i =0 ; i<questionNum.length; i++) {
           //문제랜덤출력
-          System.out.printf("문제>> %s\n",getWord("eng", i));
-          System.out.print("정답>> ");
+          System.out.printf("문제 >>> %s\n",getWord("eng", i));
+          System.out.print("정답 >>> ");
 
           //제한시간 10초설정
           ExecutorService ex = Executors.newSingleThreadExecutor();
@@ -124,9 +122,13 @@ public class Game {
           answerCheck(uanswer, i);
           System.out.println();
         }//for end
-      }catch(Exception ex) {System.out.println("에러이유: "+ex);}
+      }catch(Exception ex) {System.out.println("error: "+ex);}
 
-      System.out.println("테스트가 끝났습니다.\n");
+      System.out.println("\n\n테스트가 끝났습니다.\n");
+      System.out.println(" \t    ┌────────────────────────────────────────────┐");
+      System.out.print(em.printChar(d.getMychar()));
+      System.out.println("  < " + em.saying());
+      System.out.println(" \t    └────────────────────────────────────────────┘\n");
       Result();      
       setEXP();
       //현재 개수 초기화(리플레이시 반영위해)
@@ -136,19 +138,12 @@ public class Game {
       //게임종료 후 메뉴선택
       while(true) {
         System.out.println("[1.리플레이]   [2.이전메뉴]");
-        System.out.print("메뉴>> ");
+        System.out.print("메뉴 >>> ");
         String menu = sc.nextLine();
-
         switch(menu) {
-          case "1":
-            continue test;
-            //break;
-          case "2":
-            return;
-            //break;
-          default:
-            System.out.println("잘못입력하셨습니다.\n");
-            continue;
+          case "1": continue test;
+          case "2": return;
+          default: System.out.println("\n번호를 다시 확인해주세요.\n"); continue;
         }//switch end
       }//while end
     }//while end
@@ -156,7 +151,6 @@ public class Game {
 
   //문제 총 개수반환
   public int getTotalWordNum() {
-
     int count = 0;
     try {
       dbConnect();
@@ -187,7 +181,6 @@ public class Game {
   //데이터베이스 단어 가져오기
   public String getWord(String type, int number) {
     String word = "단어";
-
     try {
       dbConnect();
       sql = "select * from "
@@ -327,17 +320,15 @@ public class Game {
 
 
 class WordList {
-  Connection CN = null;
-  Statement ST = null;
-  ResultSet RS = null;
-  PreparedStatement pstmt = null;
+  Connection CN;
+  Statement ST;
+  ResultSet RS;
+  PreparedStatement pstmt;
   Scanner sc = new Scanner(System.in);
-  int sLevel = 0;
-  String msg = null;
-  int engin;
-  String ENG;
+  int sLevel, engin;
+  String msg;
   String userID;
-  String KOR;
+  String ENG, KOR;
   Dao d = new Dao(userID);
   Emoticon em = new Emoticon(userID);
 
@@ -356,9 +347,11 @@ class WordList {
     int[] num = randomNum();
     Loop: for (engin = 0; engin < Gtotal(); engin++) {
       enginStart();
-
       d.select(userID);
-      System.out.println("\t\t\t    " + em.printChar2(d.getMychar()) + "\n");
+      System.out.println("  \t\t\t\t\t┌────────────────────────────────────────────┐");
+      System.out.print("\t\t\t" + em.printChar(d.getMychar()));
+      System.out.println("      < " + em.saying());
+      System.out.println("  \t\t\t\t\t└────────────────────────────────────────────┘\n\n");
 
       System.out.println("\t\t\t\t(" + (engin+1) + ")\n");
       System.out.println("\t\t\t\t[단 어]\t\t\t[ 뜻 ]\n\t\t\t\t______________________________\n");
@@ -372,12 +365,12 @@ class WordList {
         } else {
           System.out.println("\t\t\t\t" + ENG+ "\t\t" + KOR);
         }
-        System.out.println("\n\n\t\t\t\t[Enter. 다음]   [2. 이전]   [8. 뒤로가기]\n\n\n\n\n\n\n\n");
-        String command = sc.nextLine();
+        System.out.println("\n\n\t\t\t\t[Enter. 다음]   [2. 이전]   [9. 뒤로가기]\n\n\n\n\n\n\n\n");
+        String menu = sc.nextLine();
         for (int i = 0; i <30; i++) {
           System.out.println("\n\n\n");
         }
-        switch(command) {
+        switch(menu) {
           case "2":
             if (engin > 0) {
               engin -= 2;
@@ -385,7 +378,7 @@ class WordList {
               engin -= 1;
             }
             break;
-          case "8":
+          case "9":
             System.out.println("종료합니다.\n\n\n");
             break Loop;
           default :
@@ -395,7 +388,7 @@ class WordList {
       }
     }
     if (engin == Gtotal()) {
-      System.out.println("모든 단어를 정독하셨습니다. 게임에 도전하세요!");
+      System.out.println("\n\n모든 단어를 정독하셨습니다. 게임에 도전하세요!");
     }
   }
 
@@ -405,10 +398,6 @@ class WordList {
         System.out.println("\n");
       }
     }
-  }
-
-  public void printSeperate() {
-
   }
 
   public int Gtotal() throws Exception {
@@ -436,8 +425,6 @@ class WordList {
   }
 }//WordTest Class END
 
-
-
 class InputAnswer implements Callable<String> { // 값 입력받기
   @Override
   public String call() throws IOException {
@@ -445,20 +432,6 @@ class InputAnswer implements Callable<String> { // 값 입력받기
     Scanner sc = new Scanner(System.in);
     String input = "사용자입력값";
     input = sc.nextLine();
-
-    //    BufferedReader inp = new BufferedReader(new InputStreamReader(System.in));
-    //    String input = "";
-    //    while ("".equals(input)) {
-    //      try {
-    //        while (!inp.ready()) {
-    //          Thread.sleep(100);
-    //        }//while end
-    //        input = inp.readLine();
-    //      } catch (InterruptedException e) {
-    //        return null;
-    //      }//try end
-    //    } //while end
-
     return input;
   }//call end
 }//InputAnswer Class END

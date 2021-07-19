@@ -37,20 +37,18 @@ public class MainMenu {
 
     while (true) {
       System.out.print("  [1. 로그인]   [2. 회원가입]   [3. 아이디 / 비밀번호 찾기]   [9. 종료] \n  >>> ");
-  
-      System.out.print("  [1. 로그인]   [2. 회원가입]   [3. 아이디 / 비밀번호 찾기]   [9. 종료] \n  >>> ");
-      String command = sc.nextLine();
+      String menu = sc.nextLine();
 
-      switch (command) {
+      switch (menu) {
         case "1" : lm.login(); break;
         case "2" : jm.join(); break;
         case "3": fm.findDb(); break;
         case "9" :
-          System.out.println("게임을 종료합니다.");
+          System.out.println("\n\n게임을 종료합니다.");
           System.exit(0);
           break;
         default :
-          System.out.println("올바른 번호를 입력해 주십시오.");
+          System.out.println("\n번호를 다시 확인해주세요.");
       }
     }
   } // executeMember() End
