@@ -79,23 +79,23 @@ public class LogInMenu {
     System.out.print("\n\n게임 로딩중  "); Thread.sleep(500);
     System.out.print("▰"); Thread.sleep(100);
     System.out.print("▰▰"); Thread.sleep(100);
-    System.out.print("▰▰▰▰▰▰▰"); Thread.sleep(500);
+    System.out.print("▰▰▰▰▰▰▰"); Thread.sleep(300);
     System.out.print("▰"); Thread.sleep(100);
     System.out.print("▰"); Thread.sleep(200);
     System.out.print("▰"); Thread.sleep(300);
-    System.out.print("▰"); Thread.sleep(400);
+    System.out.print("▰"); Thread.sleep(100);
     System.out.print("▰"); Thread.sleep(100);
     System.out.print("▰"); Thread.sleep(200);
     System.out.print("▰"); Thread.sleep(100);
-    System.out.print("▰"); Thread.sleep(500);
-    System.out.print("▰"); Thread.sleep(100);
     System.out.print("▰"); Thread.sleep(300);
     System.out.print("▰"); Thread.sleep(100);
+    System.out.print("▰"); Thread.sleep(200);
     System.out.print("▰"); Thread.sleep(100);
-    System.out.print("▰"); Thread.sleep(300);
-    System.out.print("▰▰▰▰▰▰"); Thread.sleep(500);
+    System.out.print("▰"); Thread.sleep(100);
+    System.out.print("▰"); Thread.sleep(200);
+    System.out.print("▰▰▰▰▰▰"); Thread.sleep(300);
     System.out.println("꧁ଘ(੭ˊ꒳ˋ)੭✧\n");
-    Thread.sleep(1000);
+    Thread.sleep(500);
   }
 
   public long ldate() throws Exception {
