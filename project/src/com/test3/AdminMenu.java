@@ -94,7 +94,7 @@ public class AdminMenu {
 
   public void listMember() throws Exception {
     System.out.println("\n[회원 리스트]");
-    System.out.println("[No.]\t[Name]\t[ID]\t[Email]\t\t\t[Created Date]\t[Score]");
+    System.out.println("[No.]\t[Name]\t\t[ID]\t\t[Email]\t\t\t[Created Date]\t[Score]");
     d.select(userID);
   }//listMember end
 
@@ -131,70 +131,32 @@ public class AdminMenu {
 
 
 
-
-
-
-
-
-  //      String deleteID = sc.next();
-  //      Dao d = new Dao(deleteID);
-  //      d.select(deleteID);
-  //      if (deleteID.equals("Admin")) {
-  //        System.out.println("관리자는 삭제하실 수 없습니다.");
-  //        return;
-  //      } else if (d.getuId() != null) {
-  //        sql = "delete from member where ID = '" + deleteID + "'";
-  //        System.out.print("\n삭제하려는 아이디가 '"+ deleteID +"' 맞습니까? (y/N)>>> ");
-  //         String p = sc.nextLine();
-  //            if (p.equals("y")) {
-  //              ST.executeUpdate(sql);
-  //              System.out.println("\n회원 삭제가 완료되었습니다.");}
-  //      } else {
-  //        deleteID ="삭제불가";
-  //        System.out.println("\n아이디를 다시 확인하십시오.");
-  //        }
-
-
-
-  //테스트용 임시삽입 delete(SqlDb)
-  //  public void delete(String id) {
-  //    try {
-  ////      sql = "select * from member where ID = '" + id + "'";
-  ////      RS = ST.executeQuery(sql);
-  ////      while(RS.next() == true) {
-  ////        delId = RS.getString("ID");
-  ////      }
-  ////      
-  //
-  ////      String p = sc.nextLine();
-  //      Dao d = new Dao(id);
-  //      if () {
-  //      
-  //     }
-  //    } catch(Exception e) { System.out.println("error delete:" + e);  }
-  //  }//Delete 
-
-
   //[2. 코멘트 확인]////////////////////////////////////////////////
   public void cmtMember() throws Exception {
     System.out.println("\n[건의사항 확인]");
-    sql = " select id, comnt from member where comnt is not null";
+    sql = " select id, comnt, com from member where comnt is not null";
     RS = ST.executeQuery(sql);
-    System.out.println("\n  ID    \t Comment");
-
-    while (RS.next() == true) {
+    if(RS.next() != true) { System.out.println("\t 현재 등록된 건의사항이 없습니다 ");}
+    else {System.out.println("\n  ID    \t\t \t Comment");}
+    while (RS.next()==true) {
       ucmt = RS.getString("comnt");
       uID = RS.getString("ID");
-      System.out.print("  "+uID);  
+      String acom = RS.getString("com");
+      System.out.println("──────────────────────────────────────────────────────────────────────────────────────");
+      System.out.printf("  %-5s \t",uID);
       printcomnt(ucmt);
-    }
+      if (acom != null) { System.out.println("──────────────────────────────────────────────────────────────────────────────────────");
+        System.out.print(" >> Admin 답    ");  printcomnt(acom);
+      System.out.println();}
+    } 
+    
 
     loop : while(true) {
       System.out.println("\n수행하실 작업을 선택해 주십시오.");
       System.out.print("[1. 건의사항 답변 ]   [2. 건의사항 삭제]   [8. 뒤로가기]\n >>> ");
       int command = Integer.parseInt(sc.nextLine());
       switch (command) {
-        case 1: com(); break;
+        case 1: com(); continue;
         case 2: delcomnt(); continue;
         case 8: break loop;
         default: System.out.println("번호를 잘못 입력하셨습니다."); continue;
@@ -231,10 +193,9 @@ public class AdminMenu {
         System.out.println("\n  [건의사항 답변]");
         System.out.println("답변할 ID를 입력해주세요");
         tid = sc.nextLine();
-
+         d.select(tid);
         if(d.getUcomnt()!=null && d.getuId().equals(tid)) {
           System.out.print("\n답변을 입력해주세요.\n >>> ");
-
           com = sc.nextLine();
           while(com.length()>100) {
             System.out.println("\n100자이내로 작성해주세요");
@@ -248,26 +209,23 @@ public class AdminMenu {
           System.out.println("ID를 다시 확인해주세요");
         }
 
-
       } 
     } catch(Exception e) {System.out.println("errorcom: "+e);}
   }
 
+  
+
   public void printcomnt(String ucmt) {
     int len = ucmt.length();
-    if (len>25) {
-      System.out.println("\t"+ucmt.substring(0,25));
-      if(len>50) {
-        System.out.println("\t"+ucmt.substring(25,50));
-        if(len>75) {
-          System.out.println("\t"+ucmt.substring(50,75));
-          System.out.println("\t"+ucmt.substring(75,len));
-        } else {System.out.println("\t"+ ucmt.substring(50,len));}
-      } else {System.out.println("\t"+ ucmt.substring(25,len));}
-
-    } else {System.out.println("\t"+ucmt.substring(0,len)); 
-    } 
-  }
+    
+    if (len>50) {
+      System.out.printf(" %-50s \t\n",ucmt.substring(0,50));
+      System.out.printf("\t\t %-5s \t\n",ucmt.substring(50,len)); }
+      else {
+        System.out.printf(" %-50s \t\n",ucmt.substring(0,len));
+      }
+    }
+  
 
 
   //[3. 단어 관리]//////////////////////////////////////////////////
@@ -337,11 +295,14 @@ public class AdminMenu {
       System.out.println("\n[단어 출력]");
       sql = "select wordLevel, eng, kor from word order by wordLevel";
       RS = ST.executeQuery(sql);
-      System.out.println("\n영단어\t단어뜻");
+      System.out.println("\n영단어\t\t\t단어뜻");
       while(RS.next() == true) {
         String peng = RS.getString("eng");
         String pkor = RS.getString("kor");
-        System.out.println(peng + "\t" + pkor);
+        System.out.printf("  %-15s \tㅣ   %-15s \t ",peng, pkor);
+        System.out.println("\n──────────────────────────────────────────────────");
+        
+       
       }
     } catch(Exception e) {System.out.println("error printWord:" + e);}
   }

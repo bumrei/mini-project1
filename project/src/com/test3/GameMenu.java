@@ -116,19 +116,20 @@ public class GameMenu {
       int uranking = RS.getInt("rank");
       String uid = RS.getString("ID");
       int uscore = RS.getInt("score");
-
+      if (uranking == 1) {System.out.println("\n 현재 1등입니다!!");}
       System.out.printf("\t→ %d\t %s\t  %d\n",uranking,uid,uscore);
       if (uranking > 10) {
         int n = uranking -10;
         int x = rank10 - uscore ; 
-        System.out.println("\n top10 에 올라가기까지 " + n + "등"+ x + "점 남았습니다");
+        System.out.println("\n top10 에 올라가기까지 " + n + " 등"+ x + " 점 남았습니다");
       }
+ 
     }
   }
 
   public void notification() {
     try{
-
+      update("ldate",userID);
       msg = "select code, title, content from notice order by code";
       RS = ST.executeQuery(msg);
       System.out.println("\nNo. \t Title \t\t\t\t\t Content");
@@ -142,11 +143,11 @@ public class GameMenu {
     } catch(Exception e) {}
   }
 
-  public void update() throws Exception{
+  public void update(String date, String userID ) throws Exception{
     dbConnect();
-    msg = "update member set ldate = sysdate where id = '"+userID+"'";
+    msg = "update member set " +date+ " = sysdate where id = '"+userID+"'";
     ST.executeUpdate(msg);
-    System.out.println(userID);
+
   }
 
   public void back() {

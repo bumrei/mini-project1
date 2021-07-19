@@ -47,16 +47,15 @@ public class Dao {
       msg = "select MEMNO,NAME,ID,EMAIL,CDATE,SCORE from member";
       RS = ST.executeQuery(msg);
       while(RS.next() == true) {
-        System.out.println(RS.getInt("MEMNO") + "\t" + 
-            RS.getString("NAME")  + "\t" + 
-            RS.getString("ID")    + "\t" + 
-            RS.getString("EMAIL") + "\t" + 
-            RS.getDate("CDATE") + "\t" + 
-            RS.getInt("SCORE"));}
-      return;
+        String a = RS.getString("NAME");
+        System.out.printf("\n%4d│ %-10s\t │ %-10s\t│  %-20s ㅣ %s  │   %-4d "
+            + "\n───────────────────────────────────────────────────────────────────────────────────────────",
+             RS.getInt("MEMNO"),
+             a, RS.getString("ID"), RS.getString("EMAIL"),RS.getDate("cdate"),
+             RS.getInt("SCORE"));
+      }
     }
-
-
+    
     msg = "select * from member, answerRate where member.ID = answerRate.ID and member.ID = '" + userID + "'";
     RS = ST.executeQuery(msg);
     while (RS.next() == true) {
@@ -90,7 +89,6 @@ public class Dao {
     dbclose();
 
   }
-
 
   public int getMychar() {
     return mychar;

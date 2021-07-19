@@ -21,9 +21,9 @@ public class LogInMenu {
   String uID , uPsw ,uName , uEmail, userPsw ;
   private String userID ;
   String fname , femail ,fID , fpsw , rpsw, ucom;
-  Date udate, ldate, ndate;
+  Date udate, ldate, ndate, adate,comdate;
   int uscord;
-
+  long calDateDays = 0;
   public void dbConnect() throws Exception {
     Class.forName("oracle.jdbc.driver.OracleDriver");
     String url = "jdbc:oracle:thin:@localhost:1521:XE";
@@ -54,7 +54,7 @@ public class LogInMenu {
       if (userID.equals(uID) && userPsw.equals(uPsw)) {
         System.out.println("\n" +uName +"님 환영합니다");
 
-        if (ucom != null) {
+        if (ucom != null && comdate()>0 ) {
           System.out.println("\n건의사항 답변이 도착했습니다");
         }
 
@@ -74,8 +74,6 @@ public class LogInMenu {
   public long ldate() throws Exception {
     dbConnect();
 
-    // 날짜 차이를 담을 변수 생성
-    long calDateDays = 0;
     msg = "select cdate from notice order by cdate desc";
     RS = ST.executeQuery(msg);
     if (RS.next() == true) {
@@ -85,7 +83,18 @@ public class LogInMenu {
     calDateDays = calDate / ( 24*60*60*1000);
     return calDateDays;
   }
-
+  
+  
+  public long comdate() throws Exception {
+    dbConnect();
+    matchLoginFromDB();
+    long calDate =   comdate.getTime() - adate.getTime();
+    //udate 공지 날짜에 넣어줘야함
+    calDateDays = calDate / ( 24*60*60*1000);
+    return calDateDays;
+  }
+  
+  
   public void matchLoginFromDB() throws Exception {
     msg = "select * from member where ID = '" + userID + "'";
     RS = ST.executeQuery(msg);
@@ -95,8 +104,10 @@ public class LogInMenu {
       uPsw = RS.getString("PSW");
       uscord = RS.getInt("score");
       ucom = RS.getString("com");
-      udate = RS.getDate("cdate");
-      ldate = RS.getDate("ldate");
+      udate = RS.getDate("cdate"); //가입날짜
+      ldate = RS.getDate("ldate");  //공지확인날짜
+      adate = RS.getDate("adate");  // 내정보확인날짜
+      comdate = RS.getDate("comdate");//건의사항 답변날짜
     }
   }
 }
@@ -236,7 +247,6 @@ class JoinMember {
       int frontLen = front.length();
       String last = email.substring(index+1);
       int lastLen = last.length();
-
       check = !last.contains(".") || frontLen < 1 || lastLen<5;
     }
     return check;

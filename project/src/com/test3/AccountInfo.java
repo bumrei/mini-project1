@@ -25,11 +25,13 @@ public class AccountInfo {
   }
 
   public void info() throws Exception {
+    GameMenu gm = new GameMenu(userID);
+    
     d.select(userID);
     System.out.println("\n\n   " + em.printChar2(d.getMychar()));
     System.out.println("\n\n               내정보              ");
     System.out.println("───────────────────────────────────────────────── ");
-    System.out.println("\t"+ d.getuName() +"님과 함께한지 "+  datedif(d.getuDate()) + " 일째 입니다" );
+    System.out.println("\t"+ d.getuName() +"님 과 함께한지 "+  datedif(d.getuDate()) + " 일째 입니다" );
     System.out.println("  Name   :\t"+ d.getuName() );
     System.out.println("  I  D   :\t"+ d.getuId() );
     System.out.println("  Email  :\t" + d.getuEmail());
@@ -43,6 +45,7 @@ public class AccountInfo {
       printcomnt(d.getUcomnt());
       System.out.print(" 답  변  :\t");
       if( d.getCom() != null ) {
+        gm.update("adate",userID);
         printcomnt(d.getCom());
       } else { System.out.println("현재 등록된 답변이 없습니다.");}
     }
@@ -166,7 +169,7 @@ public class AccountInfo {
         System.out.println("\n100자이내로 작성해주세요");
         System.out.print("\n건의사항을 입력해주세요.\n >>> ");
         comnt = sc.nextLine(); }
-      msg = "update member SET comnt = '"+ comnt +"'  where id = '"+userID+"' ";
+      msg = "update member SET comnt = '"+ comnt +"' , com = null  where id = '"+userID+"' ";
       d.dbConnect();
       d.ST.executeUpdate(msg);
       System.out.println("\n건의사항을 관리자에게 전송했습니다.");
