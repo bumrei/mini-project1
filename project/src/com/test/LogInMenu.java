@@ -142,7 +142,7 @@ class JoinMember {
   Statement ST = null; //ST=CN, createStatement() 명령어생성 삭제, 신규등록, 조회하라
   PreparedStatement PST = null;
   ResultSet RS = null; //select조회결과값 전체데이터를 기억
-  String sql = "isud = crud쿼리문기술";
+  String msg = "isud = crud쿼리문기술";
   Scanner sc = new Scanner(System.in);
   String id, psw, name, email;
   String tmp = "비밀번호재확인용";
@@ -198,8 +198,8 @@ class JoinMember {
         break;
       }//while end
       try {
-        sql = "select * from member";
-        RS = ST.executeQuery(sql);
+        msg = "select * from member";
+        RS = ST.executeQuery(msg);
         while(RS.next()==true) {
           String tmpid = RS.getString("ID");
           if(id.equals(tmpid)) {
@@ -285,24 +285,24 @@ class JoinMember {
 
 
   public void insertMember() throws SQLException {
-    sql = "INSERT INTO member(memNo, name, ID, psw, email, cdate) "
+    msg = "INSERT INTO member(memNo, name, ID, psw, email, cdate) "
         + "VALUES(member_seq.nextval, ?, ?, ?, ?,sysdate)";
-    PST = CN.prepareStatement(sql);
+    PST = CN.prepareStatement(msg);
     PST.setString(1, name);
     PST.setString(2, id);
     PST.setString(3, psw);
     PST.setString(4, email);
     PST.executeUpdate();
 
-    sql = "insert into Transaction values(?,?,?)";
-    PST = CN.prepareStatement(sql);
+    msg = "insert into Transaction values(?,?,?)";
+    PST = CN.prepareStatement(msg);
     PST.setString(1, id);
     PST.setInt(2, 0);
     PST.setInt(3, 0);
     PST.executeUpdate();
 
-    sql = "INSERT INTO answerRate(ID) VALUES(?)";
-    PST = CN.prepareStatement(sql);
+    msg = "INSERT INTO answerRate(ID) VALUES(?)";
+    PST = CN.prepareStatement(msg);
     PST.setString(1, id);
     PST.executeUpdate();
   }//insertMember end
@@ -358,7 +358,7 @@ class FindMember {
       System.out.println("\n  [아이디 찾기]");
       System.out.println("\n회원정보를 입력하세요.");
 
-      System.out.print("  이름 >>> ");
+      System.out.print("  닉네임 >>> ");
       fname = sc.nextLine();
       System.out.print("  Email >>> ");
       femail = sc.nextLine();
@@ -382,7 +382,7 @@ class FindMember {
       System.out.println("\n  [비밀번호 찾기]");
       System.out.println("\n회원정보를 입력하세요.");
 
-      System.out.print("  이름 >>> ");
+      System.out.print("  닉네임 >>> ");
       fname = sc.nextLine();
       System.out.print("  ID >>> ");
       fID = sc.nextLine();

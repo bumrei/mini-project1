@@ -14,7 +14,7 @@ create table member (
   ID varchar(10) ,
   psw varchar(15) not null ,
   email varchar(25) not null ,
-  cdate date not null ,
+  cdate date default(sysdate),
   score number(4) default(0) ,
   memLevel varchar(10) default('Bronze'),
   exp number(4) default(0),
@@ -33,16 +33,6 @@ create table transaction (
   irow number(3) ,
   jcolumn number(3) ,
   constraint fk_transaction_ID foreign key(ID)
-      references member(ID) on delete cascade
-);
-
-create table message (
-  code number(4) not null,
-  ID varchar(10) not null,
-  mess nvarchar2(100) ,
-  mdate date ,
-  ToID varchar(10) not null ,
-  constraint fk_message_ID foreign key(ID)
       references member(ID) on delete cascade
 );
 
@@ -67,48 +57,80 @@ commit ;
 
 --member insert 부분/////////////////////////////////////////////////////////////////////////////////////////////////////
 
-insert into member(memNo, name, ID, psw, email, cdate, ldate, point)
- values(member_seq.nextval, '김하하', 'ID1', '12345', 'hahahaha@gmail.com',  '2021-07-10', '2021-07-12', 30000);
+insert into member(memNo, name, ID, psw, email, cdate, ldate, score)
+ values(member_seq.nextval, '벌레', 'bumrei', '12345', 'hahahaha@gmail.com',  '2021-07-10', '2021-07-12', 50);
 
-insert into member(memNo, name, ID, psw, email, cdate)
- values(member_seq.nextval, '김호호', 'ID2', '12345', 'ggggjjj@gmail.com', sysdate);
+insert into member(memNo, name, ID, psw, email, cdate, score)
+ values(member_seq.nextval, '짱아치', 'jeonga', '12345', 'ggggjjj@gmail.com', sysdate, 40);
 
-insert into member(memNo, name, ID, psw, email, cdate)
- values(member_seq.nextval, '김히히', 'ID3', '12345', 'ggggjjj@gmail.com', sysdate);
+insert into member(memNo, name, ID, psw, email, cdate, score)
+ values(member_seq.nextval, '배', 'bsj308', '12345', 'ggggjjj@gmail.com', sysdate, 33);
 
-insert into member(memNo, name, ID, psw, email, cdate, ldate)
- values(member_seq.nextval, 'a', 'a', 'a', 'ggggjjj@gmail.com', '2021-07-10', '2021-07-14');
+insert into member(memNo, name, ID, psw, email, cdate, ldate, score)
+ values(member_seq.nextval, '무햐호', 'w3whhhh', '12345', 'ggggjjj@gmail.com', '2021-07-10', '2021-07-14', 35);
+
+insert into member(memNo, name, ID, psw, email, score)
+ values(member_seq.nextval, '전지현', 'a', '12345', 'asdasdf@adffa.com', 10);
+
+insert into member(memNo, name, ID, psw, email, score)
+ values(member_seq.nextval, '송혜교', 'b', '12345', 'fjksla@gjdklj.com', 14);
+
+insert into member(memNo, name, ID, psw, email, score)
+ values(member_seq.nextval, '김태희', 'c', '12345', 'fdjlfak@jjfkld.com', 20);
+
+insert into member(memNo, name, ID, psw, email, score)
+ values(member_seq.nextval, '송중기', 'd', '12345', 'dkjlkdg@djk.com', 22);
+
+insert into member(memNo, name, ID, psw, email, score)
+ values(member_seq.nextval, '장기용', 'e', '12345', 'jdksdlagh@dd.com', 10);
+
+insert into member(memNo, name, ID, psw, email, score)
+ values(member_seq.nextval, '유재석', 'f', '12345', 'jdklf@fkldg.com', 8);
+
+insert into member(memNo, name, ID, psw, email, score)
+ values(member_seq.nextval, '비', 'g', '12345', 'djfkal@dkl.net', 39);
+
+insert into member(memNo, name, ID, psw, email, score)
+ values(member_seq.nextval, '조조', 'h', '12345', 'jfkdld@jkg.com', 44);
+
+insert into member(memNo, name, ID, psw, email)
+ values(member_seq.nextval, '김영림', 'rladudfla', '12345', 'jfkl@dkjgl.com');
+
+insert into member(memNo, name, ID, psw, email)
+ values(member_seq.nextval, '엄진영', 'djawlsdud', '12345', 'jfdksgak@jkgdas.com');
+
+insert into member(memNo, name, ID, psw, email)
+ values(member_seq.nextval, '황주희', 'ghkdwngml', '12345', 'jfdflkda@dd.com');
+
+
 
 --////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 --transaction insert 부분////////////////////////////////////////////////////////////////////////////////////////
 
 
-insert into transaction values('ID1', 0,0) ;
+insert into transaction values('bumrei', 0,0) ;
 
-insert into transaction values('ID2', 0,0) ;
+insert into transaction values('jeonga', 0,0) ;
 
-insert into transaction values('ID3', 0,0) ;
+insert into transaction values('bsj308', 0,0) ;
 
---//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
---message insert 부분 ///////////////////////////////////////////////////////////////////////////////////////////
-insert into message values(message_seq.nextval, 'ID1', 'hi hahahahahahaha', sysdate, 'ID2');
+insert into transaction values('w3whhhh', 0,0) ;
 
 --//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 --answerRate insert 부분/////////////////////////////////////////////////////////////////////////////////////////
-INSERT INTO answerRate(ID) VALUES('ID1');
-INSERT INTO answerRate(ID) VALUES('ID2');
-INSERT INTO answerRate(ID) VALUES('ID3');
-INSERT INTO answerRate(ID) VALUES('a');
+INSERT INTO answerRate(ID) VALUES('bumrei');
+INSERT INTO answerRate(ID) VALUES('jeonga');
+INSERT INTO answerRate(ID) VALUES('bsj308');
+INSERT INTO answerRate(ID) VALUES('w3whhhh');
 --////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 commit ;
 select * from member;
 
 select * from transaction ;
-
-select * from message ;
 
 select * from answerRate;

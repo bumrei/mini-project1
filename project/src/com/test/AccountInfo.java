@@ -34,7 +34,7 @@ public class AccountInfo {
     System.out.println("\n\n                    내정보              ");
     System.out.println("───────────────────────────────────────────────── ");
     System.out.println("\t"+ d.getuName() +" 님과 함께한지 "+  datedif(d.getuDate()) + " 일째 입니다 ❤" );
-    System.out.println("  Name   :\t"+ d.getuName() );
+    System.out.println("  Nick   :\t"+ d.getuName() );
     System.out.println("  I  D   :\t"+ d.getuId() );
     System.out.println("  Email  :\t" + d.getuEmail());
     System.out.println("  SCORE  :\t" + d.getuScore());

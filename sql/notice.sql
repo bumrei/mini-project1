@@ -11,7 +11,9 @@ cdate date default(sysdate)
 
 create sequence notice_seq;
 
-insert into notice(code, title, content, cdate) values(notice_seq.nextval, '서버 오픈', '21년 6월 7일자로 서버가 오픈하였습니다. 회원분들의 많은 이용 바랍니다.', '21/06/07');
+insert into notice(code, title, content, cdate) values(notice_seq.nextval, '6월 7일 서버 오픈 안내', '21년 6월 7일자로 서버를 오픈할 계획입니다. 회원분들의 많은 이용 바랍니다.', '21/06/05');
+
+insert into notice(code, title, content, cdate) values(notice_seq.nextval, '게임 이용 안내', '단어 암기 게임은 단어장을 보고 단어를 외우며, 랜덤으로 출력되는 영단어의 뜻을 맞추는 게임입니다. 재미있게 즐겨주세요!', '21/06/07');
 
 insert into notice(code, title, content, cdate) values(notice_seq.nextval, '단어 Level 추가', '단어를 수준별로 테스트하면 좋겠다는 회원분들의 의견을 반영해 level을 추가하였습니다.', '21/06/10');
 

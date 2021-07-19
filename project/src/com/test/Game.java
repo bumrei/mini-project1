@@ -22,7 +22,7 @@ public class Game {
   Statement ST ; 
   PreparedStatement PST ;
   ResultSet RS ; 
-  String sql = "isud = crud쿼리문기술";
+  String msg = "isud = crud쿼리문기술";
   Scanner sc = new Scanner(System.in);
 
   String userID;
@@ -33,7 +33,7 @@ public class Game {
   String memLevel;//유저레벨
   int quCount;//현재 플레이동안 푼 문제개수
   int anCount;//현재 플레이동안 맞춘 문제개수
-  int[] questionNum = new int[6];
+  int[] questionNum = new int[10];
   Dao d = new Dao(userID);
   Emoticon em = new Emoticon(userID);
 
@@ -80,26 +80,16 @@ public class Game {
       System.out.println("테스트중간에 그만두고 싶으시다면 'end'를 입력해주세요.\n\n");
       try {
         dbConnect();
-        //랜덤문제생성
         randomSetting();
-
-        //테스트 반복
         for(int i =0 ; i<questionNum.length; i++) {
-          //문제랜덤출력
           System.out.printf("문제 >>> %s\n",getWord("eng", i));
           System.out.print("정답 >>> ");
-
-          //제한시간 10초설정
           ExecutorService ex = Executors.newSingleThreadExecutor();
-          //쓰레드 1개인 ExecutorService를 리턴합니다. 싱글 쓰레드에서 동작해야하는 작업을 처리할 때 사용합니다.
           String uanswer = "사용자 답변";
           try {
-            Future<String> result = ex.submit(new InputAnswer()); // 정답함수 받아서 쓰레드에 전달
-            //submit은 Runnable 또는 Callable을 받는다. Runnable은 리턴값이 없고 Callable은 리턴값이 있다.
+            Future<String> result = ex.submit(new InputAnswer());
             try {
               uanswer = result.get(10, TimeUnit.SECONDS);
-              //필요에 따라서 최대지정된 시간, 계산이 완료할 때까지 대기해, 그 후, 계산 결과가 이용 가능한 경우는 결과를 가져옵니다.
-              //게임도중 종료
               if(uanswer.equals("end")) {
                 break;
               }//if end
@@ -116,8 +106,6 @@ public class Game {
             }//try end
           } finally {
             ex.shutdownNow(); //진행중인거 강제 종료
-            //스레드 풀의 스레드는 기본적으로 데몬 스레드가 아니기 때문에 main 스레드가 종료되더라도 작업을 처리하기 위해 계속 실행 상태로 남아있습니다.
-            //프로세스를 종료시키려면 스레드 풀을 종료시켜 스레드들이 종료 상태가 되도록 처리필요
           }//try end
           answerCheck(uanswer, i);
           System.out.println();
@@ -131,11 +119,9 @@ public class Game {
       System.out.println(" \t    └────────────────────────────────────────────┘\n");
       Result();      
       setEXP();
-      //현재 개수 초기화(리플레이시 반영위해)
       quCount = 0;
       anCount = 0;
 
-      //게임종료 후 메뉴선택
       while(true) {
         System.out.println("[1.리플레이]   [2.이전메뉴]");
         System.out.print("메뉴 >>> ");
@@ -149,13 +135,12 @@ public class Game {
     }//while end
   }//wordTest end
 
-  //문제 총 개수반환
   public int getTotalWordNum() {
     int count = 0;
     try {
       dbConnect();
-      sql = "select count(*) from word where wordlevel = ?";
-      PST = CN.prepareStatement(sql);
+      msg = "select count(*) from word where wordlevel = ?";
+      PST = CN.prepareStatement(msg);
       PST.setInt(1, level);
       RS = PST.executeQuery();
       if( RS.next() == true) {
@@ -175,19 +160,17 @@ public class Game {
         }//if end
       }//for end
     }//for end
-
   }//print[] END
 
-  //데이터베이스 단어 가져오기
   public String getWord(String type, int number) {
     String word = "단어";
     try {
       dbConnect();
-      sql = "select * from "
+      msg = "select * from "
           + "(select row_number() over(partition by wordlevel order by wordNum) as row_num, b.* "
           + "from word b) a "
           + "where wordlevel = " + level + " and a.row_num = " + questionNum[number];
-      RS = ST.executeQuery(sql);
+      RS = ST.executeQuery(msg);
       if( RS.next() == true) {
         word = RS.getString(type);
       }//if end
@@ -196,11 +179,9 @@ public class Game {
   }//getQuestion end
 
 
-  //정답채점해서 DB에 점수저장
   public void answerCheck(String userAnswer, int number) throws Exception {
     dbConnect();
     d.select(userID);
-    //데이터 저장을 따로 빼서 전역변수로 선언함
     d.questionTotalCnt++;
     quCount++;
     String answer = getWord("kor", number);
@@ -233,9 +214,7 @@ public class Game {
       }//switch end
     }//if end
     System.out.println("현재점수는 " + d.uScore + "점입니다.");
-
     setDBData(userID);
-
   }//answerCheck end
 
   public void Result() throws Exception {
@@ -292,18 +271,18 @@ public class Game {
 
   public void setDBData(String userID) {
     try {
-      sql = "update member set score = ?, memLevel = ?, exp = ?, point = ? where ID = ?";
-      PST = CN.prepareStatement(sql);
+      msg = "update member set score = ?, memLevel = ?, exp = ?, point = ? where ID = ?";
+      PST = CN.prepareStatement(msg);
       PST.setInt(1, d.uScore); PST.setString(2, d.memLevel); PST.setInt(3, d.exp);
       PST.setInt(4, d.point); PST.setString(5, userID);
       PST.executeUpdate();
 
-      sql = "update answerRate set "
+      msg = "update answerRate set "
           + "questionTotalCnt = ?, questionCnt1 = ?, questionCnt2 = ?, questionCnt3 = ?,"
           + "answerTotalCnt = ?,answerCnt1 = ?, answerCnt2 = ?, answerCnt3 = ?,"
           + "answerTotalRate = ?, answerRate1 = ?, answerRate2 = ?, answerRate3 = ? "
           + "where ID = ?";
-      PST = CN.prepareStatement(sql);
+      PST = CN.prepareStatement(msg);
       PST.setInt(1, d.questionTotalCnt); PST.setInt(2, d.questionCnt1);
       PST.setInt(3, d.questionCnt2); PST.setInt(4, d.questionCnt3);
       PST.setInt(5, d.answerTotalCnt); PST.setInt(6, d.answerCnt1);
